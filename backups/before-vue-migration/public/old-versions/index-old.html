@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Claudio - 你的AI音乐DJ">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>Claudio FM</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <!-- 点阵背景 -->
+  <canvas id="dotBackground" class="dot-background"></canvas>
+
+  <!-- 光晕效果 -->
+  <div class="ambient-glow"></div>
+
+  <div class="app-container">
+    <!-- 像素时钟和状态 -->
+    <div class="pixel-clock-section">
+      <div class="pixel-clock" id="pixelClock">21:11</div>
+      <div class="clock-date" id="clockDate">Monday</div>
+      <div class="clock-full-date" id="clockFullDate">20 APR 2026</div>
+      <div class="on-air-status">ON AIR</div>
+    </div>
+
+    <!-- 音频可视化 -->
+    <div class="audio-visualizer" id="visualizer">
+      <div class="visualizer-bar"></div>
+      <div class="visualizer-bar"></div>
+      <div class="visualizer-bar"></div>
+      <div class="visualizer-bar"></div>
+      <div class="visualizer-bar"></div>
+    </div>
+
+    <!-- 当前播放 -->
+    <div class="now-playing-header">
+      <div class="now-playing-title">NOW PLAYING</div>
+      <div class="now-playing-song" id="songName">等待播放...</div>
+      <div class="now-playing-artist" id="artistName">Claudio</div>
+    </div>
+
+    <!-- 专辑封面（可选） -->
+    <div class="album-art-container" id="albumArtContainer" style="display: none;">
+      <img id="albumArt" class="album-art" alt="Album Art">
+    </div>
+
+    <!-- 进度条 -->
+    <div class="progress-section">
+      <div class="progress-bar" id="progressBar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-time">
+        <span id="currentTime">0:00</span>
+        <span id="totalTime">0:00</span>
+      </div>
+    </div>
+
+    <!-- 播放控制 -->
+    <div class="controls">
+      <button class="control-btn secondary" onclick="skipPrevious()" title="上一首">⏮</button>
+      <button class="control-btn" onclick="togglePlay()" title="播放/暂停" id="playBtn">⏸</button>
+      <button class="control-btn secondary" onclick="skipNext()" title="下一首">⏭</button>
+      <button class="control-btn secondary" onclick="stopPlayback()" title="停止">⏹</button>
+      <button class="control-btn icon-btn" onclick="toggleLike()" title="喜欢" id="likeBtn">♡</button>
+      <button class="control-btn text-btn" onclick="showPlaylist()" title="播放列表">LIST</button>
+      <button class="control-btn text-btn" onclick="showFavorites()" title="收藏">FAV</button>
+      <div class="volume-control">
+        <span class="volume-label">VOL</span>
+        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="80" oninput="changeVolume(this.value)">
+      </div>
+    </div>
+
+    <!-- 对话区域 -->
+    <div class="chat-section">
+      <div class="status-indicator">
+        <span class="status-dot"></span>
+        <span>CLAUDIO FM - CONNECTED</span>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <!-- 消息将动态添加到这里 -->
+      </div>
+    </div>
+
+    <!-- 输入区域 -->
+    <div class="chat-input-container">
+      <div class="chat-input-wrapper">
+        <input
+          type="text"
+          class="chat-input"
+          id="chatInput"
+          placeholder="嗨，Claudio！我想听点什么..."
+          onkeypress="handleKeyPress(event)"
+        >
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="发送">↑</button>
+      </div>
+    </div>
+
+    <!-- 底部状态 -->
+    <div class="footer-status">
+      <span id="footerStatus">CLAUDIO FM</span>
+    </div>
+  </div>
+
+  <!-- 播放列表弹窗 -->
+  <div class="playlist-modal" id="playlistModal">
+    <div class="playlist-content">
+      <div class="playlist-header">
+        <div class="playlist-title">播放列表</div>
+        <button class="playlist-close" onclick="closePlaylist()">×</button>
+      </div>
+      <div id="playlistItems">
+        <!-- 播放列表项将动态添加 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 隐藏的audio元素 -->
+  <audio id="audioPlayer" crossorigin="anonymous"></audio>
+
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="192" height="192" fill="#000000"/>
+
+  <!-- 音符图标 -->
+  <g transform="translate(38.400000000000006, 38.400000000000006)">
+    <!-- 音符杆 -->
+    <rect x="40.31999999999999" y="17.279999999999998" width="15.36" height="57.599999999999994" fill="#00ff88" rx="7.68"/>
+
+    <!-- 音符头 -->
+    <ellipse cx="47.99999999999999" cy="80.63999999999999" rx="13.823999999999998" ry="11.52" fill="#00ff88"/>
+
+    <!-- 第二个音符杆 -->
+    <rect x="63.36" y="28.799999999999997" width="15.36" height="51.839999999999996" fill="#00ff88" rx="7.68"/>
+
+    <!-- 第二个音符头 -->
+    <ellipse cx="71.03999999999999" cy="86.39999999999999" rx="13.823999999999998" ry="11.52" fill="#00ff88"/>
+
+    <!-- 连接线 -->
+    <path d="M 55.67999999999999 17.279999999999998 Q 57.599999999999994 11.52 63.36 28.799999999999997"
+          stroke="#00ff88" stroke-width="9.216" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- 底部文字 -->
+  <text x="96" y="172.8"
+        font-family="monospace"
+        font-size="23.04"
+        font-weight="bold"
+        fill="#00ff88"
+        text-anchor="middle">CLAUDIO</text>
+</svg>

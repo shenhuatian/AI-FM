@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="128" height="128" fill="#000000"/>
+
+  <!-- 音符图标 -->
+  <g transform="translate(25.6, 25.6)">
+    <!-- 音符杆 -->
+    <rect x="26.88" y="11.52" width="10.24" height="38.4" fill="#00ff88" rx="5.12"/>
+
+    <!-- 音符头 -->
+    <ellipse cx="32" cy="53.76" rx="9.216" ry="7.68" fill="#00ff88"/>
+
+    <!-- 第二个音符杆 -->
+    <rect x="42.24" y="19.2" width="10.24" height="34.56" fill="#00ff88" rx="5.12"/>
+
+    <!-- 第二个音符头 -->
+    <ellipse cx="47.36" cy="57.599999999999994" rx="9.216" ry="7.68" fill="#00ff88"/>
+
+    <!-- 连接线 -->
+    <path d="M 37.12 11.52 Q 38.4 7.68 42.24 19.2"
+          stroke="#00ff88" stroke-width="6.144" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- 底部文字 -->
+  <text x="64" y="115.2"
+        font-family="monospace"
+        font-size="15.36"
+        font-weight="bold"
+        fill="#00ff88"
+        text-anchor="middle">CLAUDIO</text>
+</svg>

@@ -1,0 +1,306 @@
+/* ==================== 点阵背景 ==================== */
+.dot-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  opacity: 0.4;
+}
+
+/* ==================== 光晕效果 ==================== */
+.ambient-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(0, 255, 136, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(102, 126, 234, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(118, 75, 162, 0.05) 0%, transparent 60%);
+  animation: glowMove 20s ease-in-out infinite;
+}
+
+@keyframes glowMove {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(20px, -20px) scale(1.05);
+  }
+  50% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+  75% {
+    transform: translate(20px, 20px) scale(1.02);
+  }
+}
+
+/* ==================== 像素时钟区域 ==================== */
+.pixel-clock-section {
+  text-align: center;
+  padding: var(--space-2xl) var(--space-xl);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.pixel-clock {
+  font-family: 'Courier New', monospace;
+  font-size: 72px;
+  font-weight: bold;
+  color: var(--text-primary);
+  letter-spacing: 8px;
+  margin-bottom: var(--space-sm);
+  text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+  /* 像素风格 */
+  image-rendering: pixelated;
+  -webkit-font-smoothing: none;
+}
+
+.clock-date {
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xs);
+  text-transform: capitalize;
+}
+
+.clock-full-date {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: var(--space-md);
+}
+
+.on-air-status {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-md);
+  background: rgba(0, 255, 136, 0.1);
+  border: 1px solid var(--accent-border);
+  border-radius: 12px;
+  font-size: var(--text-xs);
+  color: var(--accent-primary);
+  font-weight: 600;
+  letter-spacing: 2px;
+  animation: blink 2s ease-in-out infinite;
+}
+
+/* ==================== 重构播放控制 ==================== */
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-xl) var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.control-btn.icon-btn {
+  font-size: 24px;
+}
+
+.control-btn.text-btn {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 0 var(--space-lg);
+  min-width: 60px;
+}
+
+.control-btn.liked {
+  color: var(--accent-primary);
+  background: rgba(0, 255, 136, 0.1);
+  border-color: var(--accent-border);
+}
+
+/* ==================== 音量控制 ==================== */
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-left: var(--space-md);
+}
+
+.volume-label {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.volume-slider {
+  width: 100px;
+  height: 4px;
+  background: var(--bg-tertiary);
+  border-radius: 2px;
+  outline: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+  transition: all var(--transition-normal);
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 12px rgba(0, 255, 136, 0.8);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+  transition: all var(--transition-normal);
+}
+
+.volume-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 12px rgba(0, 255, 136, 0.8);
+}
+
+/* ==================== 播放列表弹窗 ==================== */
+.playlist-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn var(--transition-slow) ease-out;
+}
+
+.playlist-modal.active {
+  display: flex;
+}
+
+.playlist-content {
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-normal);
+  border-radius: 16px;
+  padding: var(--space-xl);
+  overflow-y: auto;
+}
+
+.playlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-xl);
+}
+
+.playlist-title {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.playlist-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-normal);
+  color: var(--text-primary);
+  font-size: 20px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.playlist-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(90deg);
+}
+
+.playlist-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  margin-bottom: var(--space-sm);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.playlist-item:hover {
+  background: rgba(0, 255, 136, 0.05);
+  transform: translateX(4px);
+}
+
+.playlist-item-cover {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--bg-tertiary);
+}
+
+.playlist-item-info {
+  flex: 1;
+}
+
+.playlist-item-title {
+  font-size: var(--text-md);
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.playlist-item-artist {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+/* ==================== 推荐歌曲高亮 ==================== */
+.song-card.featured {
+  background: rgba(0, 255, 136, 0.1);
+  border: 2px solid var(--accent-primary);
+  box-shadow: 0 4px 20px rgba(0, 255, 136, 0.2);
+  position: relative;
+}
+
+.song-card.featured::before {
+  content: '⭐ 最推荐';
+  position: absolute;
+  top: -10px;
+  left: var(--space-md);
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.song-card-comment {
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid rgba(0, 255, 136, 0.1);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  font-style: italic;
+}

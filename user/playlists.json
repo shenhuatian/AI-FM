@@ -1,0 +1,27 @@
+{
+  "morning": {
+    "name": "晨起歌单",
+    "description": "适合早上听的轻快歌曲",
+    "songs": []
+  },
+  "work": {
+    "name": "工作歌单",
+    "description": "适合工作时的专注音乐",
+    "songs": []
+  },
+  "relax": {
+    "name": "放松歌单",
+    "description": "适合放松时的舒缓音乐",
+    "songs": []
+  },
+  "workout": {
+    "name": "运动歌单",
+    "description": "适合运动时的激励音乐",
+    "songs": []
+  },
+  "favorites": {
+    "name": "我的最爱",
+    "description": "最喜欢的歌曲合集",
+    "songs": []
+  }
+}

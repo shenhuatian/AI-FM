@@ -1,0 +1,576 @@
+/* ==================== Nothing Design System - Tokens ==================== */
+:root {
+  /* Colors - Dark Mode */
+  --black: #000000;
+  --surface: #111111;
+  --surface-raised: #1A1A1A;
+  --border: #222222;
+  --border-visible: #333333;
+  --text-disabled: #666666;
+  --text-secondary: #999999;
+  --text-primary: #E8E8E8;
+  --text-display: #FFFFFF;
+
+  /* Accent & Status */
+  --accent: #D71921;
+  --accent-subtle: rgba(215, 25, 33, 0.15);
+  --success: #4A9E5C;
+  --warning: #D4A843;
+  --interactive: #5B9BF6;
+
+  /* Typography */
+  --font-display: 'Space Mono', monospace;
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-data: 'Space Mono', monospace;
+
+  /* Type Scale */
+  --display-xl: 72px;
+  --display-lg: 48px;
+  --display-md: 36px;
+  --heading: 24px;
+  --subheading: 18px;
+  --body: 16px;
+  --body-sm: 14px;
+  --caption: 12px;
+  --label: 11px;
+
+  /* Spacing (8px base) */
+  --space-2xs: 2px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-4xl: 96px;
+}
+
+/* ==================== Base Styles ==================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--black);
+  color: var(--text-primary);
+  font-size: var(--body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==================== Dot Grid Background ==================== */
+.dot-grid-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(circle, var(--border) 0.5px, transparent 0.5px);
+  background-size: 16px 16px;
+  opacity: 0.3;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ==================== App Container ==================== */
+.app-container {
+  max-width: 680px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--black);
+}
+
+/* ==================== Header ==================== */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md);
+  border-bottom: 1px solid var(--border-visible);
+}
+
+.app-logo {
+  font-family: var(--font-display);
+  font-size: var(--heading);
+  color: var(--text-display);
+  letter-spacing: 0.1em;
+}
+
+.header-right {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+/* ==================== Main Content ==================== */
+.main-content {
+  flex: 1;
+  padding: var(--space-xl) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+}
+
+/* ==================== Clock Section - Primary Layer ==================== */
+.clock-section {
+  text-align: center;
+  padding: var(--space-3xl) 0;
+}
+
+.display-xl {
+  font-family: var(--font-display);
+  font-size: var(--display-xl);
+  font-weight: 700;
+  color: var(--text-display);
+  line-height: 1.0;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-sm);
+}
+
+.clock-meta {
+  font-family: var(--font-body);
+  font-size: var(--body);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-md);
+}
+
+.separator {
+  margin: 0 var(--space-xs);
+  color: var(--text-disabled);
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-md);
+  border: 1px solid var(--border-visible);
+  border-radius: 999px;
+  font-family: var(--font-data);
+  font-size: var(--label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ==================== Visualizer ==================== */
+.visualizer-compact {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  height: 40px;
+  margin: var(--space-lg) 0;
+}
+
+.vis-bar {
+  width: 2px;
+  height: 12px;
+  background: var(--text-display);
+  transition: height 0.1s ease;
+}
+
+/* ==================== Now Playing - Secondary Layer ==================== */
+.now-playing {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.label {
+  font-family: var(--font-data);
+  font-size: var(--label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.song-title {
+  font-family: var(--font-body);
+  font-size: var(--display-md);
+  font-weight: 500;
+  color: var(--text-display);
+  line-height: 1.1;
+}
+
+.song-artist {
+  font-family: var(--font-body);
+  font-size: var(--subheading);
+  color: var(--text-secondary);
+}
+
+.album-cover {
+  margin: var(--space-lg) 0;
+  text-align: center;
+}
+
+.album-cover img {
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+  border: 1px solid var(--border-visible);
+}
+
+/* ==================== Progress Bar ==================== */
+.progress-container {
+  margin: var(--space-lg) 0;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 2px;
+  background: var(--border-visible);
+  position: relative;
+  cursor: pointer;
+  margin-bottom: var(--space-sm);
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--text-display);
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.progress-time {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-data);
+  font-size: var(--caption);
+  color: var(--text-disabled);
+}
+
+/* ==================== Controls ==================== */
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin: var(--space-lg) 0;
+}
+
+.btn-control {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--border-visible);
+  color: var(--text-primary);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-body);
+}
+
+.btn-control:hover {
+  border-color: var(--text-primary);
+  color: var(--text-display);
+}
+
+.btn-play {
+  width: 56px;
+  height: 56px;
+  background: var(--text-display);
+  color: var(--black);
+  border: none;
+  font-size: 20px;
+}
+
+.btn-play:hover {
+  background: var(--text-primary);
+}
+
+.btn-secondary {
+  height: 44px;
+  padding: 0 var(--space-lg);
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid var(--border-visible);
+  color: var(--text-primary);
+  font-family: var(--font-data);
+  font-size: var(--label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  border-color: var(--text-primary);
+  color: var(--text-display);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-data);
+  font-size: var(--label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: var(--space-sm) var(--space-md);
+  transition: color 0.2s ease;
+}
+
+.btn-ghost:hover {
+  color: var(--text-display);
+}
+
+/* ==================== Volume ==================== */
+.volume-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  justify-content: center;
+}
+
+.volume-slider {
+  width: 120px;
+  height: 2px;
+  background: var(--border-visible);
+  outline: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  background: var(--text-display);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: var(--text-display);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+
+/* ==================== Queue Info ==================== */
+.queue-info {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.queue-count {
+  font-family: var(--font-data);
+  font-size: var(--caption);
+  color: var(--text-disabled);
+}
+
+/* ==================== Chat Section - Tertiary Layer ==================== */
+.chat-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  min-height: 200px;
+}
+
+.connection-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-data);
+  font-size: var(--label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-disabled);
+}
+
+.chat-messages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.message {
+  display: flex;
+  gap: var(--space-md);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.message-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border-visible);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.message-content {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: var(--body-sm);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.message-time {
+  font-family: var(--font-data);
+  font-size: var(--caption);
+  color: var(--text-disabled);
+  margin-top: var(--space-xs);
+}
+
+/* ==================== Chat Input ==================== */
+.chat-input-container {
+  display: flex;
+  gap: var(--space-sm);
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--border-visible);
+}
+
+.chat-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-visible);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--body);
+  padding: var(--space-sm) 0;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.chat-input:focus {
+  border-bottom-color: var(--text-primary);
+}
+
+.chat-input::placeholder {
+  color: var(--text-disabled);
+}
+
+.btn-send {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--text-display);
+  border: none;
+  color: var(--black);
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-send:hover {
+  background: var(--text-primary);
+}
+
+/* ==================== Footer ==================== */
+.app-footer {
+  padding: var(--space-md);
+  border-top: 1px solid var(--border-visible);
+  text-align: center;
+  font-family: var(--font-data);
+  font-size: var(--label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-disabled);
+}
+
+/* ==================== Modal ==================== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  max-width: 480px;
+  width: 90%;
+  max-height: 80vh;
+  background: var(--surface);
+  border: 1px solid var(--border-visible);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--border-visible);
+}
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-lg);
+}
+
+/* ==================== Responsive ==================== */
+@media (max-width: 680px) {
+  .display-xl {
+    font-size: 56px;
+  }
+
+  .song-title {
+    font-size: var(--heading);
+  }
+
+  .controls {
+    gap: var(--space-xs);
+  }
+}

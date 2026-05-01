@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm start *)",
+      "Read(//e/netease-api/api-enhanced-main/**)",
+      "Bash(timeout 5 node app.js)"
+    ],
+    "additionalDirectories": [
+      "e:\\My Ai DJ\\node_modules"
+    ]
+  }
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+  <title>Claudio FM</title>
+
+  <!-- Google Fonts - Nothing Design -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles-nothing.css">
+</head>
+<body>
+  <!-- 点阵背景 -->
+  <div class="dot-grid-bg"></div>
+
+  <div class="app-container">
+    <!-- 顶部导航 -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="app-logo">Claudio</div>
+      </div>
+      <div class="header-right">
+        <button class="btn-ghost" onclick="toggleTheme()">DARK</button>
+        <button class="btn-ghost">LIGHT</button>
+      </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+      <!-- 时钟区域 - Primary Layer -->
+      <section class="clock-section">
+        <div class="display-xl" id="clockDisplay">21:11</div>
+        <div class="clock-meta">
+          <span id="clockDay">Thursday</span>
+          <span class="separator">·</span>
+          <span id="clockDate">30 APR 2026</span>
+        </div>
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          <span>ON AIR</span>
+        </div>
+      </section>
+
+      <!-- 音频可视化 -->
+      <div class="visualizer-compact" id="visualizer">
+        <div class="vis-bar"></div>
+        <div class="vis-bar"></div>
+        <div class="vis-bar"></div>
+        <div class="vis-bar"></div>
+        <div class="vis-bar"></div>
+      </div>
+
+      <!-- 当前播放 - Secondary Layer -->
+      <section class="now-playing">
+        <div class="label">NOW PLAYING</div>
+        <div class="song-title" id="songTitle">Melody</div>
+        <div class="song-artist" id="songArtist">陶喆</div>
+
+        <!-- 专辑封面 -->
+        <div class="album-cover" id="albumCover" style="display: none;">
+          <img id="albumImage" alt="Album">
+        </div>
+
+        <!-- 进度条 -->
+        <div class="progress-container">
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-time">
+            <span id="timeStart">0:47</span>
+            <span id="timeEnd">4:29</span>
+          </div>
+        </div>
+
+        <!-- 播放控制 -->
+        <div class="controls">
+          <button class="btn-control" onclick="skipPrevious()">⏮</button>
+          <button class="btn-control btn-play" id="playBtn" onclick="togglePlay()">▶</button>
+          <button class="btn-control" onclick="skipNext()">⏭</button>
+          <button class="btn-control" onclick="stopPlayback()">⏹</button>
+          <button class="btn-control" id="likeBtn" onclick="toggleLike()">♡</button>
+          <button class="btn-secondary" onclick="showPlaylist()">LIST</button>
+          <button class="btn-secondary" onclick="showFavorites()">FAV</button>
+        </div>
+
+        <!-- 音量控制 -->
+        <div class="volume-row">
+          <span class="label">VOL</span>
+          <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="80">
+        </div>
+      </section>
+
+      <!-- 队列信息 -->
+      <div class="queue-info">
+        <span class="label">QUEUE</span>
+        <span class="queue-count" id="queueCount">0 TRACKS</span>
+      </div>
+
+      <!-- 对话区域 - Tertiary Layer -->
+      <section class="chat-section">
+        <div class="connection-status">
+          <span class="status-dot"></span>
+          <span>CLAUDIO FM - CONNECTED</span>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+          <!-- 消息动态添加 -->
+        </div>
+      </section>
+
+      <!-- 输入区域 -->
+      <div class="chat-input-container">
+        <input
+          type="text"
+          class="chat-input"
+          id="chatInput"
+          placeholder="Say something to the DJ..."
+          onkeypress="handleKeyPress(event)"
+        >
+        <button class="btn-send" id="sendBtn" onclick="sendMessage()">↑</button>
+      </div>
+    </main>
+
+    <!-- 底部状态栏 -->
+    <footer class="app-footer">
+      <span>CLAUDIO FM</span>
+      <span class="separator">·</span>
+      <span id="footerStatus">CONNECTED</span>
+    </footer>
+  </div>
+
+  <!-- 播放列表模态框 -->
+  <div class="modal" id="playlistModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="label">PLAYLIST</span>
+        <button class="btn-ghost" onclick="closePlaylist()">✕</button>
+      </div>
+      <div class="modal-body" id="playlistItems">
+        <!-- 播放列表项 -->
+      </div>
+    </div>
+  </div>
+
+  <audio id="audioPlayer" crossorigin="anonymous"></audio>
+  <script src="/app.js"></script>
+</body>
+</html>

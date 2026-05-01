@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Claudio - AI DJ with Nothing Design">
+  <meta name="theme-color" content="#000000">
+  <title>Claudio FM</title>
+  <link rel="stylesheet" href="/styles-final.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- 背景点阵 -->
+    <canvas id="dotMatrix" class="dot-matrix"></canvas>
+
+    <!-- 顶部像素时间 -->
+    <div class="pixel-time-section">
+      <div class="pixel-time" id="pixelTime">20:08</div>
+    </div>
+
+    <!-- 音频可视化 -->
+    <div class="audio-visualizer">
+      <div class="visualizer-bar"></div>
+      <div class="visualizer-bar"></div>
+      <div class="visualizer-bar"></div>
+      <div class="visualizer-bar"></div>
+      <div class="visualizer-bar"></div>
+    </div>
+
+    <!-- 当前播放信息 -->
+    <div class="now-playing">
+      <div class="song-title" id="songName">If</div>
+      <div class="song-artist" id="artistName">BREAD</div>
+    </div>
+
+    <!-- 播放控制栏 -->
+    <div class="player-controls">
+      <button class="control-btn" onclick="skipPrevious()" title="上一首" aria-label="上一首">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 20L9 12l10-8v16z"/>
+          <path d="M5 19V5"/>
+        </svg>
+      </button>
+
+      <button class="control-btn play-pause-btn" onclick="togglePlay()" id="playBtn" title="播放/暂停" aria-label="播放/暂停">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="pauseIcon">
+          <rect x="6" y="4" width="4" height="16"/>
+          <rect x="14" y="4" width="4" height="16"/>
+        </svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="playIcon" style="display:none;">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+      </button>
+
+      <button class="control-btn" onclick="skipNext()" title="下一首" aria-label="下一首">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 4l10 8-10 8V4z"/>
+          <path d="M19 5v14"/>
+        </svg>
+      </button>
+
+      <button class="control-btn" onclick="stopPlayback()" title="停止" aria-label="停止">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="6" y="6" width="12" height="12"/>
+        </svg>
+      </button>
+
+      <button class="control-btn" onclick="toggleLike()" id="likeBtn" title="喜欢" aria-label="喜欢">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </button>
+
+      <button class="control-btn text-btn" onclick="showPlaylist()" title="播放列表">LIST</button>
+      <button class="control-btn text-btn" onclick="showFavorites()" title="收藏">FAV</button>
+
+      <div class="volume-control">
+        <span class="volume-label">VOL</span>
+        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="80" oninput="changeVolume(this.value)" aria-label="音量">
+      </div>
+    </div>
+
+    <!-- 进度条 -->
+    <div class="progress-section">
+      <div class="progress-time">
+        <span id="currentTime">1:10</span>
+        <span id="totalTime">3:14</span>
+      </div>
+      <div class="progress-bar" id="progressBar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <!-- 状态指示器 -->
+    <div class="status-section">
+      <div class="status-indicator">
+        <span class="status-dot"></span>
+        <span class="status-text">Claudio</span>
+      </div>
+      <div class="live-badge">LIVE</div>
+      <div class="timestamp" id="timestamp">20:08</div>
+    </div>
+
+    <!-- 对话区域 -->
+    <div class="chat-section" id="chatSection">
+      <div class="chat-messages" id="chatMessages">
+        <!-- 消息将动态添加 -->
+      </div>
+    </div>
+
+    <!-- 输入区域 -->
+    <div class="input-section">
+      <input
+        type="text"
+        class="chat-input"
+        id="chatInput"
+        placeholder="Say something to the DJ..."
+        onkeypress="handleKeyPress(event)"
+        aria-label="输入消息"
+      >
+      <button class="mic-btn" onclick="toggleMic()" title="语音输入" aria-label="语音输入">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          <line x1="12" y1="19" x2="12" y2="23"/>
+          <line x1="8" y1="23" x2="16" y2="23"/>
+        </svg>
+      </button>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="发送" aria-label="发送">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <polyline points="19 12 12 5 5 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- 底部状态栏 -->
+    <div class="footer-status">
+      <span>CLAUDIO FM</span>
+      <span class="connection-status">CONNECTED</span>
+    </div>
+  </div>
+
+  <!-- 播放列表弹窗 -->
+  <div class="playlist-modal" id="playlistModal">
+    <div class="playlist-content">
+      <div class="playlist-header">
+        <div class="playlist-title">PLAYLIST</div>
+        <button class="close-btn" onclick="closePlaylist()" aria-label="关闭">×</button>
+      </div>
+      <div class="playlist-items" id="playlistItems">
+        <!-- 播放列表项将动态添加 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 隐藏的audio元素 -->
+  <audio id="audioPlayer" crossorigin="anonymous"></audio>
+
+  <script src="/app-final.js"></script>
+</body>
+</html>

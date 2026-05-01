@@ -1,0 +1,2812 @@
+{
+  "plays": [
+    {
+      "song_id": 3375585142,
+      "song_name": "狗狗听的歌舒缓",
+      "artist": "ledu",
+      "album": "狗狗舒缓纯音乐 放松心情",
+      "played_at": "2026-04-29T05:20:13.568Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 247162,
+      "song_name": "在路上",
+      "artist": "花粥",
+      "album": "早年间的一些歌",
+      "played_at": "2026-04-29T05:20:22.504Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 1386711763,
+      "song_name": "远在北方孤独的鬼",
+      "artist": "花粥",
+      "album": "乍见之欢",
+      "played_at": "2026-04-29T05:20:27.745Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 27514447,
+      "song_name": "画",
+      "artist": "花粥",
+      "album": "早年间的其他一些歌",
+      "played_at": "2026-04-29T05:20:42.553Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 247166,
+      "song_name": "少年你在哪里",
+      "artist": "花粥",
+      "album": "早年间的一些歌",
+      "played_at": "2026-04-29T05:20:51.479Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": "6001",
+      "song_name": "River Flows in You",
+      "artist": "Yiruma",
+      "album": "First Love",
+      "played_at": "2026-04-29T09:59:13.832Z",
+      "context": {
+        "reason": "下午工作时间，用户需要专注的轻音乐，符合用户喜欢的轻音乐偏好",
+        "scheduled": "work"
+      }
+    },
+    {
+      "song_id": "6002",
+      "song_name": "Canon in D",
+      "artist": "Johann Pachelbel",
+      "album": "Classical Music",
+      "played_at": "2026-04-29T09:59:13.833Z",
+      "context": {
+        "reason": "下午工作时间，用户需要专注的轻音乐，符合用户喜欢的轻音乐偏好",
+        "scheduled": "work"
+      }
+    },
+    {
+      "song_id": 150623,
+      "song_name": "普通朋友",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-29T10:09:44.082Z",
+      "context": {
+        "reason": "用户刚上完课，傍晚晴天，需要放松。陶喆是用户喜欢的艺人，歌曲旋律优美节奏适中，适合傍晚放松心情。"
+      }
+    },
+    {
+      "song_id": 150623,
+      "song_name": "普通朋友",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-29T10:12:21.430Z",
+      "context": {
+        "reason": "用户刚结束课程，需要放松；傍晚时间适合舒缓的流行歌曲；用户喜欢陶喆"
+      }
+    },
+    {
+      "song_id": 150667,
+      "song_name": "流沙",
+      "artist": "陶喆",
+      "album": "David Tao",
+      "played_at": "2026-04-29T10:12:25.485Z",
+      "context": {
+        "reason": "用户刚结束课程，需要放松；傍晚时间适合舒缓的流行歌曲；用户喜欢陶喆"
+      }
+    },
+    {
+      "song_id": "6001",
+      "song_name": "River Flows in You",
+      "artist": "Yiruma",
+      "album": "First Love",
+      "played_at": "2026-04-29T12:00:02.686Z",
+      "context": {
+        "reason": "晚上8点用户需要专注，根据taste喜欢轻音乐和Jazz，历史播放过这两首纯音乐，适合工作场景",
+        "scheduled": "work"
+      }
+    },
+    {
+      "song_id": "6002",
+      "song_name": "Canon in D",
+      "artist": "Johann Pachelbel",
+      "album": "Classical Music",
+      "played_at": "2026-04-29T12:00:02.717Z",
+      "context": {
+        "reason": "晚上8点用户需要专注，根据taste喜欢轻音乐和Jazz，历史播放过这两首纯音乐，适合工作场景",
+        "scheduled": "work"
+      }
+    },
+    {
+      "song_id": 1409154509,
+      "song_name": "I Feel Good (feat. 路嘉欣)",
+      "artist": "夏之禹/路嘉欣",
+      "album": "I Feel Good",
+      "played_at": "2026-04-29T15:34:28.721Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 2029878710,
+      "song_name": "BURBERRY",
+      "artist": "Wallon涡轮",
+      "album": "BURBERRY",
+      "played_at": "2026-04-29T15:34:32.774Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 2657533450,
+      "song_name": "筹码（Feat.CG）（prod.by.Morrow）",
+      "artist": "SHOTCBANDITS/CG TO THE TOP",
+      "album": "湘西爱",
+      "played_at": "2026-04-29T15:34:37.207Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 1439950238,
+      "song_name": "爱，很简单",
+      "artist": "JohnGrande",
+      "album": "JG的demo星球",
+      "played_at": "2026-04-29T15:34:41.201Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 2059814178,
+      "song_name": "荷尔蒙之恋",
+      "artist": "Philo 阿哲/地下8英里/0-100",
+      "album": "地下8英里2022赛季北部决赛",
+      "played_at": "2026-04-29T15:34:45.199Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 483146037,
+      "song_name": "The Girl from Ipanema",
+      "artist": "Stan Getz/João Gilberto/Jobim/De Moraes",
+      "album": "Getz/Gilberto",
+      "played_at": "2026-04-29T15:35:58.994Z",
+      "context": {
+        "reason": "深夜23:35，用户喜欢JAZZ和舒缓音乐，适合安静内省"
+      }
+    },
+    {
+      "song_id": 247169,
+      "song_name": "妈妈要我出嫁",
+      "artist": "花粥",
+      "album": "早年间的一些歌",
+      "played_at": "2026-04-29T15:40:20.842Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 150399,
+      "song_name": "你的歌",
+      "artist": "陶喆",
+      "album": "六九乐章",
+      "played_at": "2026-04-29T15:40:24.688Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 1386710665,
+      "song_name": "少年你在哪里",
+      "artist": "花粥",
+      "album": "乍见之欢",
+      "played_at": "2026-04-29T15:40:28.693Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 150437,
+      "song_name": "她的歌",
+      "artist": "陶喆",
+      "album": "太平盛世",
+      "played_at": "2026-04-29T15:40:32.930Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 247165,
+      "song_name": "我们总是在寻找",
+      "artist": "花粥",
+      "album": "早年间的一些歌",
+      "played_at": "2026-04-29T15:40:37.390Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 150399,
+      "song_name": "你的歌",
+      "artist": "陶喆",
+      "album": "六九乐章",
+      "played_at": "2026-04-29T16:48:10.713Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 150437,
+      "song_name": "她的歌",
+      "artist": "陶喆",
+      "album": "太平盛世",
+      "played_at": "2026-04-29T16:48:11.113Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 26425123,
+      "song_name": "真爱等一下",
+      "artist": "陶喆/蔡健雅",
+      "album": "再见你好吗",
+      "played_at": "2026-04-29T16:48:11.973Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 26425120,
+      "song_name": "上爱唱的歌",
+      "artist": "陶喆",
+      "album": "再见你好吗",
+      "played_at": "2026-04-29T16:48:12.501Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": 1386711763,
+      "song_name": "远在北方孤独的鬼",
+      "artist": "花粥",
+      "album": "乍见之欢",
+      "played_at": "2026-04-29T16:48:13.055Z",
+      "context": {
+        "reason": "直接搜索"
+      }
+    },
+    {
+      "song_id": "6001",
+      "song_name": "River Flows in You",
+      "artist": "Yiruma",
+      "album": "First Love",
+      "played_at": "2026-04-29T17:30:55.200Z",
+      "context": {
+        "reason": "凌晨1:30，夜深人静，适合舒缓纯音乐帮助放松入睡，用户喜欢轻音乐和JAZZ风格"
+      }
+    },
+    {
+      "song_id": "6002",
+      "song_name": "Canon in D",
+      "artist": "Johann Pachelbel",
+      "album": "Classical Music",
+      "played_at": "2026-04-29T17:30:55.202Z",
+      "context": {
+        "reason": "凌晨1:30，夜深人静，适合舒缓纯音乐帮助放松入睡，用户喜欢轻音乐和JAZZ风格"
+      }
+    },
+    {
+      "song_id": 150437,
+      "song_name": "她的歌",
+      "artist": "陶喆",
+      "album": "太平盛世",
+      "played_at": "2026-04-29T17:31:52.927Z",
+      "context": {
+        "reason": "深夜1点半，用户喜欢陶喆，需要舒缓的歌曲助眠"
+      }
+    },
+    {
+      "song_id": "6001",
+      "song_name": "River Flows in You",
+      "artist": "Yiruma",
+      "album": "First Love",
+      "played_at": "2026-04-29T17:43:27.116Z",
+      "context": {
+        "reason": "凌晨1点，用户需要安静舒缓的音乐，适合放松入眠，符合用户喜欢的轻音乐和舒缓风格"
+      }
+    },
+    {
+      "song_id": "6002",
+      "song_name": "Canon in D",
+      "artist": "Johann Pachelbel",
+      "album": "Classical Music",
+      "played_at": "2026-04-29T17:43:27.117Z",
+      "context": {
+        "reason": "凌晨1点，用户需要安静舒缓的音乐，适合放松入眠，符合用户喜欢的轻音乐和舒缓风格"
+      }
+    },
+    {
+      "song_id": 21693174,
+      "song_name": "The Girl From Ipanema",
+      "artist": "Stan Getz/João Gilberto/Astrud Gilberto",
+      "album": "Getz/Gilberto",
+      "played_at": "2026-04-29T18:00:29.072Z",
+      "context": {
+        "reason": "凌晨2点做计算机项目，需要专注但不催眠的背景音乐，爵士乐节奏稳定且没有人声干扰，符合用户喜欢的JAZZ类型"
+      }
+    },
+    {
+      "song_id": 22091746,
+      "song_name": "Take Five",
+      "artist": "Dave Brubeck",
+      "album": "Time Out",
+      "played_at": "2026-04-29T18:00:33.481Z",
+      "context": {
+        "reason": "凌晨2点做计算机项目，需要专注但不催眠的背景音乐，爵士乐节奏稳定且没有人声干扰，符合用户喜欢的JAZZ类型"
+      }
+    },
+    {
+      "song_id": 21335863,
+      "song_name": "So What",
+      "artist": "Miles Davis",
+      "album": "Kind Of Blue",
+      "played_at": "2026-04-29T18:00:42.784Z",
+      "context": {
+        "reason": "凌晨2点做计算机项目，需要专注但不催眠的背景音乐，爵士乐节奏稳定且没有人声干扰，符合用户喜欢的JAZZ类型"
+      }
+    },
+    {
+      "song_id": 150520,
+      "song_name": "Melody",
+      "artist": "陶喆",
+      "album": "Ultrasound 乐之路 1997-2003",
+      "played_at": "2026-04-30T00:18:21.721Z",
+      "context": {
+        "reason": "早晨8点，晴天，用户喜欢陶喆，《Melody》旋律优美轻快适合开启新一天"
+      }
+    },
+    {
+      "song_id": 1299981609,
+      "song_name": "River Flows in You",
+      "artist": "Yiruma",
+      "album": "Simplement piano",
+      "played_at": "2026-04-30T01:00:04.182Z",
+      "context": {
+        "reason": "上午工作时间，用户需要专注，轻音乐适合，且历史有播放记录，用户喜欢",
+        "scheduled": "work"
+      }
+    },
+    {
+      "song_id": 560780790,
+      "song_name": "Canon in D",
+      "artist": "Johann Pachelbel/Chris Snelling",
+      "album": "Canon in D",
+      "played_at": "2026-04-30T01:00:04.675Z",
+      "context": {
+        "reason": "上午工作时间，用户需要专注，轻音乐适合，且历史有播放记录，用户喜欢",
+        "scheduled": "work"
+      }
+    },
+    {
+      "song_id": 1299981609,
+      "song_name": "River Flows in You",
+      "artist": "Yiruma",
+      "album": "Simplement piano",
+      "played_at": "2026-04-30T03:00:03.255Z",
+      "context": {
+        "reason": "上午工作时段，用户需要专注轻音乐，历史播放过这两首且用户喜欢，适合工作背景",
+        "scheduled": "work"
+      }
+    },
+    {
+      "song_id": 560780790,
+      "song_name": "Canon in D",
+      "artist": "Johann Pachelbel/Chris Snelling",
+      "album": "Canon in D",
+      "played_at": "2026-04-30T03:00:03.814Z",
+      "context": {
+        "reason": "上午工作时段，用户需要专注轻音乐，历史播放过这两首且用户喜欢，适合工作背景",
+        "scheduled": "work"
+      }
+    },
+    {
+      "song_id": 150623,
+      "song_name": "普通朋友",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-30T04:31:05.530Z",
+      "context": {
+        "reason": "午餐后适合轻松愉悦的歌曲，陶喆的旋律优美且节奏适中，符合用户喜好"
+      }
+    },
+    {
+      "song_id": 1414551444,
+      "song_name": "陶喆-爱很简单",
+      "artist": "刘雨杭/Lil-69",
+      "album": "爱很简单Remix",
+      "played_at": "2026-04-30T04:31:05.935Z",
+      "context": {
+        "reason": "午餐后适合轻松愉悦的歌曲，陶喆的旋律优美且节奏适中，符合用户喜好"
+      }
+    },
+    {
+      "song_id": 150617,
+      "song_name": "找自己",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-30T05:13:06.389Z",
+      "context": {
+        "reason": "用户喜欢陶喆，下午需要提神歌曲，这几首节奏轻快适合工作间隙"
+      }
+    },
+    {
+      "song_id": 150619,
+      "song_name": "小镇姑娘",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-30T05:13:06.764Z",
+      "context": {
+        "reason": "用户喜欢陶喆，下午需要提神歌曲，这几首节奏轻快适合工作间隙"
+      }
+    },
+    {
+      "song_id": 150422,
+      "song_name": "今天你要嫁给我",
+      "artist": "蔡依林/陶喆",
+      "album": "太美丽",
+      "played_at": "2026-04-30T05:13:07.182Z",
+      "context": {
+        "reason": "用户喜欢陶喆，下午需要提神歌曲，这几首节奏轻快适合工作间隙"
+      }
+    },
+    {
+      "song_id": 150656,
+      "song_name": "沙滩",
+      "artist": "陶喆",
+      "album": "David Tao",
+      "played_at": "2026-04-30T05:17:21.894Z",
+      "context": {
+        "reason": "中午13点休息时段，阳光好，用户喜欢陶喆，《沙滩》慵懒舒适，《天天》轻快温暖，适合午餐后放松"
+      }
+    },
+    {
+      "song_id": 150633,
+      "song_name": "天天",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-30T05:17:22.313Z",
+      "context": {
+        "reason": "中午13点休息时段，阳光好，用户喜欢陶喆，《沙滩》慵懒舒适，《天天》轻快温暖，适合午餐后放松"
+      }
+    },
+    {
+      "song_id": 22829932,
+      "song_name": "River Flows in You",
+      "artist": "Yiruma",
+      "album": "The Best - Reminiscent 10th Anniversary",
+      "played_at": "2026-04-30T07:00:03.168Z",
+      "context": {
+        "reason": "下午工作时段，需要不影响专注的纯音乐，用户喜欢轻音乐和纯音乐",
+        "scheduled": "work"
+      }
+    },
+    {
+      "song_id": 560780790,
+      "song_name": "Canon in D",
+      "artist": "Johann Pachelbel/Chris Snelling",
+      "album": "Canon in D",
+      "played_at": "2026-04-30T07:00:03.764Z",
+      "context": {
+        "reason": "下午工作时段，需要不影响专注的纯音乐，用户喜欢轻音乐和纯音乐",
+        "scheduled": "work"
+      }
+    },
+    {
+      "song_id": 3344811140,
+      "song_name": "晴天(正式版)",
+      "artist": "周杰伦./溺死的鱼",
+      "album": "从前从前有个人爱你很久但偏偏风渐渐（不要你离开距离隔不开思念变成海）",
+      "played_at": "2026-04-30T07:55:49.008Z",
+      "context": {
+        "reason": "用户点播"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150623,
+      "song_name": "普通朋友",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-30T08:00:29.788Z",
+      "context": {
+        "reason": "用户明确要求陶喆的歌，且常听陶喆。下午4点适合中速、舒缓节奏，这三首都是陶喆代表作，旋律优美不吵闹。"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150656,
+      "song_name": "沙滩",
+      "artist": "陶喆",
+      "album": "David Tao",
+      "played_at": "2026-04-30T08:00:30.088Z",
+      "context": {
+        "reason": "用户明确要求陶喆的歌，且常听陶喆。下午4点适合中速、舒缓节奏，这三首都是陶喆代表作，旋律优美不吵闹。"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150633,
+      "song_name": "天天",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-30T08:00:30.394Z",
+      "context": {
+        "reason": "用户明确要求陶喆的歌，且常听陶喆。下午4点适合中速、舒缓节奏，这三首都是陶喆代表作，旋律优美不吵闹。"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 406346856,
+      "song_name": "天天 (Live)",
+      "artist": "陶喆",
+      "album": "1.2.3我们都是木头人 世界巡回演唱会",
+      "played_at": "2026-04-30T08:46:24.067Z",
+      "context": {
+        "reason": "用户明确要求陶喆的歌，下午时段适合轻松旋律，这些是用户最近常听的陶喆经典"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150590,
+      "song_name": "沙滩 (Live)",
+      "artist": "陶喆",
+      "album": "陶喆I'm OK演唱会",
+      "played_at": "2026-04-30T08:46:24.674Z",
+      "context": {
+        "reason": "用户明确要求陶喆的歌，下午时段适合轻松旋律，这些是用户最近常听的陶喆经典"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150411,
+      "song_name": "普通朋友(Live)",
+      "artist": "陶喆",
+      "album": "Power Of Live 影音记录珍藏盘",
+      "played_at": "2026-04-30T08:46:25.227Z",
+      "context": {
+        "reason": "用户明确要求陶喆的歌，下午时段适合轻松旋律，这些是用户最近常听的陶喆经典"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150561,
+      "song_name": "蝴蝶",
+      "artist": "陶喆",
+      "album": "黑色柳丁",
+      "played_at": "2026-04-30T09:18:26.151Z",
+      "context": {
+        "reason": "用户明确要求陶喆的歌，下午时段适合听节奏舒缓的R&B经典，三首都是他最具代表性的作品，旋律优美且适合放松"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150623,
+      "song_name": "普通朋友",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-30T09:18:26.694Z",
+      "context": {
+        "reason": "用户明确要求陶喆的歌，下午时段适合听节奏舒缓的R&B经典，三首都是他最具代表性的作品，旋律优美且适合放松"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150520,
+      "song_name": "Melody",
+      "artist": "陶喆",
+      "album": "Ultrasound 乐之路 1997-2003",
+      "played_at": "2026-04-30T09:18:27.332Z",
+      "context": {
+        "reason": "用户明确要求陶喆的歌，下午时段适合听节奏舒缓的R&B经典，三首都是他最具代表性的作品，旋律优美且适合放松"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150561,
+      "song_name": "蝴蝶",
+      "artist": "陶喆",
+      "album": "黑色柳丁",
+      "played_at": "2026-04-30T09:27:09.329Z",
+      "context": {
+        "reason": "用户请求推荐陶喆的歌，当前下午近傍晚，推荐节奏舒缓、旋律优美的经典曲目"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150619,
+      "song_name": "小镇姑娘",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-30T09:27:13.304Z",
+      "context": {
+        "reason": "用户请求推荐陶喆的歌，当前下午近傍晚，推荐节奏舒缓、旋律优美的经典曲目"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150623,
+      "song_name": "普通朋友",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-30T09:27:17.273Z",
+      "context": {
+        "reason": "用户请求推荐陶喆的歌，当前下午近傍晚，推荐节奏舒缓、旋律优美的经典曲目"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150633,
+      "song_name": "天天",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-30T09:28:18.260Z",
+      "context": {
+        "reason": "用户喜欢陶喆，最近常听《天天》，傍晚晴天推荐这首舒缓的经典"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150633,
+      "song_name": "天天",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-30T09:33:09.537Z",
+      "context": {
+        "reason": "用户喜欢陶喆，傍晚时段适合温暖放松的R&B，这些歌都是用户常听的经典"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150623,
+      "song_name": "普通朋友",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-30T09:33:10.075Z",
+      "context": {
+        "reason": "用户喜欢陶喆，傍晚时段适合温暖放松的R&B，这些歌都是用户常听的经典"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150656,
+      "song_name": "沙滩",
+      "artist": "陶喆",
+      "album": "David Tao",
+      "played_at": "2026-04-30T09:33:10.663Z",
+      "context": {
+        "reason": "用户喜欢陶喆，傍晚时段适合温暖放松的R&B，这些歌都是用户常听的经典"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150633,
+      "song_name": "天天",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-30T10:03:12.866Z",
+      "context": {
+        "reason": "傍晚时分，用户主动要求推荐陶喆的歌。根据历史记录，用户最近反复听了天天、普通朋友、沙滩，说明非常喜欢这几首。陶喆的R&B风格适合傍晚放松。"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150623,
+      "song_name": "普通朋友",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-30T10:03:13.353Z",
+      "context": {
+        "reason": "傍晚时分，用户主动要求推荐陶喆的歌。根据历史记录，用户最近反复听了天天、普通朋友、沙滩，说明非常喜欢这几首。陶喆的R&B风格适合傍晚放松。"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150656,
+      "song_name": "沙滩",
+      "artist": "陶喆",
+      "album": "David Tao",
+      "played_at": "2026-04-30T10:03:13.950Z",
+      "context": {
+        "reason": "傍晚时分，用户主动要求推荐陶喆的歌。根据历史记录，用户最近反复听了天天、普通朋友、沙滩，说明非常喜欢这几首。陶喆的R&B风格适合傍晚放松。"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1299981609,
+      "song_name": "River Flows in You",
+      "artist": "Yiruma",
+      "album": "Simplement piano",
+      "played_at": "2026-04-30T12:00:04.051Z",
+      "context": {
+        "reason": "晚上8点用户仍在工作，需要专注轻音乐，符合用户对轻音乐的偏好，且用户最近听陶喆较多，但此时需要纯音乐，Yiruma是经典选择。",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 513619907,
+      "song_name": "Canon in D",
+      "artist": "Johann Pachelbel",
+      "album": "Música Clásica para Dormir, Vol. 1",
+      "played_at": "2026-04-30T12:00:04.889Z",
+      "context": {
+        "reason": "晚上8点用户仍在工作，需要专注轻音乐，符合用户对轻音乐的偏好，且用户最近听陶喆较多，但此时需要纯音乐，Yiruma是经典选择。",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1299980643,
+      "song_name": "Kiss the Rain",
+      "artist": "Yiruma",
+      "album": "Simplement piano",
+      "played_at": "2026-04-30T12:00:05.550Z",
+      "context": {
+        "reason": "晚上8点用户仍在工作，需要专注轻音乐，符合用户对轻音乐的偏好，且用户最近听陶喆较多，但此时需要纯音乐，Yiruma是经典选择。",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150561,
+      "song_name": "蝴蝶",
+      "artist": "陶喆",
+      "album": "黑色柳丁",
+      "played_at": "2026-04-30T12:37:24.900Z",
+      "context": {
+        "reason": "晚上放松时刻，用户累了，推荐陶喆的轻松R&B，旋律舒缓但温暖，符合用户对陶喆的偏好以及轻松的需求"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150430,
+      "song_name": "就是爱你",
+      "artist": "陶喆",
+      "album": "太平盛世",
+      "played_at": "2026-04-30T12:37:25.387Z",
+      "context": {
+        "reason": "晚上放松时刻，用户累了，推荐陶喆的轻松R&B，旋律舒缓但温暖，符合用户对陶喆的偏好以及轻松的需求"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150564,
+      "song_name": "月亮代表谁的心",
+      "artist": "陶喆",
+      "album": "黑色柳丁",
+      "played_at": "2026-04-30T12:37:25.921Z",
+      "context": {
+        "reason": "晚上放松时刻，用户累了，推荐陶喆的轻松R&B，旋律舒缓但温暖，符合用户对陶喆的偏好以及轻松的需求"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150520,
+      "song_name": "Melody",
+      "artist": "陶喆",
+      "album": "Ultrasound 乐之路 1997-2003",
+      "played_at": "2026-04-30T13:00:58.576Z",
+      "context": {
+        "reason": "阴天晚上推荐舒缓歌曲，陶喆是用户最爱，Yiruma曾多次播放"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 387764,
+      "song_name": "离歌",
+      "artist": "信乐团",
+      "album": "天高地厚",
+      "played_at": "2026-04-30T13:00:59.089Z",
+      "context": {
+        "reason": "阴天晚上推荐舒缓歌曲，陶喆是用户最爱，Yiruma曾多次播放"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1299980643,
+      "song_name": "Kiss the Rain",
+      "artist": "Yiruma",
+      "album": "Simplement piano",
+      "played_at": "2026-04-30T13:00:59.710Z",
+      "context": {
+        "reason": "阴天晚上推荐舒缓歌曲，陶喆是用户最爱，Yiruma曾多次播放"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1299980643,
+      "song_name": "Kiss the Rain",
+      "artist": "Yiruma",
+      "album": "Simplement piano",
+      "played_at": "2026-04-30T15:00:03.468Z",
+      "context": {
+        "reason": "晚上23点用户需要专注，最近常听Yiruma和纯音乐，适合工作背景",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1299981609,
+      "song_name": "River Flows in You",
+      "artist": "Yiruma",
+      "album": "Simplement piano",
+      "played_at": "2026-04-30T15:00:04.128Z",
+      "context": {
+        "reason": "晚上23点用户需要专注，最近常听Yiruma和纯音乐，适合工作背景",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 513619907,
+      "song_name": "Canon in D",
+      "artist": "Johann Pachelbel",
+      "album": "Música Clásica para Dormir, Vol. 1",
+      "played_at": "2026-04-30T15:00:05.041Z",
+      "context": {
+        "reason": "晚上23点用户需要专注，最近常听Yiruma和纯音乐，适合工作背景",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1299981609,
+      "song_name": "River Flows in You",
+      "artist": "Yiruma",
+      "album": "Simplement piano",
+      "played_at": "2026-04-30T17:00:02.940Z",
+      "context": {
+        "reason": "深夜工作时段，用户喜欢Yiruma和纯音乐，最近播放频率高，能帮助专注",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1299980643,
+      "song_name": "Kiss the Rain",
+      "artist": "Yiruma",
+      "album": "Simplement piano",
+      "played_at": "2026-04-30T17:00:03.518Z",
+      "context": {
+        "reason": "深夜工作时段，用户喜欢Yiruma和纯音乐，最近播放频率高，能帮助专注",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 513619907,
+      "song_name": "Canon in D",
+      "artist": "Johann Pachelbel",
+      "album": "Música Clásica para Dormir, Vol. 1",
+      "played_at": "2026-04-30T17:00:04.228Z",
+      "context": {
+        "reason": "深夜工作时段，用户喜欢Yiruma和纯音乐，最近播放频率高，能帮助专注",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1299980643,
+      "song_name": "Kiss the Rain",
+      "artist": "Yiruma",
+      "album": "Simplement piano",
+      "played_at": "2026-04-30T17:24:19.774Z",
+      "context": {
+        "reason": "凌晨1点，用户说有点累，需要舒缓放松的纯音乐，Yiruma和Pachelbel是用户常听的艺术家，适合深夜助眠"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1299981609,
+      "song_name": "River Flows in You",
+      "artist": "Yiruma",
+      "album": "Simplement piano",
+      "played_at": "2026-04-30T17:24:20.371Z",
+      "context": {
+        "reason": "凌晨1点，用户说有点累，需要舒缓放松的纯音乐，Yiruma和Pachelbel是用户常听的艺术家，适合深夜助眠"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 513619907,
+      "song_name": "Canon in D",
+      "artist": "Johann Pachelbel",
+      "album": "Música Clásica para Dormir, Vol. 1",
+      "played_at": "2026-04-30T17:24:21.039Z",
+      "context": {
+        "reason": "凌晨1点，用户说有点累，需要舒缓放松的纯音乐，Yiruma和Pachelbel是用户常听的艺术家，适合深夜助眠"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1299981609,
+      "song_name": "River Flows in You",
+      "artist": "Yiruma",
+      "album": "Simplement piano",
+      "played_at": "2026-04-30T17:57:16.457Z",
+      "context": {
+        "reason": "深夜1点，用户正在调试程序，需要专注且舒缓的背景音乐，Yiruma的钢琴曲和Canon in D都是用户常听的，适合深夜工作场景"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1299980643,
+      "song_name": "Kiss the Rain",
+      "artist": "Yiruma",
+      "album": "Simplement piano",
+      "played_at": "2026-04-30T17:57:16.979Z",
+      "context": {
+        "reason": "深夜1点，用户正在调试程序，需要专注且舒缓的背景音乐，Yiruma的钢琴曲和Canon in D都是用户常听的，适合深夜工作场景"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 513619907,
+      "song_name": "Canon in D",
+      "artist": "Johann Pachelbel",
+      "album": "Música Clásica para Dormir, Vol. 1",
+      "played_at": "2026-04-30T17:57:17.665Z",
+      "context": {
+        "reason": "深夜1点，用户正在调试程序，需要专注且舒缓的背景音乐，Yiruma的钢琴曲和Canon in D都是用户常听的，适合深夜工作场景"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1316578404,
+      "song_name": "每天爱你多一些",
+      "artist": "张学友",
+      "album": "张学友4合1珍藏集",
+      "played_at": "2026-04-30T17:57:54.299Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 27514447,
+      "song_name": "画",
+      "artist": "花粥",
+      "album": "早年间的其他一些歌",
+      "played_at": "2026-04-30T17:57:54.780Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1480090146,
+      "song_name": "分他一些快乐",
+      "artist": "邵帅",
+      "album": "小屋笔记",
+      "played_at": "2026-04-30T17:57:55.260Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 3343186636,
+      "song_name": "若生命等候",
+      "artist": "黄凯芹",
+      "album": "MULTIVERSE OF POLYGRAM 55TH ANNIVERSARY - 黄凯芹",
+      "played_at": "2026-04-30T17:57:55.724Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 247169,
+      "song_name": "妈妈要我出嫁",
+      "artist": "花粥",
+      "album": "早年间的一些歌",
+      "played_at": "2026-04-30T17:57:56.150Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150623,
+      "song_name": "普通朋友",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-30T17:58:51.202Z",
+      "context": {
+        "reason": "用户喜欢陶喆，深夜需要舒缓节奏，推荐他的经典R&B作品"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150654,
+      "song_name": "爱，很简单",
+      "artist": "陶喆",
+      "album": "David Tao",
+      "played_at": "2026-04-30T17:58:51.644Z",
+      "context": {
+        "reason": "用户喜欢陶喆，深夜需要舒缓节奏，推荐他的经典R&B作品"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150619,
+      "song_name": "小镇姑娘",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-04-30T17:58:52.091Z",
+      "context": {
+        "reason": "用户喜欢陶喆，深夜需要舒缓节奏，推荐他的经典R&B作品"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1301417688,
+      "song_name": "So What",
+      "artist": "Miles Davis",
+      "album": "Miles Davis - So What and Greatest Hits (Remastered)",
+      "played_at": "2026-04-30T18:23:58.363Z",
+      "context": {
+        "reason": "深夜用户要正宗爵士，推荐冷爵士和酷爵士经典，风格纯正、节奏舒缓，适合深夜聆听"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1981238034,
+      "song_name": "My Funny Valentine",
+      "artist": "Chet Baker",
+      "album": "My Funny Valentine",
+      "played_at": "2026-04-30T18:23:58.939Z",
+      "context": {
+        "reason": "深夜用户要正宗爵士，推荐冷爵士和酷爵士经典，风格纯正、节奏舒缓，适合深夜聆听"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1421646506,
+      "song_name": "Take Five",
+      "artist": "Dave Brubeck",
+      "album": "Take Five",
+      "played_at": "2026-04-30T18:23:59.520Z",
+      "context": {
+        "reason": "深夜用户要正宗爵士，推荐冷爵士和酷爵士经典，风格纯正、节奏舒缓，适合深夜聆听"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1810205052,
+      "song_name": "Take Five",
+      "artist": "Dave Brubeck",
+      "album": "The Jazz Effect - Dave Brubeck",
+      "played_at": "2026-05-01T03:46:53.538Z",
+      "context": {
+        "reason": "上午时段，用户喜欢爵士，推荐经典入门曲目，节奏轻快适合早晨到中午的过渡"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 18723647,
+      "song_name": "Blue Train",
+      "artist": "John Coltrane",
+      "album": "Blue Train, 1957",
+      "played_at": "2026-05-01T03:46:54.226Z",
+      "context": {
+        "reason": "上午时段，用户喜欢爵士，推荐经典入门曲目，节奏轻快适合早晨到中午的过渡"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1981238034,
+      "song_name": "My Funny Valentine",
+      "artist": "Chet Baker",
+      "album": "My Funny Valentine",
+      "played_at": "2026-05-01T04:50:39.673Z",
+      "context": {
+        "reason": "中午12:50，阴天，用户主动询问推荐，且最近听过Chet Baker，符合用户对正宗爵士的偏好，温柔舒缓适合阴天午后"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1919129994,
+      "song_name": "But Not for Me",
+      "artist": "Chet Baker",
+      "album": "Remastered Classics, Vol. 109, Chet Baker",
+      "played_at": "2026-05-01T04:50:40.581Z",
+      "context": {
+        "reason": "中午12:50，阴天，用户主动询问推荐，且最近听过Chet Baker，符合用户对正宗爵士的偏好，温柔舒缓适合阴天午后"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1315088237,
+      "song_name": "Time After Time",
+      "artist": "Chet Baker",
+      "album": "Time After Time",
+      "played_at": "2026-05-01T04:50:41.249Z",
+      "context": {
+        "reason": "中午12:50，阴天，用户主动询问推荐，且最近听过Chet Baker，符合用户对正宗爵士的偏好，温柔舒缓适合阴天午后"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 2057152616,
+      "song_name": "Alive",
+      "artist": "Blue",
+      "album": "夏日跟唱经典曲",
+      "played_at": "2026-05-01T05:23:02.045Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 2662170702,
+      "song_name": "每天爱你多一些 (live)",
+      "artist": "卫兰/伍珂玥",
+      "album": "声生不息·大湾区季 第6期",
+      "played_at": "2026-05-01T05:23:02.669Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 3376866372,
+      "song_name": "卡拉永遠OK",
+      "artist": "谭咏麟",
+      "album": "Jing Dian Liu Xing Chang Pian Hang",
+      "played_at": "2026-05-01T05:23:03.226Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 190464,
+      "song_name": "每天爱你多一些(国)",
+      "artist": "张学友",
+      "album": "吻别",
+      "played_at": "2026-05-01T05:23:03.747Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1316578404,
+      "song_name": "每天爱你多一些",
+      "artist": "张学友",
+      "album": "张学友4合1珍藏集",
+      "played_at": "2026-05-01T05:23:04.337Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150617,
+      "song_name": "找自己",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-05-01T06:47:27.299Z",
+      "context": {
+        "reason": "用户表示疲惫需要提神，陶喆是用户喜欢的艺人，《找自己》节奏明快充满活力，适合下午提神"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1973575263,
+      "song_name": "The Thrill Is Gone",
+      "artist": "B.B. King",
+      "album": "So Excited",
+      "played_at": "2026-05-01T07:32:57.730Z",
+      "context": {
+        "reason": "用户想尝试新风格，蓝调符合用户音乐品味，阴天适合这种深沉有质感的音乐"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 572821472,
+      "song_name": "Time After Time",
+      "artist": "Chet Baker",
+      "album": "Chet Baker: Time After Time",
+      "played_at": "2026-05-01T08:21:01.263Z",
+      "context": {
+        "reason": "下午阴天，用户心情平静，推荐舒缓的爵士乐，符合用户对Chet Baker的偏好"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 2692690431,
+      "song_name": "Never see me again（Explicit）",
+      "artist": "TheFloridaMan/GOAT",
+      "album": "Ghost Town Runaway pt.2",
+      "played_at": "2026-05-01T08:36:48.668Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 2697758374,
+      "song_name": "Never See Me Again",
+      "artist": "Azure Wave/Kanye West Unreleased",
+      "album": "Never See Me Again",
+      "played_at": "2026-05-01T08:36:49.413Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 3338217728,
+      "song_name": "Never See Me Again×Mrs.Officer",
+      "artist": "雨果",
+      "album": "Never See Me Again×Mrs.Officer",
+      "played_at": "2026-05-01T08:36:50.088Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 2740899765,
+      "song_name": "Never see me again",
+      "artist": "JANCEH",
+      "album": "Never see me again",
+      "played_at": "2026-05-01T08:36:50.654Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1996755298,
+      "song_name": "Never See Me Again",
+      "artist": "Goostavo",
+      "album": "Never See Me Again",
+      "played_at": "2026-05-01T08:36:51.207Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150654,
+      "song_name": "爱，很简单",
+      "artist": "陶喆",
+      "album": "David Tao",
+      "played_at": "2026-05-01T08:47:41.762Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150654,
+      "song_name": "爱，很简单",
+      "artist": "陶喆",
+      "album": "David Tao",
+      "played_at": "2026-05-01T08:47:41.781Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150654,
+      "song_name": "爱，很简单",
+      "artist": "陶喆",
+      "album": "David Tao",
+      "played_at": "2026-05-01T08:47:41.793Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 406346850,
+      "song_name": "爱，很简单 (Live)",
+      "artist": "陶喆",
+      "album": "1.2.3我们都是木头人 世界巡回演唱会",
+      "played_at": "2026-05-01T08:47:42.367Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150614,
+      "song_name": "爱，很简单(安可曲) (Live)",
+      "artist": "陶喆",
+      "album": "陶喆I'm OK演唱会",
+      "played_at": "2026-05-01T08:47:43.003Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150520,
+      "song_name": "Melody",
+      "artist": "陶喆",
+      "album": "Ultrasound 乐之路 1997-2003",
+      "played_at": "2026-05-01T09:21:43.019Z",
+      "context": {
+        "reason": "阴天下午，用户喜欢陶喆，风格偏蓝调，旋律舒缓适合放松"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1299981609,
+      "song_name": "River Flows in You",
+      "artist": "Yiruma",
+      "album": "Simplement piano",
+      "played_at": "2026-05-01T11:00:03.704Z",
+      "context": {
+        "reason": "晚上工作时间，用户需要专注的轻音乐，推荐经典钢琴曲帮助集中注意力",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 513619907,
+      "song_name": "Canon in D",
+      "artist": "Johann Pachelbel",
+      "album": "Música Clásica para Dormir, Vol. 1",
+      "played_at": "2026-05-01T11:00:04.607Z",
+      "context": {
+        "reason": "晚上工作时间，用户需要专注的轻音乐，推荐经典钢琴曲帮助集中注意力",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1299980643,
+      "song_name": "Kiss the Rain",
+      "artist": "Yiruma",
+      "album": "Simplement piano",
+      "played_at": "2026-05-01T11:00:05.248Z",
+      "context": {
+        "reason": "晚上工作时间，用户需要专注的轻音乐，推荐经典钢琴曲帮助集中注意力",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 399343374,
+      "song_name": "爱是什么",
+      "artist": "小霞",
+      "album": "小霞",
+      "played_at": "2026-05-01T12:09:56.460Z",
+      "context": {
+        "reason": "晚上20点，阴天，用户喜欢小霞，她的歌舒缓治愈适合晚间放松"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1901319324,
+      "song_name": "无聊的",
+      "artist": "小霞",
+      "album": "小霞 2.0",
+      "played_at": "2026-05-01T12:09:56.981Z",
+      "context": {
+        "reason": "晚上20点，阴天，用户喜欢小霞，她的歌舒缓治愈适合晚间放松"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 399343373,
+      "song_name": "拆穿",
+      "artist": "小霞",
+      "album": "小霞",
+      "played_at": "2026-05-01T12:09:57.478Z",
+      "context": {
+        "reason": "晚上20点，阴天，用户喜欢小霞，她的歌舒缓治愈适合晚间放松"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150619,
+      "song_name": "小镇姑娘",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-05-01T12:45:28.914Z",
+      "context": {
+        "reason": "用户想听90年代华语歌曲，陶喆是用户喜欢的艺人，两首都是经典，节奏舒缓适合晚间。周华健的《花心》也是90年代经典，旋律优美。"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150623,
+      "song_name": "普通朋友",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-05-01T12:45:29.368Z",
+      "context": {
+        "reason": "用户想听90年代华语歌曲，陶喆是用户喜欢的艺人，两首都是经典，节奏舒缓适合晚间。周华健的《花心》也是90年代经典，旋律优美。"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1958444249,
+      "song_name": "花心",
+      "artist": "周华健",
+      "album": "畅销金曲②",
+      "played_at": "2026-05-01T12:45:30.004Z",
+      "context": {
+        "reason": "用户想听90年代华语歌曲，陶喆是用户喜欢的艺人，两首都是经典，节奏舒缓适合晚间。周华健的《花心》也是90年代经典，旋律优美。"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150667,
+      "song_name": "流沙",
+      "artist": "陶喆",
+      "album": "David Tao",
+      "played_at": "2026-05-01T13:01:07.873Z",
+      "context": {
+        "reason": "用户喜欢90年代华语歌，且之前听过陶喆和周华健。阴天晚上适合舒缓温柔的歌曲，这三首都是经典且符合用户品味。"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150654,
+      "song_name": "爱，很简单",
+      "artist": "陶喆",
+      "album": "David Tao",
+      "played_at": "2026-05-01T13:01:08.363Z",
+      "context": {
+        "reason": "用户喜欢90年代华语歌，且之前听过陶喆和周华健。阴天晚上适合舒缓温柔的歌曲，这三首都是经典且符合用户品味。"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1958444249,
+      "song_name": "花心",
+      "artist": "周华健",
+      "album": "畅销金曲②",
+      "played_at": "2026-05-01T13:01:08.869Z",
+      "context": {
+        "reason": "用户喜欢90年代华语歌，且之前听过陶喆和周华健。阴天晚上适合舒缓温柔的歌曲，这三首都是经典且符合用户品味。"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150667,
+      "song_name": "流沙",
+      "artist": "陶喆",
+      "album": "David Tao",
+      "played_at": "2026-05-01T13:17:17.329Z",
+      "context": {
+        "reason": "用户喜欢陶喆，且晚上适合舒缓的歌曲，阴天推荐经典华语歌"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150654,
+      "song_name": "爱，很简单",
+      "artist": "陶喆",
+      "album": "David Tao",
+      "played_at": "2026-05-01T13:17:17.791Z",
+      "context": {
+        "reason": "用户喜欢陶喆，且晚上适合舒缓的歌曲，阴天推荐经典华语歌"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1958444249,
+      "song_name": "花心",
+      "artist": "周华健",
+      "album": "畅销金曲②",
+      "played_at": "2026-05-01T13:17:18.331Z",
+      "context": {
+        "reason": "用户喜欢陶喆，且晚上适合舒缓的歌曲，阴天推荐经典华语歌"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150667,
+      "song_name": "流沙",
+      "artist": "陶喆",
+      "album": "David Tao",
+      "played_at": "2026-05-01T13:22:20.832Z",
+      "context": {
+        "reason": "用户喜欢陶喆和周华健，晚上休闲时光适合舒缓的90年代歌曲"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150654,
+      "song_name": "爱，很简单",
+      "artist": "陶喆",
+      "album": "David Tao",
+      "played_at": "2026-05-01T13:22:21.272Z",
+      "context": {
+        "reason": "用户喜欢陶喆和周华健，晚上休闲时光适合舒缓的90年代歌曲"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1958444249,
+      "song_name": "花心",
+      "artist": "周华健",
+      "album": "畅销金曲②",
+      "played_at": "2026-05-01T13:22:21.747Z",
+      "context": {
+        "reason": "用户喜欢陶喆和周华健，晚上休闲时光适合舒缓的90年代歌曲"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 516657140,
+      "song_name": "遥远的歌",
+      "artist": "刘惜君",
+      "album": "你好，旧时光 连续剧原声带",
+      "played_at": "2026-05-01T13:38:02.833Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 5232561,
+      "song_name": "一个人的精彩",
+      "artist": "萧亚轩",
+      "album": "那些年，我们一起听过的歌",
+      "played_at": "2026-05-01T13:38:03.310Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 3376472241,
+      "song_name": "那么爱你不能拥有你",
+      "artist": "TE.D",
+      "album": "那些年的好歌224",
+      "played_at": "2026-05-01T13:38:04.231Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1316578404,
+      "song_name": "每天爱你多一些",
+      "artist": "张学友",
+      "album": "张学友4合1珍藏集",
+      "played_at": "2026-05-01T13:38:04.860Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 5232550,
+      "song_name": "最熟悉的陌生人",
+      "artist": "萧亚轩",
+      "album": "那些年，我们一起听过的歌",
+      "played_at": "2026-05-01T13:38:05.439Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 190464,
+      "song_name": "每天爱你多一些(国)",
+      "artist": "张学友",
+      "album": "吻别",
+      "played_at": "2026-05-01T14:55:22.580Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1929411554,
+      "song_name": "一样的月光（Cover徐佳莹）",
+      "artist": "邱韵文Yuki",
+      "album": "一些Cover",
+      "played_at": "2026-05-01T14:55:23.114Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 247169,
+      "song_name": "妈妈要我出嫁",
+      "artist": "花粥",
+      "album": "早年间的一些歌",
+      "played_at": "2026-05-01T14:55:23.555Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 94809,
+      "song_name": "若生命等候",
+      "artist": "黄凯芹",
+      "album": "没结果的一些感情",
+      "played_at": "2026-05-01T14:55:24.034Z",
+      "context": {
+        "reason": "直接搜索"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1299981609,
+      "song_name": "River Flows in You",
+      "artist": "Yiruma",
+      "album": "Simplement piano",
+      "played_at": "2026-05-01T16:00:03.791Z",
+      "context": {
+        "reason": "深夜工作时段，用户需要专注音乐，推荐宁静的钢琴曲和轻音乐，符合用户喜欢的旋律优美、适合工作的轻音乐偏好",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 513619907,
+      "song_name": "Canon in D",
+      "artist": "Johann Pachelbel",
+      "album": "Música Clásica para Dormir, Vol. 1",
+      "played_at": "2026-05-01T16:00:04.605Z",
+      "context": {
+        "reason": "深夜工作时段，用户需要专注音乐，推荐宁静的钢琴曲和轻音乐，符合用户喜欢的旋律优美、适合工作的轻音乐偏好",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 26402498,
+      "song_name": "月光边境",
+      "artist": "林海",
+      "album": "月光边境",
+      "played_at": "2026-05-01T16:00:05.255Z",
+      "context": {
+        "reason": "深夜工作时段，用户需要专注音乐，推荐宁静的钢琴曲和轻音乐，符合用户喜欢的旋律优美、适合工作的轻音乐偏好",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150561,
+      "song_name": "蝴蝶",
+      "artist": "陶喆",
+      "album": "黑色柳丁",
+      "played_at": "2026-05-01T16:41:50.084Z",
+      "context": {
+        "reason": "深夜用户指定陶喆的安静歌曲，推荐他最经典的慢歌，符合用户对陶喆的偏好和夜晚场景"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150623,
+      "song_name": "普通朋友",
+      "artist": "陶喆",
+      "album": "I'm OK",
+      "played_at": "2026-05-01T16:41:50.565Z",
+      "context": {
+        "reason": "深夜用户指定陶喆的安静歌曲，推荐他最经典的慢歌，符合用户对陶喆的偏好和夜晚场景"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 150654,
+      "song_name": "爱，很简单",
+      "artist": "陶喆",
+      "album": "David Tao",
+      "played_at": "2026-05-01T16:41:51.015Z",
+      "context": {
+        "reason": "深夜用户指定陶喆的安静歌曲，推荐他最经典的慢歌，符合用户对陶喆的偏好和夜晚场景"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 26402498,
+      "song_name": "月光边境",
+      "artist": "林海",
+      "album": "月光边境",
+      "played_at": "2026-05-01T18:00:03.271Z",
+      "context": {
+        "reason": "深夜工作，用户需要专注的轻音乐，上次白天工作时推荐过类似歌单，用户没有跳过，说明接受度高。",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 1299981609,
+      "song_name": "River Flows in You",
+      "artist": "Yiruma",
+      "album": "Simplement piano",
+      "played_at": "2026-05-01T18:00:03.803Z",
+      "context": {
+        "reason": "深夜工作，用户需要专注的轻音乐，上次白天工作时推荐过类似歌单，用户没有跳过，说明接受度高。",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    },
+    {
+      "song_id": 513619907,
+      "song_name": "Canon in D",
+      "artist": "Johann Pachelbel",
+      "album": "Música Clásica para Dormir, Vol. 1",
+      "played_at": "2026-05-01T18:00:04.474Z",
+      "context": {
+        "reason": "深夜工作，用户需要专注的轻音乐，上次白天工作时推荐过类似歌单，用户没有跳过，说明接受度高。",
+        "scheduled": "work"
+      },
+      "completed": false,
+      "skipped": false
+    }
+  ],
+  "messages": [
+    {
+      "role": "user",
+      "content": "���",
+      "created_at": "2026-04-30T08:32:58.960Z"
+    },
+    {
+      "role": "assistant",
+      "content": "抱歉，我遇到了一些问题...",
+      "created_at": "2026-04-30T08:32:58.962Z"
+    },
+    {
+      "role": "user",
+      "content": "帮我推荐一些陶喆的歌吧",
+      "created_at": "2026-04-30T08:37:07.599Z"
+    },
+    {
+      "role": "assistant",
+      "content": "抱歉，我遇到了一些问题...",
+      "created_at": "2026-04-30T08:37:07.600Z"
+    },
+    {
+      "role": "user",
+      "content": "你好claudio 可以帮我推荐一些陶喆的歌吗",
+      "created_at": "2026-04-30T08:43:16.629Z"
+    },
+    {
+      "role": "assistant",
+      "content": "下午好！阳光正好，来几首陶喆的经典放松心情 🎵",
+      "created_at": "2026-04-30T08:43:16.630Z"
+    },
+    {
+      "role": "user",
+      "content": "你好claudio 可以帮我推荐一些陶喆的歌吗",
+      "created_at": "2026-04-30T08:44:18.614Z"
+    },
+    {
+      "role": "assistant",
+      "content": "抱歉，我遇到了一些问题...",
+      "created_at": "2026-04-30T08:44:18.615Z"
+    },
+    {
+      "role": "user",
+      "content": "hi claudio，可以帮我推荐一些陶喆的歌吗",
+      "created_at": "2026-04-30T08:46:23.354Z"
+    },
+    {
+      "role": "assistant",
+      "content": "下午好！阳光正好，来几首陶喆的经典放松心情吧 ☀️",
+      "created_at": "2026-04-30T08:46:23.356Z"
+    },
+    {
+      "role": "user",
+      "content": "hi claudio，可以帮我推荐一些陶喆的歌吗",
+      "created_at": "2026-04-30T08:57:31.876Z"
+    },
+    {
+      "role": "assistant",
+      "content": "抱歉，我遇到了一些问题...",
+      "created_at": "2026-04-30T08:57:31.878Z"
+    },
+    {
+      "role": "user",
+      "content": "播放陶喆的天天",
+      "created_at": "2026-04-30T09:15:01.186Z"
+    },
+    {
+      "role": "assistant",
+      "content": "继续播放",
+      "created_at": "2026-04-30T09:15:01.188Z"
+    },
+    {
+      "role": "user",
+      "content": "播放陶喆的爱很简单",
+      "created_at": "2026-04-30T09:15:39.627Z"
+    },
+    {
+      "role": "assistant",
+      "content": "继续播放",
+      "created_at": "2026-04-30T09:15:39.629Z"
+    },
+    {
+      "role": "user",
+      "content": "推荐一些陶喆的歌",
+      "created_at": "2026-04-30T09:18:25.558Z"
+    },
+    {
+      "role": "assistant",
+      "content": "下午五点多，阳光还不赖，来几首陶喆的经典陪你过渡到傍晚吧 🎵",
+      "created_at": "2026-04-30T09:18:25.559Z"
+    },
+    {
+      "role": "user",
+      "content": "帮我播放陶喆的天天可以吗",
+      "created_at": "2026-04-30T09:25:30.672Z"
+    },
+    {
+      "role": "assistant",
+      "content": "继续播放",
+      "created_at": "2026-04-30T09:25:30.674Z"
+    },
+    {
+      "role": "user",
+      "content": "帮我推荐一些陶喆的歌可以吗",
+      "created_at": "2026-04-30T09:26:19.282Z"
+    },
+    {
+      "role": "assistant",
+      "content": "抱歉，我现在有点忙，稍后再聊吧",
+      "created_at": "2026-04-30T09:26:19.284Z"
+    },
+    {
+      "role": "user",
+      "content": "帮我推荐一些陶喆的歌可以吗",
+      "created_at": "2026-04-30T09:27:05.325Z"
+    },
+    {
+      "role": "assistant",
+      "content": "下午五点多，阳光还不赖，来几首陶喆的经典陪你过渡到傍晚吧 🎵",
+      "created_at": "2026-04-30T09:27:05.327Z"
+    },
+    {
+      "role": "user",
+      "content": "帮我推荐一些陶喆的歌可以吗",
+      "created_at": "2026-04-30T09:28:14.312Z"
+    },
+    {
+      "role": "assistant",
+      "content": "傍晚了，再来一首陶喆的《天天》，温暖又放松，适合现在听 🌇",
+      "created_at": "2026-04-30T09:28:14.314Z"
+    },
+    {
+      "role": "user",
+      "content": "帮我推荐一些陶喆的歌可以吗",
+      "created_at": "2026-04-30T09:33:08.990Z"
+    },
+    {
+      "role": "assistant",
+      "content": "傍晚的阳光配陶喆的R&B最合适了，来几首经典陪你度过这个黄昏 🌇",
+      "created_at": "2026-04-30T09:33:08.992Z"
+    },
+    {
+      "role": "user",
+      "content": "帮我推荐一些陶喆的歌可以吗",
+      "created_at": "2026-04-30T10:02:43.599Z"
+    },
+    {
+      "role": "assistant",
+      "content": "抱歉，我现在有点忙，稍后再聊吧",
+      "created_at": "2026-04-30T10:02:43.601Z"
+    },
+    {
+      "role": "user",
+      "content": "帮我推荐一些陶喆的歌可以吗",
+      "created_at": "2026-04-30T10:03:12.263Z"
+    },
+    {
+      "role": "assistant",
+      "content": "傍晚了，来几首陶喆的经典陪你度过这个日落时分吧 🌇",
+      "created_at": "2026-04-30T10:03:12.264Z"
+    },
+    {
+      "role": "user",
+      "content": "你知道吗，我为了创建你这给项目用了很多token和时间那，现在我有点累了，给我推一些轻松一点的歌吧",
+      "created_at": "2026-04-30T12:37:24.380Z"
+    },
+    {
+      "role": "assistant",
+      "content": "辛苦了，我懂你！来首陶喆的《蝴蝶》，轻快又治愈，给你充充电 🦋",
+      "created_at": "2026-04-30T12:37:24.382Z"
+    },
+    {
+      "role": "user",
+      "content": "帮我推荐一些歌吧",
+      "created_at": "2026-04-30T13:00:57.977Z"
+    },
+    {
+      "role": "assistant",
+      "content": "晚上好～阴天夜晚，来几首舒缓的旋律陪你放松吧 🎵",
+      "created_at": "2026-04-30T13:00:57.979Z"
+    },
+    {
+      "role": "user",
+      "content": "帮我推荐一些歌吧",
+      "created_at": "2026-04-30T16:39:53.197Z"
+    },
+    {
+      "role": "assistant",
+      "content": "抱歉，我现在有点忙，稍后再聊吧",
+      "created_at": "2026-04-30T16:39:53.209Z"
+    },
+    {
+      "role": "user",
+      "content": "帮我推荐一些歌曲",
+      "created_at": "2026-04-30T16:56:26.605Z"
+    },
+    {
+      "role": "assistant",
+      "content": "抱歉，我现在有点忙，稍后再聊吧",
+      "created_at": "2026-04-30T16:56:26.617Z"
+    },
+    {
+      "role": "user",
+      "content": "帮我推荐一些歌",
+      "created_at": "2026-04-30T17:06:15.390Z"
+    },
+    {
+      "role": "assistant",
+      "content": "抱歉，我现在有点忙，稍后再聊吧",
+      "created_at": "2026-04-30T17:06:15.392Z"
+    },
+    {
+      "role": "user",
+      "content": "给我推荐一些歌吧",
+      "created_at": "2026-04-30T17:24:19.078Z"
+    },
+    {
+      "role": "assistant",
+      "content": "深夜了，来点安静的音乐陪你入眠吧 🌙",
+      "created_at": "2026-04-30T17:24:19.079Z"
+    },
+    {
+      "role": "user",
+      "content": "给我推荐一些歌吧，我还在调试程序哦，为了让你呈现的效果更好",
+      "created_at": "2026-04-30T17:57:15.821Z"
+    },
+    {
+      "role": "assistant",
+      "content": "深夜调试辛苦了！来点温柔的钢琴曲帮你保持专注，又不打扰思路 🎹",
+      "created_at": "2026-04-30T17:57:15.822Z"
+    },
+    {
+      "role": "user",
+      "content": "换一些嘛，我想听一些爵士乐",
+      "created_at": "2026-04-30T17:57:53.797Z"
+    },
+    {
+      "role": "assistant",
+      "content": "为你找到了\"换一些嘛，一些爵士乐\"",
+      "created_at": "2026-04-30T17:57:53.799Z"
+    },
+    {
+      "role": "user",
+      "content": "换一些陶喆的歌吧",
+      "created_at": "2026-04-30T17:58:50.598Z"
+    },
+    {
+      "role": "assistant",
+      "content": "深夜来点陶喆的经典，这首《普通朋友》节奏舒缓又耐听，适合调试代码时当背景音 🎵",
+      "created_at": "2026-04-30T17:58:50.599Z"
+    },
+    {
+      "role": "user",
+      "content": "给我推荐一些爵士乐吧，要正宗一些的哦",
+      "created_at": "2026-04-30T18:23:57.628Z"
+    },
+    {
+      "role": "assistant",
+      "content": "深夜两点来点正宗爵士，Miles Davis的冷爵士经典，像夜色一样深沉又迷人 🌙",
+      "created_at": "2026-04-30T18:23:57.630Z"
+    },
+    {
+      "role": "user",
+      "content": "早上好呀",
+      "created_at": "2026-05-01T03:25:35.845Z"
+    },
+    {
+      "role": "assistant",
+      "content": "抱歉，我现在有点忙，稍后再聊吧",
+      "created_at": "2026-05-01T03:25:35.857Z"
+    },
+    {
+      "role": "user",
+      "content": "早上好呀",
+      "created_at": "2026-05-01T03:26:07.066Z"
+    },
+    {
+      "role": "assistant",
+      "content": "抱歉，我现在有点忙，稍后再聊吧",
+      "created_at": "2026-05-01T03:26:07.068Z"
+    },
+    {
+      "role": "user",
+      "content": "早上好呀claudio",
+      "created_at": "2026-05-01T03:46:52.584Z"
+    },
+    {
+      "role": "assistant",
+      "content": "早上好！快中午了，来首轻快的爵士唤醒你，Dave Brubeck的《Take Five》经典又提神 ☕️",
+      "created_at": "2026-05-01T03:46:52.586Z"
+    },
+    {
+      "role": "user",
+      "content": "你好呀claudio",
+      "created_at": "2026-05-01T04:49:32.063Z"
+    },
+    {
+      "role": "assistant",
+      "content": "抱歉，我现在有点忙，稍后再聊吧",
+      "created_at": "2026-05-01T04:49:32.065Z"
+    },
+    {
+      "role": "user",
+      "content": "你好呀claudio，今天有什么推荐吗",
+      "created_at": "2026-05-01T04:50:38.949Z"
+    },
+    {
+      "role": "assistant",
+      "content": "中午好！阴天的午后，来点温柔的爵士吧，Chet Baker的《My Funny Valentine》超适合现在听 🎺",
+      "created_at": "2026-05-01T04:50:38.951Z"
+    },
+    {
+      "role": "user",
+      "content": "你好呀claudio，我想听一些欧美流行乐，可以给一些推荐吗",
+      "created_at": "2026-05-01T05:23:01.470Z"
+    },
+    {
+      "role": "assistant",
+      "content": "为你找到了\"你好呀claudio，一些欧美流行乐，可以给一些推荐吗\"",
+      "created_at": "2026-05-01T05:23:01.473Z"
+    },
+    {
+      "role": "user",
+      "content": "hi claudio i fell tired，place give me some happ song",
+      "created_at": "2026-05-01T06:47:26.661Z"
+    },
+    {
+      "role": "assistant",
+      "content": "累了就来点快乐能量！陶喆的《找自己》节奏轻快，保证让你精神起来 💪",
+      "created_at": "2026-05-01T06:47:26.663Z"
+    },
+    {
+      "role": "user",
+      "content": "你好呀claudio，给我推荐一些歌吧，我想试试不太一样的风格",
+      "created_at": "2026-05-01T07:32:56.796Z"
+    },
+    {
+      "role": "assistant",
+      "content": "阴天下午，来点不一样的节奏！试试蓝调风格的《The Thrill Is Gone》，B.B. King的经典，低沉又带劲 🎸",
+      "created_at": "2026-05-01T07:32:56.798Z"
+    },
+    {
+      "role": "user",
+      "content": "你好呀claudio",
+      "created_at": "2026-05-01T08:20:25.637Z"
+    },
+    {
+      "role": "assistant",
+      "content": "抱歉，我现在有点忙，稍后再聊吧",
+      "created_at": "2026-05-01T08:20:25.639Z"
+    },
+    {
+      "role": "user",
+      "content": "你好呀claudio",
+      "created_at": "2026-05-01T08:21:00.479Z"
+    },
+    {
+      "role": "assistant",
+      "content": "下午好呀！阴天下午，来点轻松的爵士怎么样？Chet Baker的《Time After Time》超适合现在听 🎺",
+      "created_at": "2026-05-01T08:21:00.481Z"
+    },
+    {
+      "role": "user",
+      "content": "你好呀claudio，我想听kanye的歌，特别是never see me again",
+      "created_at": "2026-05-01T08:36:48.068Z"
+    },
+    {
+      "role": "assistant",
+      "content": "为你找到了\"你好呀claudio，kanye的歌，特别是never see me again\"",
+      "created_at": "2026-05-01T08:36:48.071Z"
+    },
+    {
+      "role": "user",
+      "content": "hi claudio 我想听陶喆的爱很简单",
+      "created_at": "2026-05-01T08:47:41.315Z"
+    },
+    {
+      "role": "assistant",
+      "content": "为你找到了\"hi claudio 陶喆的爱很简单\"",
+      "created_at": "2026-05-01T08:47:41.318Z"
+    },
+    {
+      "role": "user",
+      "content": "你好claudio",
+      "created_at": "2026-05-01T09:21:42.270Z"
+    },
+    {
+      "role": "assistant",
+      "content": "下午好！阴天下午，来点蓝调风格的放松一下吧，陶喆的《Melody》很适合这种天气 🎵",
+      "created_at": "2026-05-01T09:21:42.271Z"
+    },
+    {
+      "role": "user",
+      "content": "hi claudio 现在是北京时间20：09分，你有什么推荐吗",
+      "created_at": "2026-05-01T12:09:30.821Z"
+    },
+    {
+      "role": "assistant",
+      "content": "抱歉，我现在有点忙，稍后再聊吧",
+      "created_at": "2026-05-01T12:09:30.823Z"
+    },
+    {
+      "role": "user",
+      "content": "hi claudio 现在是北京时间20：09分，你有什么推荐吗",
+      "created_at": "2026-05-01T12:09:55.315Z"
+    },
+    {
+      "role": "assistant",
+      "content": "晚上好呀！今晚阴天，来点舒缓的爵士放松一下，小霞的歌很有氛围感 🎷",
+      "created_at": "2026-05-01T12:09:55.318Z"
+    },
+    {
+      "role": "user",
+      "content": "给我推荐一些90年代的华语歌曲吧",
+      "created_at": "2026-05-01T12:45:28.289Z"
+    },
+    {
+      "role": "assistant",
+      "content": "晚上好！阴天的夜晚，来点90s经典吧，陶喆的《小镇姑娘》和《普通朋友》都很适合这个时刻 🎵",
+      "created_at": "2026-05-01T12:45:28.292Z"
+    },
+    {
+      "role": "user",
+      "content": "你好呀claudio 帮我推荐一些90年代的华语歌",
+      "created_at": "2026-05-01T12:59:30.665Z"
+    },
+    {
+      "role": "assistant",
+      "content": "抱歉，我现在有点忙，稍后再聊吧",
+      "created_at": "2026-05-01T12:59:30.667Z"
+    },
+    {
+      "role": "user",
+      "content": "你好呀claudio 帮我推荐一些90年代的华语歌",
+      "created_at": "2026-05-01T13:00:32.787Z"
+    },
+    {
+      "role": "assistant",
+      "content": "抱歉，我现在有点忙，稍后再聊吧",
+      "created_at": "2026-05-01T13:00:32.789Z"
+    },
+    {
+      "role": "user",
+      "content": "你好呀claudio 帮我推荐一些90年代的华语歌",
+      "created_at": "2026-05-01T13:01:07.179Z"
+    },
+    {
+      "role": "assistant",
+      "content": "晚上好！阴天的夜晚，来几首90年代经典吧，陶喆的《流沙》和《爱，很简单》都很应景 🎵",
+      "created_at": "2026-05-01T13:01:07.180Z"
+    },
+    {
+      "role": "user",
+      "content": "你好呀claudio，可以给我推荐一些90年代的华语歌吗",
+      "created_at": "2026-05-01T13:17:16.864Z"
+    },
+    {
+      "role": "assistant",
+      "content": "晚上好！阴天的夜晚，来几首90年代经典吧，陶喆的《流沙》和《爱，很简单》都很应景 🎵",
+      "created_at": "2026-05-01T13:17:16.866Z"
+    },
+    {
+      "role": "user",
+      "content": "你好呀claudio，可以给我推荐一些90年代的华语歌吗",
+      "created_at": "2026-05-01T13:22:20.319Z"
+    },
+    {
+      "role": "assistant",
+      "content": "晚上好！阴天的夜晚，来几首90年代经典吧，陶喆的《流沙》和《爱，很简单》都很应景 🎵",
+      "created_at": "2026-05-01T13:22:20.321Z"
+    },
+    {
+      "role": "user",
+      "content": "你好呀Claudio，我想听一些有一些年代的华语歌",
+      "created_at": "2026-05-01T13:38:02.280Z"
+    },
+    {
+      "role": "assistant",
+      "content": "为你找到了\"你好呀Claudio，一些有一些年代的华语歌\"",
+      "created_at": "2026-05-01T13:38:02.282Z"
+    },
+    {
+      "role": "user",
+      "content": "你好呀claudio，给我推荐一些歌吧，我想听一些不太一样的，我没有听过的类型",
+      "created_at": "2026-05-01T14:55:21.794Z"
+    },
+    {
+      "role": "assistant",
+      "content": "为你找到了\"你好呀claudio，给我推荐一些歌吧，一些不太一样的，我没有过的类型\"",
+      "created_at": "2026-05-01T14:55:21.796Z"
+    },
+    {
+      "role": "user",
+      "content": "夜晚了，给我放一些陶喆的安静一些的歌吧",
+      "created_at": "2026-05-01T16:41:49.514Z"
+    },
+    {
+      "role": "assistant",
+      "content": "深夜听陶喆，安静又治愈。《蝴蝶》和《普通朋友》都是你喜欢的慢歌，很适合现在听 🌙",
+      "created_at": "2026-05-01T16:41:49.516Z"
+    }
+  ],
+  "plans": {},
+  "preferences": {
+    "time_afternoon": {
+      "value": [
+        {
+          "song": "Time After Time",
+          "artist": "Chet Baker",
+          "timestamp": "2026-05-01T04:50:41.250Z"
+        },
+        {
+          "song": "Alive",
+          "artist": "Blue",
+          "timestamp": "2026-05-01T05:23:02.046Z"
+        },
+        {
+          "song": "每天爱你多一些 (live)",
+          "artist": "卫兰/伍珂玥",
+          "timestamp": "2026-05-01T05:23:02.670Z"
+        },
+        {
+          "song": "卡拉永遠OK",
+          "artist": "谭咏麟",
+          "timestamp": "2026-05-01T05:23:03.228Z"
+        },
+        {
+          "song": "每天爱你多一些(国)",
+          "artist": "张学友",
+          "timestamp": "2026-05-01T05:23:03.749Z"
+        },
+        {
+          "song": "每天爱你多一些",
+          "artist": "张学友",
+          "timestamp": "2026-05-01T05:23:04.339Z"
+        },
+        {
+          "song": "找自己",
+          "artist": "陶喆",
+          "timestamp": "2026-05-01T06:47:27.300Z"
+        },
+        {
+          "song": "The Thrill Is Gone",
+          "artist": "B.B. King",
+          "timestamp": "2026-05-01T07:32:57.744Z"
+        },
+        {
+          "song": "Time After Time",
+          "artist": "Chet Baker",
+          "timestamp": "2026-05-01T08:21:01.264Z"
+        },
+        {
+          "song": "Never see me again（Explicit）",
+          "artist": "TheFloridaMan/GOAT",
+          "timestamp": "2026-05-01T08:36:48.671Z"
+        },
+        {
+          "song": "Never See Me Again",
+          "artist": "Azure Wave/Kanye West Unreleased",
+          "timestamp": "2026-05-01T08:36:49.415Z"
+        },
+        {
+          "song": "Never See Me Again×Mrs.Officer",
+          "artist": "雨果",
+          "timestamp": "2026-05-01T08:36:50.089Z"
+        },
+        {
+          "song": "Never see me again",
+          "artist": "JANCEH",
+          "timestamp": "2026-05-01T08:36:50.656Z"
+        },
+        {
+          "song": "Never See Me Again",
+          "artist": "Goostavo",
+          "timestamp": "2026-05-01T08:36:51.209Z"
+        },
+        {
+          "song": "爱，很简单",
+          "artist": "陶喆",
+          "timestamp": "2026-05-01T08:47:41.764Z"
+        },
+        {
+          "song": "爱，很简单",
+          "artist": "陶喆",
+          "timestamp": "2026-05-01T08:47:41.783Z"
+        },
+        {
+          "song": "爱，很简单",
+          "artist": "陶喆",
+          "timestamp": "2026-05-01T08:47:41.795Z"
+        },
+        {
+          "song": "爱，很简单 (Live)",
+          "artist": "陶喆",
+          "timestamp": "2026-05-01T08:47:42.368Z"
+        },
+        {
+          "song": "爱，很简单(安可曲) (Live)",
+          "artist": "陶喆",
+          "timestamp": "2026-05-01T08:47:43.004Z"
+        },
+        {
+          "song": "Melody",
+          "artist": "陶喆",
+          "timestamp": "2026-05-01T09:21:43.021Z"
+        }
+      ],
+      "updated_at": "2026-05-01T09:21:43.021Z"
+    },
+    "artist_周杰伦./溺死的鱼": {
+      "value": 1,
+      "updated_at": "2026-04-30T07:55:49.008Z"
+    },
+    "artist_陶喆": {
+      "value": 44,
+      "updated_at": "2026-05-01T16:41:51.015Z"
+    },
+    "time_evening": {
+      "value": [
+        {
+          "song": "普通朋友",
+          "artist": "陶喆",
+          "timestamp": "2026-05-01T12:45:29.370Z"
+        },
+        {
+          "song": "花心",
+          "artist": "周华健",
+          "timestamp": "2026-05-01T12:45:30.006Z"
+        },
+        {
+          "song": "流沙",
+          "artist": "陶喆",
+          "timestamp": "2026-05-01T13:01:07.875Z"
+        },
+        {
+          "song": "爱，很简单",
+          "artist": "陶喆",
+          "timestamp": "2026-05-01T13:01:08.365Z"
+        },
+        {
+          "song": "花心",
+          "artist": "周华健",
+          "timestamp": "2026-05-01T13:01:08.870Z"
+        },
+        {
+          "song": "流沙",
+          "artist": "陶喆",
+          "timestamp": "2026-05-01T13:17:17.330Z"
+        },
+        {
+          "song": "爱，很简单",
+          "artist": "陶喆",
+          "timestamp": "2026-05-01T13:17:17.792Z"
+        },
+        {
+          "song": "花心",
+          "artist": "周华健",
+          "timestamp": "2026-05-01T13:17:18.333Z"
+        },
+        {
+          "song": "流沙",
+          "artist": "陶喆",
+          "timestamp": "2026-05-01T13:22:20.833Z"
+        },
+        {
+          "song": "爱，很简单",
+          "artist": "陶喆",
+          "timestamp": "2026-05-01T13:22:21.274Z"
+        },
+        {
+          "song": "花心",
+          "artist": "周华健",
+          "timestamp": "2026-05-01T13:22:21.749Z"
+        },
+        {
+          "song": "遥远的歌",
+          "artist": "刘惜君",
+          "timestamp": "2026-05-01T13:38:02.836Z"
+        },
+        {
+          "song": "一个人的精彩",
+          "artist": "萧亚轩",
+          "timestamp": "2026-05-01T13:38:03.312Z"
+        },
+        {
+          "song": "那么爱你不能拥有你",
+          "artist": "TE.D",
+          "timestamp": "2026-05-01T13:38:04.233Z"
+        },
+        {
+          "song": "每天爱你多一些",
+          "artist": "张学友",
+          "timestamp": "2026-05-01T13:38:04.862Z"
+        },
+        {
+          "song": "最熟悉的陌生人",
+          "artist": "萧亚轩",
+          "timestamp": "2026-05-01T13:38:05.441Z"
+        },
+        {
+          "song": "每天爱你多一些(国)",
+          "artist": "张学友",
+          "timestamp": "2026-05-01T14:55:22.582Z"
+        },
+        {
+          "song": "一样的月光（Cover徐佳莹）",
+          "artist": "邱韵文Yuki",
+          "timestamp": "2026-05-01T14:55:23.116Z"
+        },
+        {
+          "song": "妈妈要我出嫁",
+          "artist": "花粥",
+          "timestamp": "2026-05-01T14:55:23.557Z"
+        },
+        {
+          "song": "若生命等候",
+          "artist": "黄凯芹",
+          "timestamp": "2026-05-01T14:55:24.035Z"
+        }
+      ],
+      "updated_at": "2026-05-01T14:55:24.035Z"
+    },
+    "artist_Yiruma": {
+      "value": 15,
+      "updated_at": "2026-05-01T18:00:03.803Z"
+    },
+    "artist_Johann Pachelbel": {
+      "value": 8,
+      "updated_at": "2026-05-01T18:00:04.474Z"
+    },
+    "artist_信乐团": {
+      "value": 1,
+      "updated_at": "2026-04-30T13:00:59.089Z"
+    },
+    "time_morning": {
+      "value": [
+        {
+          "song": "分他一些快乐",
+          "artist": "邵帅",
+          "timestamp": "2026-04-30T17:57:55.262Z"
+        },
+        {
+          "song": "若生命等候",
+          "artist": "黄凯芹",
+          "timestamp": "2026-04-30T17:57:55.726Z"
+        },
+        {
+          "song": "妈妈要我出嫁",
+          "artist": "花粥",
+          "timestamp": "2026-04-30T17:57:56.152Z"
+        },
+        {
+          "song": "普通朋友",
+          "artist": "陶喆",
+          "timestamp": "2026-04-30T17:58:51.204Z"
+        },
+        {
+          "song": "爱，很简单",
+          "artist": "陶喆",
+          "timestamp": "2026-04-30T17:58:51.645Z"
+        },
+        {
+          "song": "小镇姑娘",
+          "artist": "陶喆",
+          "timestamp": "2026-04-30T17:58:52.093Z"
+        },
+        {
+          "song": "So What",
+          "artist": "Miles Davis",
+          "timestamp": "2026-04-30T18:23:58.365Z"
+        },
+        {
+          "song": "My Funny Valentine",
+          "artist": "Chet Baker",
+          "timestamp": "2026-04-30T18:23:58.941Z"
+        },
+        {
+          "song": "Take Five",
+          "artist": "Dave Brubeck",
+          "timestamp": "2026-04-30T18:23:59.522Z"
+        },
+        {
+          "song": "Take Five",
+          "artist": "Dave Brubeck",
+          "timestamp": "2026-05-01T03:46:53.550Z"
+        },
+        {
+          "song": "Blue Train",
+          "artist": "John Coltrane",
+          "timestamp": "2026-05-01T03:46:54.227Z"
+        },
+        {
+          "song": "River Flows in You",
+          "artist": "Yiruma",
+          "timestamp": "2026-05-01T16:00:03.793Z"
+        },
+        {
+          "song": "Canon in D",
+          "artist": "Johann Pachelbel",
+          "timestamp": "2026-05-01T16:00:04.607Z"
+        },
+        {
+          "song": "月光边境",
+          "artist": "林海",
+          "timestamp": "2026-05-01T16:00:05.257Z"
+        },
+        {
+          "song": "蝴蝶",
+          "artist": "陶喆",
+          "timestamp": "2026-05-01T16:41:50.088Z"
+        },
+        {
+          "song": "普通朋友",
+          "artist": "陶喆",
+          "timestamp": "2026-05-01T16:41:50.567Z"
+        },
+        {
+          "song": "爱，很简单",
+          "artist": "陶喆",
+          "timestamp": "2026-05-01T16:41:51.018Z"
+        },
+        {
+          "song": "月光边境",
+          "artist": "林海",
+          "timestamp": "2026-05-01T18:00:03.274Z"
+        },
+        {
+          "song": "River Flows in You",
+          "artist": "Yiruma",
+          "timestamp": "2026-05-01T18:00:03.804Z"
+        },
+        {
+          "song": "Canon in D",
+          "artist": "Johann Pachelbel",
+          "timestamp": "2026-05-01T18:00:04.475Z"
+        }
+      ],
+      "updated_at": "2026-05-01T18:00:04.475Z"
+    },
+    "artist_张学友": {
+      "value": 5,
+      "updated_at": "2026-05-01T14:55:22.580Z"
+    },
+    "artist_花粥": {
+      "value": 3,
+      "updated_at": "2026-05-01T14:55:23.555Z"
+    },
+    "artist_邵帅": {
+      "value": 1,
+      "updated_at": "2026-04-30T17:57:55.260Z"
+    },
+    "artist_黄凯芹": {
+      "value": 2,
+      "updated_at": "2026-05-01T14:55:24.034Z"
+    },
+    "artist_Miles Davis": {
+      "value": 1,
+      "updated_at": "2026-04-30T18:23:58.363Z"
+    },
+    "artist_Chet Baker": {
+      "value": 5,
+      "updated_at": "2026-05-01T08:21:01.263Z"
+    },
+    "artist_Dave Brubeck": {
+      "value": 2,
+      "updated_at": "2026-05-01T03:46:53.538Z"
+    },
+    "artist_John Coltrane": {
+      "value": 1,
+      "updated_at": "2026-05-01T03:46:54.226Z"
+    },
+    "artist_Blue": {
+      "value": 1,
+      "updated_at": "2026-05-01T05:23:02.045Z"
+    },
+    "artist_卫兰/伍珂玥": {
+      "value": 1,
+      "updated_at": "2026-05-01T05:23:02.669Z"
+    },
+    "artist_谭咏麟": {
+      "value": 1,
+      "updated_at": "2026-05-01T05:23:03.226Z"
+    },
+    "artist_B.B. King": {
+      "value": 1,
+      "updated_at": "2026-05-01T07:32:57.730Z"
+    },
+    "artist_TheFloridaMan/GOAT": {
+      "value": 1,
+      "updated_at": "2026-05-01T08:36:48.668Z"
+    },
+    "artist_Azure Wave/Kanye West Unreleased": {
+      "value": 1,
+      "updated_at": "2026-05-01T08:36:49.413Z"
+    },
+    "artist_雨果": {
+      "value": 1,
+      "updated_at": "2026-05-01T08:36:50.088Z"
+    },
+    "artist_JANCEH": {
+      "value": 1,
+      "updated_at": "2026-05-01T08:36:50.654Z"
+    },
+    "artist_Goostavo": {
+      "value": 1,
+      "updated_at": "2026-05-01T08:36:51.207Z"
+    },
+    "artist_小霞": {
+      "value": 3,
+      "updated_at": "2026-05-01T12:09:57.478Z"
+    },
+    "artist_周华健": {
+      "value": 4,
+      "updated_at": "2026-05-01T13:22:21.747Z"
+    },
+    "artist_刘惜君": {
+      "value": 1,
+      "updated_at": "2026-05-01T13:38:02.833Z"
+    },
+    "artist_萧亚轩": {
+      "value": 2,
+      "updated_at": "2026-05-01T13:38:05.439Z"
+    },
+    "artist_TE.D": {
+      "value": 1,
+      "updated_at": "2026-05-01T13:38:04.231Z"
+    },
+    "artist_邱韵文Yuki": {
+      "value": 1,
+      "updated_at": "2026-05-01T14:55:23.114Z"
+    },
+    "artist_林海": {
+      "value": 2,
+      "updated_at": "2026-05-01T18:00:03.271Z"
+    }
+  }
+}
