@@ -488,7 +488,7 @@ claudio-fm/
 ## 🙏 致谢
 - [mmguo](https://www.xiaohongshu.com/user/profile/55a508e8c2bdeb432f5763e2) - 感谢博主mmguo提供的想法和创意
 - [DeepSeek](https://www.deepseek.com/) - 提供强大的AI能力
-- [网易云音乐API](https://github.com/Binaryify/NeteaseCloudMusicApi) - 音乐数据来源
+- [网易云音乐API](https://github.com/NeteaseCloudMusicApiEnhanced/api-enhanced) - 音乐数据来源
 - [Fish Audio](https://fish.audio/) - 语音合成服务
 - [Vue.js](https://vuejs.org/) - 前端框架
 
