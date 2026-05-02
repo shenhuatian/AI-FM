@@ -3,7 +3,7 @@
     <!-- Focus Mode - 极简栏 -->
     <div v-if="isFocusMode" class="focus-bar" @click="exitFocusMode">
       <div class="focus-logo">
-        <div class="mini-avatar"></div>
+        <div class="mini-avatar" :style="avatarStyle"></div>
         <span class="mini-brand">Claudio</span>
       </div>
       <button class="exit-focus-btn" @click.stop="exitFocusMode">
@@ -16,7 +16,7 @@
       <!-- Header with controls -->
       <div class="header">
         <div class="logo">
-          <div class="avatar"></div>
+          <div class="avatar" :style="avatarStyle" @click="emit('openProfile')"></div>
           <span class="brand">Claudio</span>
         </div>
         <div class="controls">
@@ -60,12 +60,13 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { getAvatar } from '../utils/avatar.js'
 
 const props = defineProps({
   isPoemCollapsed: Boolean
 })
 
-const emit = defineEmits(['update:isPoemCollapsed'])
+const emit = defineEmits(['update:isPoemCollapsed', 'openProfile'])
 
 const currentTime = ref('00:00')
 const currentDate = ref('')
@@ -73,7 +74,21 @@ const dayName = ref('')
 const isCollapsed = ref(false)
 const isFocusMode = ref(false)
 const isDark = ref(true)
+const avatarUrl = ref('')
 let intervalId = null
+
+const avatarStyle = computed(() => {
+  if (avatarUrl.value) {
+    return {
+      backgroundImage: `url(${avatarUrl.value})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }
+  }
+  return {
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+  }
+})
 
 const updateTime = () => {
   const now = new Date()
@@ -115,6 +130,14 @@ const exitFocusMode = () => {
 onMounted(() => {
   updateTime()
   intervalId = setInterval(updateTime, 1000)
+
+  // 加载头像
+  avatarUrl.value = getAvatar()
+
+  // 监听头像更新事件
+  window.addEventListener('avatar-updated', () => {
+    avatarUrl.value = getAvatar()
+  })
 })
 
 onUnmounted(() => {

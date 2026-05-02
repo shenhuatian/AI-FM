@@ -264,6 +264,39 @@ async function constructServer(moduleDefs) {
   app.use(cache('2 minutes', (_, res) => res.statusCode === 200))
 
   /**
+   * Custom API: Read user taste from user/taste.md
+   */
+  app.get('/user-taste', async (req, res) => {
+    try {
+      const tastePath = path.join(__dirname, '../../user/taste.md')
+      const content = await fs.promises.readFile(tastePath, 'utf-8')
+
+      const lines = content.split('\n')
+      const genres = []
+      let inGenresSection = false
+
+      for (const line of lines) {
+        if (line.includes('## 喜欢的音乐类型')) {
+          inGenresSection = true
+          continue
+        }
+        if (inGenresSection && line.startsWith('##')) {
+          break
+        }
+        if (inGenresSection && line.trim().startsWith('-')) {
+          const genre = line.trim().substring(1).trim()
+          if (genre) genres.push(genre)
+        }
+      }
+
+      res.json({ genres })
+    } catch (error) {
+      console.error('读取 user/taste.md 失败:', error)
+      res.json({ genres: ['JAZZ', '90S华语', '下雨白噪音', '流行', 'BLUES'] })
+    }
+  })
+
+  /**
    * Special Routers
    */
   const special = {

@@ -111,23 +111,56 @@ const handleSeek = (e) => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   flex-shrink: 0;
+  position: relative;
+}
+
+.control-btn::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: transparent;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: -1;
+  opacity: 0;
 }
 
 .control-btn:hover {
   border-color: #fff;
   background: rgba(255, 255, 255, 0.05);
+  transform: scale(1.05) translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.control-btn:hover::before {
+  opacity: 1;
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
 }
 
 .control-btn:active {
-  transform: scale(0.95);
+  transform: scale(0.95) translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition-duration: 0.1s;
 }
 
 .control-btn.play-pause-btn {
   width: 44px;
   height: 44px;
   border-color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.control-btn.play-pause-btn:hover {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: var(--mood-accent, #00ff88);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 20px var(--mood-accent, rgba(0, 255, 136, 0.4));
+  transform: scale(1.08) translateY(-2px);
+}
+
+.control-btn.play-pause-btn:active {
+  transform: scale(0.98) translateY(0);
 }
 
 .control-btn.text-btn {
@@ -143,6 +176,16 @@ const handleSeek = (e) => {
 .control-btn.liked {
   border-color: #00ff88;
   color: #00ff88;
+  background: rgba(0, 255, 136, 0.1);
+  animation: heartbeat 1.5s ease-in-out;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  10% { transform: scale(1.2); }
+  20% { transform: scale(1); }
+  30% { transform: scale(1.15); }
+  40% { transform: scale(1); }
 }
 
 .volume-control {
@@ -181,8 +224,9 @@ const handleSeek = (e) => {
 }
 
 .volume-slider::-webkit-slider-thumb:hover {
-  background: #00ff88;
+  background: var(--mood-accent, #00ff88);
   transform: scale(1.2);
+  box-shadow: 0 0 8px var(--mood-accent, #00ff88);
 }
 
 .progress-row {
@@ -211,8 +255,8 @@ const handleSeek = (e) => {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #00ff88, #00cc66);
-  transition: width 0.1s linear;
+  background: linear-gradient(90deg, var(--mood-accent, #00ff88), var(--mood-accent, #00cc66));
+  transition: width 0.1s linear, background 1s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
 
@@ -226,7 +270,7 @@ const handleSeek = (e) => {
   height: 8px;
   background: #fff;
   border-radius: 50%;
-  box-shadow: 0 0 4px rgba(0, 255, 136, 0.6);
+  box-shadow: 0 0 8px var(--mood-accent, #00ff88);
 }
 
 @media (max-width: 480px) {

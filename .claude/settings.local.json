@@ -27,7 +27,14 @@
       "Bash(curl -s \"https://api.github.com/search/repositories?q=analyser+node+canvas+bars&sort=stars&order=desc&per_page=15\")",
       "Bash(curl -s \"https://api.github.com/search/repositories?q=audio+visualizer+demo+javascript+in:readme&sort=stars&order=desc&per_page=15\")",
       "Bash(grep -E \"\\\\.js$|\\\\.py$|package\\\\.json\")",
-      "Bash(python3 *)"
+      "Bash(python3 *)",
+      "Bash(findstr :8080)",
+      "Bash(taskkill *)",
+      "Bash(curl *)",
+      "Bash(node -e ' *)",
+      "Bash(node -e \"const data = JSON.parse\\(require\\('fs'\\).readFileSync\\(0, 'utf-8'\\)\\); console.log\\('✅ 喜欢的歌曲数:', data.liked.length\\);\")",
+      "Bash(node -e \"const data = JSON.parse\\(require\\('fs'\\).readFileSync\\(0, 'utf-8'\\)\\); console.log\\('✅ 收藏的歌曲数:', data.favorites.length\\);\")",
+      "Bash(node -e \"const data = JSON.parse\\(require\\('fs'\\).readFileSync\\(0, 'utf-8'\\)\\); console.log\\('✅ 主动对话设置:'\\); console.log\\('  级别:', data.settings.level\\); console.log\\('  安静时段:', data.settings.quietHours.start + ':00 - ' + data.settings.quietHours.end + ':00'\\);\")"
     ]
   }
 }

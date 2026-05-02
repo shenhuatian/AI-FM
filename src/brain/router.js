@@ -13,19 +13,125 @@ export class Router {
    * @returns {Promise<Object>} 处理结果
    */
   async route(input, context, conversationHistory = []) {
+    // 🔥 新增：快速意图分类
+    const intent = this.quickClassifyIntent(input);
+    console.log(`🎯 意图识别结果: "${input}" -> ${intent}`);
+
+    // 如果明确是纯聊天，不推荐音乐
+    if (intent === 'definitely_chat') {
+      console.log('✅ 识别为纯聊天意图，不推荐音乐');
+      return await this.handlePureChat(input, context, conversationHistory);
+    }
+
     // 检测简单指令
     const simpleCommand = this.detectSimpleCommand(input);
     if (simpleCommand) {
       return await this.handleSimpleCommand(simpleCommand, context);
     }
 
-    // 检测音乐搜索意图
-    if (this.isMusicSearch(input)) {
+    // 如果明确是音乐请求
+    if (intent === 'definitely_music' || this.isMusicSearch(input)) {
+      console.log('🎯 识别为音乐请求意图');
       return await this.handleMusicSearch(input, context);
     }
 
-    // 默认走DeepSeek自然语言处理
+    // 不确定的情况，走DeepSeek自然语言处理（AI会自己判断）
+    console.log('🎯 意图不明确，交给AI判断');
     return await this.handleNaturalLanguage(input, context, conversationHistory);
+  }
+
+  /**
+   * 🔥 新增：快速意图分类
+   * @param {string} input - 用户输入
+   * @returns {string} 'definitely_chat' | 'definitely_music' | 'uncertain'
+   */
+  quickClassifyIntent(input) {
+    const lowerInput = input.toLowerCase().trim();
+
+    // 纯聊天关键词（明确不想要音乐）
+    const pureChatKeywords = [
+      '聊天', '聊聊', '聊会', '说说话', '说说', '讲讲',
+      '怎么样', '最近', '你好吗', '在干嘛', '干什么',
+      '我今天', '我感觉', '我心情', '我觉得',
+      '你觉得', '你认为', '你怎么看'
+    ];
+
+    // 明确拒绝音乐
+    const rejectMusicKeywords = [
+      '不想听', '别放', '不要音乐', '先不听', '暂时不要',
+      '不用放', '别推荐', '不需要音乐'
+    ];
+
+    // 音乐请求关键词
+    const musicKeywords = [
+      '播放', '来一首', '来首', '听', '推荐', '放',
+      '换首', '下一首', '上一首', '音乐', '歌',
+      '有什么好听', '推荐点'
+    ];
+
+    // 场景关键词（通常需要音乐）
+    const sceneKeywords = [
+      '工作', '运动', '睡觉', '开车', '学习',
+      '放松', '健身', '跑步'
+    ];
+
+    // 1. 明确拒绝音乐 -> 纯聊天
+    if (rejectMusicKeywords.some(k => lowerInput.includes(k))) {
+      return 'definitely_chat';
+    }
+
+    // 2. 纯聊天关键词 + 没有音乐关键词 -> 纯聊天
+    const hasChatKeyword = pureChatKeywords.some(k => lowerInput.includes(k));
+    const hasMusicKeyword = musicKeywords.some(k => lowerInput.includes(k));
+
+    if (hasChatKeyword && !hasMusicKeyword) {
+      return 'definitely_chat';
+    }
+
+    // 3. 明确的音乐请求
+    if (hasMusicKeyword) {
+      return 'definitely_music';
+    }
+
+    // 4. 场景关键词（可能需要音乐，但不确定）
+    if (sceneKeywords.some(k => lowerInput.includes(k))) {
+      return 'uncertain';
+    }
+
+    // 5. 短问候语（纯聊天）
+    const greetings = ['你好', '嗨', 'hi', 'hello', '早', '晚上好', '下午好'];
+    if (greetings.some(g => lowerInput === g || lowerInput.startsWith(g))) {
+      return 'definitely_chat';
+    }
+
+    // 6. 默认不确定，让AI判断
+    return 'uncertain';
+  }
+
+  /**
+   * 🔥 新增：处理纯聊天（不推荐音乐）
+   * @param {string} input - 用户输入
+   * @param {Object} context - 上下文
+   * @param {Array} conversationHistory - 对话历史
+   * @returns {Promise<Object>}
+   */
+  async handlePureChat(input, context, conversationHistory = []) {
+    const fullContext = {
+      ...context,
+      userInput: input,
+      chatOnly: true  // 标记为纯聊天模式
+    };
+
+    const decision = await this.deepseek.decide(fullContext, conversationHistory);
+
+    // 确保不返回音乐（双重保险）
+    return {
+      type: 'chat',
+      say: decision.say,
+      play: [],  // 强制清空音乐推荐
+      reason: '',
+      segue: ''
+    };
   }
 
   /**

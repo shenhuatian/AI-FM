@@ -10,7 +10,18 @@ export class StateManager {
       plays: [],
       messages: [],
       plans: {},
-      preferences: {}
+      preferences: {},
+      feedback: {},      // 用户反馈（喜欢/不喜欢）
+      favorites: [],     // 用户收藏
+      proactiveSettings: {  // 主动对话设置
+        level: 'medium',    // 'quiet' | 'medium' | 'active'
+        quietHours: { start: 23, end: 7 }
+      },
+      proactiveMessages: [],  // 主动消息历史
+      proactiveStats: {       // 主动对话统计
+        responseRate: 1.0,
+        lastUpdate: Date.now()
+      }
     };
     this.init();
   }
@@ -344,6 +355,278 @@ export class StateManager {
 
     await this.save();
     console.log('🧹 已清理过期数据');
+  }
+
+  // ==================== 反馈管理 ====================
+
+  /**
+   * 添加用户反馈
+   * @param {string} songId - 歌曲ID
+   * @param {string} songName - 歌曲名称
+   * @param {string} artist - 艺术家
+   * @param {string} feedback - 反馈类型 ('like' | 'dislike')
+   */
+  async addFeedback(songId, songName, artist, feedback) {
+    if (!this.state.feedback) {
+      this.state.feedback = {};
+    }
+
+    this.state.feedback[songId] = {
+      songId,
+      songName,
+      artist,
+      feedback,
+      timestamp: new Date().toISOString()
+    };
+
+    await this.save();
+    console.log(`✅ 反馈已保存: ${songName} - ${feedback}`);
+  }
+
+  /**
+   * 获取歌曲反馈
+   * @param {string} songId - 歌曲ID
+   * @returns {Object|null} 反馈对象
+   */
+  getFeedback(songId) {
+    return this.state.feedback?.[songId] || null;
+  }
+
+  /**
+   * 移除歌曲反馈
+   * @param {string} songId - 歌曲ID
+   */
+  async removeFeedback(songId) {
+    if (this.state.feedback && this.state.feedback[songId]) {
+      delete this.state.feedback[songId];
+      await this.save();
+      console.log(`🗑️ 已移除反馈: ${songId}`);
+    }
+  }
+
+  /**
+   * 获取所有反馈
+   * @returns {Object} 所有反馈数据
+   */
+  getAllFeedback() {
+    return this.state.feedback || {};
+  }
+
+  /**
+   * 获取喜欢的歌曲列表
+   * @returns {Array} 喜欢的歌曲列表
+   */
+  getLikedSongs() {
+    if (!this.state.feedback) return [];
+    return Object.values(this.state.feedback)
+      .filter(item => item.feedback === 'like')
+      .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  }
+
+  /**
+   * 获取不喜欢的歌曲列表
+   * @returns {Array} 不喜欢的歌曲列表
+   */
+  getDislikedSongs() {
+    if (!this.state.feedback) return [];
+    return Object.values(this.state.feedback)
+      .filter(item => item.feedback === 'dislike')
+      .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  }
+
+  // ==================== 收藏管理 ====================
+
+  /**
+   * 添加收藏
+   * @param {Object} song - 歌曲对象
+   * @returns {boolean} 是否添加成功
+   */
+  async addFavorite(song) {
+    if (!this.state.favorites) {
+      this.state.favorites = [];
+    }
+
+    // 检查是否已收藏
+    if (this.state.favorites.some(f => f.id === song.id)) {
+      console.log(`⚠️ 歌曲已在收藏夹中: ${song.name}`);
+      return false;
+    }
+
+    const favoriteItem = {
+      id: song.id,
+      name: song.name,
+      artist: song.artist,
+      album: song.album || '',
+      url: song.url,
+      albumPic: song.albumPic || null,
+      addedAt: new Date().toISOString()
+    };
+
+    this.state.favorites.unshift(favoriteItem);
+    await this.save();
+    console.log(`⭐ 已收藏: ${song.name} - ${song.artist}`);
+    return true;
+  }
+
+  /**
+   * 移除收藏
+   * @param {string} songId - 歌曲ID
+   */
+  async removeFavorite(songId) {
+    if (!this.state.favorites) return;
+
+    const originalLength = this.state.favorites.length;
+    this.state.favorites = this.state.favorites.filter(f => f.id !== songId);
+
+    if (this.state.favorites.length < originalLength) {
+      await this.save();
+      console.log(`🗑️ 已从收藏夹移除: ${songId}`);
+    }
+  }
+
+  /**
+   * 获取所有收藏
+   * @returns {Array} 收藏列表
+   */
+  getFavorites() {
+    return this.state.favorites || [];
+  }
+
+  /**
+   * 检查歌曲是否已收藏
+   * @param {string} songId - 歌曲ID
+   * @returns {boolean}
+   */
+  isFavorited(songId) {
+    if (!this.state.favorites) return false;
+    return this.state.favorites.some(f => f.id === songId);
+  }
+
+  /**
+   * 清空收藏夹
+   */
+  async clearFavorites() {
+    this.state.favorites = [];
+    await this.save();
+    console.log('🗑️ 已清空收藏夹');
+  }
+
+  // ==================== 主动对话管理 ====================
+
+  /**
+   * 获取主动对话设置
+   * @returns {Object} 主动对话设置
+   */
+  getProactiveSettings() {
+    if (!this.state.proactiveSettings) {
+      this.state.proactiveSettings = {
+        level: 'medium',
+        quietHours: { start: 23, end: 7 }
+      };
+    }
+    return this.state.proactiveSettings;
+  }
+
+  /**
+   * 更新主动对话设置
+   * @param {Object} settings - 新的设置
+   */
+  async updateProactiveSettings(settings) {
+    this.state.proactiveSettings = {
+      ...this.state.proactiveSettings,
+      ...settings
+    };
+    await this.save();
+    console.log('✅ 主动对话设置已更新:', settings);
+  }
+
+  /**
+   * 添加主动消息记录
+   * @param {Object} decision - AI的决策结果
+   */
+  async addProactiveMessage(decision) {
+    if (!this.state.proactiveMessages) {
+      this.state.proactiveMessages = [];
+    }
+
+    const message = {
+      message: decision.message,
+      intent: decision.intent,
+      songs: decision.songs || [],
+      timestamp: new Date().toISOString(),
+      responded: false  // 用户是否响应
+    };
+
+    this.state.proactiveMessages.push(message);
+
+    // 只保留最近50条
+    if (this.state.proactiveMessages.length > 50) {
+      this.state.proactiveMessages = this.state.proactiveMessages.slice(-50);
+    }
+
+    await this.save();
+  }
+
+  /**
+   * 标记最近的主动消息为已响应
+   */
+  async markProactiveMessageResponded() {
+    if (!this.state.proactiveMessages || this.state.proactiveMessages.length === 0) {
+      return;
+    }
+
+    const lastMessage = this.state.proactiveMessages[this.state.proactiveMessages.length - 1];
+    if (!lastMessage.responded) {
+      lastMessage.responded = true;
+      await this.save();
+      console.log('✅ 标记主动消息为已响应');
+    }
+  }
+
+  /**
+   * 获取主动消息历史
+   * @param {number} limit - 返回数量
+   * @returns {Array} 主动消息历史
+   */
+  getProactiveMessages(limit = 10) {
+    if (!this.state.proactiveMessages) {
+      return [];
+    }
+    return this.state.proactiveMessages.slice(-limit).reverse();
+  }
+
+  /**
+   * 更新主动对话统计
+   * @param {Object} stats - 统计数据
+   */
+  async updateProactiveStats(stats) {
+    if (!this.state.proactiveStats) {
+      this.state.proactiveStats = {
+        responseRate: 1.0,
+        lastUpdate: Date.now()
+      };
+    }
+
+    this.state.proactiveStats = {
+      ...this.state.proactiveStats,
+      ...stats
+    };
+
+    await this.save();
+  }
+
+  /**
+   * 获取主动对话统计
+   * @returns {Object} 统计数据
+   */
+  getProactiveStats() {
+    if (!this.state.proactiveStats) {
+      return {
+        responseRate: 1.0,
+        lastUpdate: Date.now()
+      };
+    }
+    return this.state.proactiveStats;
   }
 }
 

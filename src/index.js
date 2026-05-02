@@ -17,6 +17,7 @@ import { Router } from './brain/router.js';
 import { ContextBuilder } from './brain/context.js';
 import { TTSService } from './brain/tts.js';
 import { Scheduler } from './brain/scheduler.js';
+import { ProactiveAgent } from './brain/proactive.js';
 
 // 加载环境变量
 dotenv.config();
@@ -37,12 +38,13 @@ const calendarService = process.env.FEISHU_APP_ID && process.env.FEISHU_APP_SECR
   : null;
 
 // 初始化本地大脑
-const deepseek = new DeepSeekAdapter(process.env.DEEPSEEK_API_KEY);
 const state = new StateManager();
+const deepseek = new DeepSeekAdapter(process.env.DEEPSEEK_API_KEY, state);
 const router = new Router(deepseek, ncm);
 const contextBuilder = new ContextBuilder(state, weatherService, calendarService);
 const tts = new TTSService(process.env.FISH_API_KEY);
 const scheduler = new Scheduler(deepseek, ncm, state);
+const proactiveAgent = new ProactiveAgent(deepseek, state, contextBuilder, ncm);
 
 // 异步初始化状态管理器
 await state.init();
@@ -254,6 +256,195 @@ app.get('/api/context', async (req, res) => {
   }
 });
 
+// ==================== 反馈和收藏 API ====================
+
+/**
+ * POST /api/feedback - 保存用户反馈
+ */
+app.post('/api/feedback', async (req, res) => {
+  try {
+    const { songId, songName, artist, feedback } = req.body;
+
+    if (!songId || !feedback) {
+      return res.status(400).json({ error: '缺少必要参数' });
+    }
+
+    if (feedback !== 'like' && feedback !== 'dislike') {
+      return res.status(400).json({ error: '反馈类型必须是 like 或 dislike' });
+    }
+
+    await state.addFeedback(songId, songName, artist, feedback);
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('保存反馈失败:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * DELETE /api/feedback/:songId - 删除反馈
+ */
+app.delete('/api/feedback/:songId', async (req, res) => {
+  try {
+    const { songId } = req.params;
+    await state.removeFeedback(songId);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('删除反馈失败:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/feedback - 获取所有反馈
+ */
+app.get('/api/feedback', async (req, res) => {
+  try {
+    const feedback = state.getAllFeedback();
+    res.json({ feedback });
+  } catch (error) {
+    console.error('获取反馈失败:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/feedback/liked - 获取喜欢的歌曲
+ */
+app.get('/api/feedback/liked', async (req, res) => {
+  try {
+    const liked = state.getLikedSongs();
+    res.json({ liked });
+  } catch (error) {
+    console.error('获取喜欢的歌曲失败:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/feedback/disliked - 获取不喜欢的歌曲
+ */
+app.get('/api/feedback/disliked', async (req, res) => {
+  try {
+    const disliked = state.getDislikedSongs();
+    res.json({ disliked });
+  } catch (error) {
+    console.error('获取不喜欢的歌曲失败:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/favorite - 添加收藏
+ */
+app.post('/api/favorite', async (req, res) => {
+  try {
+    const { song } = req.body;
+
+    if (!song || !song.id) {
+      return res.status(400).json({ error: '缺少歌曲信息' });
+    }
+
+    const success = await state.addFavorite(song);
+
+    res.json({ success });
+  } catch (error) {
+    console.error('添加收藏失败:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * DELETE /api/favorite/:songId - 删除收藏
+ */
+app.delete('/api/favorite/:songId', async (req, res) => {
+  try {
+    const { songId } = req.params;
+    await state.removeFavorite(songId);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('删除收藏失败:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/favorites - 获取所有收藏
+ */
+app.get('/api/favorites', async (req, res) => {
+  try {
+    const favorites = state.getFavorites();
+    res.json({ favorites });
+  } catch (error) {
+    console.error('获取收藏失败:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * DELETE /api/favorites - 清空收藏夹
+ */
+app.delete('/api/favorites', async (req, res) => {
+  try {
+    await state.clearFavorites();
+    res.json({ success: true });
+  } catch (error) {
+    console.error('清空收藏夹失败:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ==================== 主动对话 API ====================
+
+/**
+ * GET /api/proactive/settings - 获取主动对话设置
+ */
+app.get('/api/proactive/settings', async (req, res) => {
+  try {
+    const settings = state.getProactiveSettings();
+    res.json({ settings });
+  } catch (error) {
+    console.error('获取主动对话设置失败:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/proactive/settings - 更新主动对话设置
+ */
+app.post('/api/proactive/settings', async (req, res) => {
+  try {
+    const { settings } = req.body;
+    await state.updateProactiveSettings(settings);
+
+    // 如果设置改变，重启主动对话系统
+    if (settings.level === 'quiet') {
+      proactiveAgent.stop();
+    } else if (!proactiveAgent.isRunning) {
+      proactiveAgent.start();
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('更新主动对话设置失败:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/proactive/history - 获取主动消息历史
+ */
+app.get('/api/proactive/history', async (req, res) => {
+  try {
+    const history = state.getProactiveMessages(20);
+    res.json({ history });
+  } catch (error) {
+    console.error('获取主动消息历史失败:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // 启动HTTP服务器
 const server = app.listen(PORT, () => {
   console.log(`
@@ -267,19 +458,30 @@ const server = app.listen(PORT, () => {
 ${weatherService ? '🌤️  天气服务: 已启用' : ''}
 ${calendarService ? '📅 日程服务: 已启用' : ''}
 ${process.env.FISH_API_KEY ? '🎤 语音服务: 已启用' : ''}
+🤖 主动对话: 已启用
 
 🎧 准备好为你播放音乐了！
   `);
 
   // 启动调度器
   scheduler.start();
+
+  // 启动主动对话系统（根据设置）
+  const proactiveSettings = state.getProactiveSettings();
+  if (proactiveSettings.level !== 'quiet') {
+    proactiveAgent.start();
+  }
 });
 
 // WebSocket服务器（用于实时推送）
 const wss = new WebSocketServer({ server, path: '/stream' });
 
+// 存储所有连接的客户端
+const clients = new Set();
+
 wss.on('connection', (ws) => {
   console.log('✅ WebSocket客户端已连接');
+  clients.add(ws);
 
   ws.on('message', async (message) => {
     try {
@@ -298,6 +500,10 @@ wss.on('connection', (ws) => {
           type: 'response',
           data: result
         }));
+
+        // 标记用户响应了主动消息
+        await state.markProactiveMessageResponded();
+        proactiveAgent.recordUserResponse(true);
       }
     } catch (error) {
       console.error('处理WebSocket消息失败:', error);
@@ -310,13 +516,76 @@ wss.on('connection', (ws) => {
 
   ws.on('close', () => {
     console.log('❌ WebSocket客户端已断开');
+    clients.delete(ws);
   });
 });
+
+// 主动对话推送函数
+const broadcastProactiveMessage = async () => {
+  const decision = await proactiveAgent.checkAndSpeak();
+
+  if (decision && decision.shouldSpeak) {
+    console.log('📢 广播主动消息:', decision.message);
+
+    // 搜索歌曲（如果有推荐）
+    const songs = [];
+    if (decision.songs && decision.songs.length > 0) {
+      for (const playItem of decision.songs) {
+        const [songName, artistName] = playItem.split(' - ').map(s => s.trim());
+        const song = await ncm.findSong(songName, artistName);
+        if (song) {
+          songs.push(song);
+        }
+      }
+    }
+
+    // 广播给所有连接的客户端
+    const message = JSON.stringify({
+      type: 'proactive',
+      message: decision.message,
+      songs: songs,
+      reason: decision.reason,
+      intent: decision.intent,
+      timestamp: new Date().toISOString()
+    });
+
+    clients.forEach(client => {
+      if (client.readyState === 1) { // WebSocket.OPEN
+        client.send(message);
+      }
+    });
+  }
+};
+
+// 将广播函数传递给 ProactiveAgent（通过修改调度逻辑）
+// 这里我们需要修改 ProactiveAgent 的 scheduleNextCheck 来调用广播
+const originalScheduleNextCheck = proactiveAgent.scheduleNextCheck.bind(proactiveAgent);
+proactiveAgent.scheduleNextCheck = function() {
+  if (!this.isRunning) return;
+
+  const settings = state.getProactiveSettings();
+  let baseInterval = this.getBaseInterval(settings.level);
+
+  if (this.userResponseRate < 0.3) {
+    baseInterval *= 2;
+  }
+
+  const randomFactor = 0.8 + Math.random() * 0.4;
+  const actualInterval = baseInterval * randomFactor;
+
+  console.log(`⏰ 下次主动检查将在 ${Math.round(actualInterval / 1000 / 60)} 分钟后`);
+
+  this.checkInterval = setTimeout(async () => {
+    await broadcastProactiveMessage();
+    this.scheduleNextCheck();
+  }, actualInterval);
+};
 
 // 优雅关闭
 process.on('SIGINT', () => {
   console.log('\n正在关闭服务...');
   scheduler.stop();
+  proactiveAgent.stop();
   server.close(() => {
     console.log('✅ 服务已关闭');
     process.exit(0);

@@ -3,11 +3,12 @@ import OpenAI from 'openai';
 import fs from 'fs/promises';
 
 export class DeepSeekAdapter {
-  constructor(apiKey) {
+  constructor(apiKey, stateManager = null) {
     this.client = new OpenAI({
       apiKey: apiKey,
       baseURL: 'https://api.deepseek.com'
     });
+    this.stateManager = stateManager;
   }
 
   /**
@@ -66,11 +67,14 @@ export class DeepSeekAdapter {
 
       console.log('🔵 发送请求到 DeepSeek...');
       console.log('📝 消息数量:', messages.length);
+      console.log('📝 系统提示词长度:', messages[0].content.length);
+      console.log('📝 用户消息:', messages[messages.length - 1].content);
 
       const response = await this.client.chat.completions.create({
         model: 'deepseek-chat',
         messages: messages,
-        temperature: 0.8,
+        temperature: 0.7,
+        max_tokens: 500,
         response_format: { type: 'json_object' }
       });
 
@@ -125,6 +129,12 @@ export class DeepSeekAdapter {
     // 分析用户习惯
     const userHabits = this.analyzeUserHabits(context.playHistory);
 
+    // 🔥 新增：获取用户真实偏好（从反馈和收藏中学习）
+    const userPreferences = this.analyzeUserPreferences();
+
+    // 🔥 新增：读取用户的网易云音乐库
+    const musicLibrary = await this.loadMusicLibrary();
+
     return `${djPersona}
 
 ## 用户音乐品味
@@ -136,8 +146,20 @@ ${routines}
 ## 心情与音乐规则
 ${moodRules}
 
+## 🔥🔥🔥 用户的网易云音乐库（最高优先级！）
+${musicLibrary}
+
+**重要规则**：
+1. 当用户明确要求某个艺术家的歌曲时，**必须优先从音乐库中推荐**
+2. 音乐库中的歌曲是用户真实喜欢的，权重最高
+3. 如果用户要求的艺术家在音乐库中，绝对不要推荐其他艺术家
+4. 例如：用户说"推荐陶喆的歌"，你必须从音乐库的陶喆歌曲中选择，不要推荐其他人
+
 ## 用户习惯分析（从播放历史中学习）
 ${userHabits}
+
+## 🔥 用户真实偏好（从反馈和收藏中学习）
+${userPreferences}
 
 ## 最近播放记录
 ${context.playHistory ? this.formatPlayHistory(context.playHistory) : '暂无历史记录'}
@@ -156,25 +178,29 @@ ${context.playHistory ? this.formatPlayHistory(context.playHistory) : '暂无历
 - 如果用户跳过某首歌，记住并避免再推荐类似的
 - 如果用户重复听某首歌，说明很喜欢，可以推荐相似风格
 
-### 3. 推荐策略
-- 每次推荐1-3首歌曲即可，不要太多
-- 优先推荐用户taste.md中明确喜欢的艺人和风格
-- 根据当前时间和场景选择合适的歌曲
+### 3. 推荐策略（严格遵守优先级）
+- **第一优先级**：用户明确要求的艺术家/歌曲，必须从音乐库中推荐
+- **第二优先级**：用户taste.md中明确喜欢的艺人和风格
+- **第三优先级**：根据当前时间和场景选择合适的歌曲
+- 每次推荐3-5首歌曲，给用户更多选择
 - 偶尔推荐一些新歌，但要符合用户品味
 
-### 4. 输出格式
+### 4. 输出格式（必须严格遵守）
 你必须返回有效的JSON格式，包含以下字段：
-- say: 你要说的话（20-50字，简短自然，像朋友聊天）
-- play: 歌曲数组，格式为 ["歌曲名 - 歌手名"]（1-3首）
-- reason: 选择这些歌的原因（内部记录，用于学习）
-- segue: 如何从上一首过渡到这一首（可选）
+
+{
+  "say": "你要说的话（20-40字，自然简短，像朋友聊天，少用emoji）",
+  "play": ["歌曲名1 - 歌手名1", "歌曲名2 - 歌手名2", "歌曲名3 - 歌手名3"],
+  "reason": "为什么推荐第一首歌（会显示给用户，要写得自然友好）",
+  "segue": ""
+}
 
 ### 5. 示例对话风格
 ❌ 不好："根据您当前的心情状态，我为您精心挑选了以下歌曲..."
-✅ 好："听起来你今天心情不错！来首轻快的《晴天》吧 ☀️"
+✅ 好："听起来你今天心情不错，来首轻快的晴天吧"
 
 ❌ 不好："这首歌曲具有优美的旋律和深刻的歌词内涵..."
-✅ 好："这首歌超好听，陶喆的经典，你肯定喜欢 🎵"
+✅ 好："这首歌超好听，陶喆的经典，你肯定喜欢"
 `;
   }
 
@@ -238,7 +264,7 @@ ${context.playHistory ? this.formatPlayHistory(context.playHistory) : '暂无历
    * @returns {string} 用户消息
    */
   buildUserMessage(context) {
-    const { time, weather, userInput, mood, calendar } = context;
+    const { time, weather, userInput, mood, calendar, chatOnly } = context;
 
     let message = `当前时间: ${time}\n`;
 
@@ -254,11 +280,29 @@ ${context.playHistory ? this.formatPlayHistory(context.playHistory) : '暂无历
       message += `用户心情: ${mood}\n`;
     }
 
+    // 🔥 新增：如果是纯聊天模式，明确告诉AI
+    if (chatOnly) {
+      message += `\n🚫🚫🚫 严格禁止推荐音乐 🚫🚫🚫\n`;
+      message += `用户明确表示只想聊天，不想听音乐。\n`;
+      message += `你必须：\n`;
+      message += `1. play 字段必须是空数组 []\n`;
+      message += `2. 不要提及任何歌曲、艺术家、音乐相关内容\n`;
+      message += `3. 只进行友好的对话交流\n`;
+      message += `违反此规则将被视为严重错误！\n`;
+    }
+
     if (userInput) {
       message += `\n用户说: ${userInput}\n`;
     } else {
       // 如果用户没有输入，主动询问或推荐
       message += `\n用户没有说话。请主动询问用户的心情或状态，或者根据当前时间和场景主动推荐音乐。记住，你是一个有温度的DJ，不要只是被动等待指令。\n`;
+    }
+
+    message += `\n请严格按照JSON格式回复，必须包含 say, play, reason, segue 四个字段。`;
+
+    // 🔥 新增：再次强调纯聊天模式
+    if (chatOnly) {
+      message += `\n\n🚫 最后警告：这是纯聊天模式！play 必须是 []，reason 和 segue 留空字符串 ""！`;
     }
 
     return message;
@@ -334,6 +378,223 @@ ${context.playHistory ? this.formatPlayHistory(context.playHistory) : '暂无历
     return recent.map(item =>
       `- ${item.song_name} - ${item.artist} (${item.played_at})`
     ).join('\n');
+  }
+
+  /**
+   * 🔥 新增：分析用户真实偏好（从反馈和收藏中学习）
+   * @returns {string} 用户偏好分析
+   */
+  analyzeUserPreferences() {
+    if (!this.stateManager) {
+      return '暂无用户偏好数据';
+    }
+
+    // 获取喜欢的歌曲
+    const likedSongs = this.stateManager.getLikedSongs();
+
+    // 获取不喜欢的歌曲
+    const dislikedSongs = this.stateManager.getDislikedSongs();
+
+    // 获取收藏的歌曲
+    const favorites = this.stateManager.getFavorites();
+
+    let analysis = '### 用户明确喜欢的歌曲\n';
+
+    if (likedSongs.length > 0) {
+      const topLiked = likedSongs.slice(0, 10);
+      analysis += topLiked.map(song =>
+        `- ${song.songName} - ${song.artist} ⭐`
+      ).join('\n');
+      analysis += '\n\n';
+    } else {
+      analysis += '暂无数据\n\n';
+    }
+
+    analysis += '### 用户收藏的歌曲\n';
+    if (favorites.length > 0) {
+      const topFavorites = favorites.slice(0, 10);
+      analysis += topFavorites.map(song =>
+        `- ${song.name} - ${song.artist} ❤️`
+      ).join('\n');
+      analysis += '\n\n';
+    } else {
+      analysis += '暂无数据\n\n';
+    }
+
+    analysis += '### 用户明确不喜欢的歌曲（避免推荐）\n';
+    if (dislikedSongs.length > 0) {
+      const topDisliked = dislikedSongs.slice(0, 10);
+      analysis += topDisliked.map(song =>
+        `- ${song.songName} - ${song.artist} 👎`
+      ).join('\n');
+      analysis += '\n\n';
+    } else {
+      analysis += '暂无数据\n\n';
+    }
+
+    analysis += `**重要提示**：
+- 优先推荐用户喜欢和收藏过的歌曲的相似风格
+- 绝对避免推荐用户明确不喜欢的歌曲
+- 从用户的反馈中学习他们的真实品味，而不仅仅依赖 taste.md`;
+
+    return analysis;
+  }
+
+  /**
+   * 🔥 新增：加载用户的网易云音乐库
+   * @returns {string} 音乐库分析
+   */
+  async loadMusicLibrary() {
+    try {
+      const libraryPath = 'user/my-music-library.json';
+      const data = await fs.readFile(libraryPath, 'utf-8');
+      const library = JSON.parse(data);
+
+      let analysis = '### 用户的网易云音乐库\n\n';
+      analysis += `导入时间: ${new Date(library.user.importedAt).toLocaleString('zh-CN')}\n\n`;
+
+      // 最常听的歌曲（听歌排行前20）
+      if (library.topSongs && library.topSongs.length > 0) {
+        analysis += '#### 最常听的歌曲（网易云听歌排行）\n';
+        const top20 = library.topSongs.slice(0, 20);
+        analysis += top20.map((song, index) =>
+          `${index + 1}. ${song.name} - ${song.artist} (播放${song.playCount}次)`
+        ).join('\n');
+        analysis += '\n\n';
+      }
+
+      // 喜欢的音乐（红心歌曲前30）
+      if (library.likedSongs && library.likedSongs.length > 0) {
+        analysis += '#### 喜欢的音乐（红心歌曲）\n';
+        const top30 = library.likedSongs.slice(0, 30);
+        analysis += top30.map(song =>
+          `- ${song.name} - ${song.artist}`
+        ).join('\n');
+        analysis += '\n\n';
+      }
+
+      // 用户歌单
+      if (library.playlists && library.playlists.length > 0) {
+        analysis += '#### 用户的歌单\n';
+        library.playlists.forEach(playlist => {
+          analysis += `\n**${playlist.name}** (${playlist.trackCount}首):\n`;
+          if (playlist.songs && playlist.songs.length > 0) {
+            const songs = playlist.songs.slice(0, 10);
+            analysis += songs.map(song =>
+              `  - ${song.name} - ${song.artist}`
+            ).join('\n');
+            if (playlist.songs.length > 10) {
+              analysis += `\n  ... 还有 ${playlist.songs.length - 10} 首`;
+            }
+            analysis += '\n';
+          }
+        });
+        analysis += '\n';
+      }
+
+      analysis += `\n**重要提示**：
+- 这是用户在网易云音乐的真实听歌数据，非常重要！
+- 优先推荐用户常听和喜欢的歌曲及其相似风格
+- 用户的听歌排行反映了真实偏好，权重最高
+- 参考用户的歌单来理解不同场景下的音乐需求`;
+
+      return analysis;
+    } catch (error) {
+      // 如果文件不存在或读取失败，返回提示
+      return '### 用户的网易云音乐库\n\n暂未导入。提示用户运行 `npm run import:music` 来导入网易云音乐数据。';
+    }
+  }
+
+  /**
+   * 🔥 新增：AI判断是否应该主动说话
+   * @param {Object} context - 上下文信息
+   * @param {Array} triggers - 触发条件
+   * @param {string} lastProactiveMessage - 上次主动说的话
+   * @returns {Promise<Object>} 决策结果
+   */
+  async decideProactive(context, triggers, lastProactiveMessage = null) {
+    try {
+      const systemPrompt = `你是Claudio，一个有温度的AI DJ。你现在可以主动和用户聊天。
+
+## 你的主动对话原则
+
+1. **自然友好** - 像朋友一样主动关心，不要太正式
+2. **适度频率** - 不要过度打扰，选择合适的时机
+3. **多样化** - 不要总是说同样的话，要有变化
+4. **有价值** - 主动说话要有意义（推荐音乐、关心用户、分享有趣的事）
+5. **记忆上下文** - 记住之前说过什么，避免重复
+
+## 你可以选择的意图
+
+- **recommend** - 推荐音乐（根据时间、心情、场景）
+- **chat** - 闲聊（问候、关心、分享音乐故事）
+- **ask** - 询问用户状态（心情、需求）
+- **joke** - 讲笑话或分享有趣的事
+- **silent** - 保持安静（如果觉得不合适打扰）
+
+## 注意事项
+
+- 如果用户正在忙碌（工作时间），要更谨慎
+- 如果上次主动说话用户没回复，这次要更谨慎
+- 深夜时段要安静，除非有特殊原因
+- 不要连续推荐同类型的歌曲
+- 讲笑话要适度，不要太频繁`;
+
+      const userPrompt = `
+当前情况：
+- 时间：${context.time}
+- 天气：${context.weather ? `${context.weather.condition}, ${context.weather.temperature}°C` : '未知'}
+- 触发条件：${triggers.map(t => t.description).join('；')}
+- 最近播放：${context.playHistory.slice(0, 3).map(p => `${p.song_name} - ${p.artist}`).join(', ') || '暂无'}
+${lastProactiveMessage ? `- 上次主动说的话：${lastProactiveMessage}` : ''}
+
+请判断：
+1. 是否应该主动说话？（考虑时机是否合适）
+2. 如果说话，应该说什么？（要自然、有价值、不重复）
+3. 是否需要推荐音乐？
+
+请返回JSON格式：
+{
+  "shouldSpeak": true/false,
+  "message": "你要说的话（20-40字，自然简短）",
+  "intent": "recommend/chat/ask/joke/silent",
+  "songs": ["歌曲名1 - 歌手名1", "歌曲名2 - 歌手名2"],
+  "reason": "为什么推荐这些歌（如果有推荐）"
+}
+
+如果不应该说话，返回 { "shouldSpeak": false }
+`;
+
+      const response = await this.client.chat.completions.create({
+        model: 'deepseek-chat',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
+        ],
+        temperature: 0.8, // 提高温度，增加多样性
+        max_tokens: 500,
+        response_format: { type: 'json_object' }
+      });
+
+      if (!response || !response.choices || !response.choices[0]) {
+        console.error('❌ DeepSeek返回无效响应');
+        return { shouldSpeak: false };
+      }
+
+      const result = JSON.parse(response.choices[0].message.content);
+      console.log('🤖 AI主动对话决策:', result);
+
+      return {
+        shouldSpeak: result.shouldSpeak || false,
+        message: result.message || '',
+        intent: result.intent || 'chat',
+        songs: result.songs || [],
+        reason: result.reason || ''
+      };
+    } catch (error) {
+      console.error('❌ AI主动对话决策失败:', error);
+      return { shouldSpeak: false };
+    }
   }
 }
 

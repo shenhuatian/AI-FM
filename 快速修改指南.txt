@@ -1,1 +1,0 @@
-LocalStorage 快速修改指南 - 已完成 storage.js 和 import，还需5处修改

@@ -143,6 +143,13 @@ export class StorageManager {
     console.log('🗑️ 已清除所有历史数据')
   }
 
+  // 清除聊天记录（保留播放列表）
+  clearMessages() {
+    this.data.conversations = []
+    this.save()
+    console.log('🗑️ 已清除聊天记录')
+  }
+
   // 获取按日期分组的对话
   getConversationsByDate() {
     return this.data.conversations.map(conv => ({

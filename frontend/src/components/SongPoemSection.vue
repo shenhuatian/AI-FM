@@ -171,7 +171,9 @@ const draw = () => {
     analyser.getByteFrequencyData(dataArray)
   }
 
-  ctx.clearRect(0, 0, width, height)
+  // 添加残影效果 - 不完全清除画布
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.3)'
+  ctx.fillRect(0, 0, width, height)
 
   const barCount = 52  // 52个钢琴白键
   const barWidth = Math.floor(width / barCount) - 1  // 自动计算宽度
@@ -224,6 +226,14 @@ const draw = () => {
 
     ctx.fillStyle = gradient
     ctx.fillRect(x, y, barWidth, barHeight)
+
+    // 添加顶部光晕效果
+    if (barHeight > 10) {
+      ctx.shadowBlur = 10
+      ctx.shadowColor = color1
+      ctx.fillRect(x, y, barWidth, 2)
+      ctx.shadowBlur = 0
+    }
   }
 
   animationId = requestAnimationFrame(draw)
