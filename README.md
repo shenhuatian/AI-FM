@@ -8,9 +8,6 @@
 ![DeepSeek](https://img.shields.io/badge/DeepSeek-AI-FF6B6B?style=for-the-badge)
 
 **一个有温度的AI音乐DJ，懂你的心情，陪你听歌**
-灵感来源为博主mmguo，https://www.xiaohongshu.com/user/profile/55a508e8c2bdeb432f5763e2 这是她的个人社交平台
-If you’d like to continue the conversation, feel free to write to me. I’ll read it carefully, and I usually reply
-shenhuatian2026@163.com
 [功能特性](#-功能特性) • [快速开始](#-快速开始) • [配置指南](#-配置指南) • [使用说明](#-使用说明) • [常见问题](#-常见问题)
 
 </div>
@@ -21,6 +18,7 @@ shenhuatian2026@163.com
 
 Claudio FM 是一个基于 **DeepSeek AI** 的智能音乐DJ系统，它不仅能根据你的心情、时间、天气推荐音乐，还会像朋友一样主动关心你，陪你聊天。
 
+灵感来源为博主mmguo，https://www.xiaohongshu.com/user/profile/55a508e8c2bdeb432f5763e2 这是她的个人社交平台
 ### 为什么选择 Claudio FM？
 
 - 🧠 **真正的AI大脑** - 使用DeepSeek AI，理解你的需求，而不是简单的算法推荐
@@ -486,16 +484,9 @@ claudio-fm/
 - 提交信息：使用清晰的提交信息
 - 文档：更新相关文档
 
----
-
-## 📄 开源协议
-
-本项目采用 [MIT License](LICENSE) 开源协议。
-
----
 
 ## 🙏 致谢
-
+- [mmguo](https://www.xiaohongshu.com/user/profile/55a508e8c2bdeb432f5763e2) - 感谢博主mmguo提供的想法和创意
 - [DeepSeek](https://www.deepseek.com/) - 提供强大的AI能力
 - [网易云音乐API](https://github.com/Binaryify/NeteaseCloudMusicApi) - 音乐数据来源
 - [Fish Audio](https://fish.audio/) - 语音合成服务
@@ -504,9 +495,9 @@ claudio-fm/
 ---
 
 ## 📮 联系方式
+If you’d like to continue the conversation, feel free to write to me. I’ll read it carefully, and I usually reply
+- **emile**: shenhuatian2026@163.com
 
-- **Issues**: [GitHub Issues](https://github.com/你的用户名/claudio-fm/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/你的用户名/claudio-fm/discussions)
 
 ---
 
@@ -518,7 +509,7 @@ claudio-fm/
 
 <div align="center">
 
-**Made with ❤️ by [你的名字]**
+**Made with ❤️ by [shenhuatian]**
 
 **Powered by DeepSeek AI**
 
