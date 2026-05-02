@@ -8,7 +8,9 @@
 ![DeepSeek](https://img.shields.io/badge/DeepSeek-AI-FF6B6B?style=for-the-badge)
 
 **一个有温度的AI音乐DJ，懂你的心情，陪你听歌**
-
+灵感来源为博主mmguo，https://www.xiaohongshu.com/user/profile/55a508e8c2bdeb432f5763e2 这是她的个人社交平台
+If you’d like to continue the conversation, feel free to write to me. I’ll read it carefully, and I usually reply
+shenhuatian2026@163.com
 [功能特性](#-功能特性) • [快速开始](#-快速开始) • [配置指南](#-配置指南) • [使用说明](#-使用说明) • [常见问题](#-常见问题)
 
 </div>
