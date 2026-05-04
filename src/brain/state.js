@@ -21,6 +21,11 @@ export class StateManager {
       proactiveStats: {       // 主动对话统计
         responseRate: 1.0,
         lastUpdate: Date.now()
+      },
+      ttsSettings: {      // TTS 语音合成设置
+        enabled: true,    // 是否启用 TTS
+        voice: '冰糖',    // 音色：冰糖、茉莉、苏打、白桦、Mia、Chloe、Milo、Dean
+        mode: 'dj'        // 模式：'dj' | 'music' | 'quiet'
       }
     };
     this.init();
@@ -216,6 +221,14 @@ export class StateManager {
    */
   getPlayHistory(limit = 50) {
     return this.state.plays.slice(-limit).reverse();
+  }
+
+  /**
+   * 获取所有播放记录
+   * @returns {Array} 所有播放记录
+   */
+  getPlays() {
+    return this.state.plays;
   }
 
   /**
@@ -627,6 +640,48 @@ export class StateManager {
       };
     }
     return this.state.proactiveStats;
+  }
+
+  // ==================== TTS 配置管理 ====================
+
+  /**
+   * 获取 TTS 配置
+   * @returns {Object} TTS 配置
+   */
+  getTTSSettings() {
+    if (!this.state.ttsSettings) {
+      this.state.ttsSettings = {
+        enabled: true,
+        voice: '冰糖',
+        mode: 'dj'
+      };
+    }
+    return this.state.ttsSettings;
+  }
+
+  /**
+   * 更新 TTS 配置
+   * @param {Object} settings - TTS 配置
+   * @param {boolean} settings.enabled - 是否启用
+   * @param {string} settings.voice - 音色
+   * @param {string} settings.mode - 模式
+   */
+  async updateTTSSettings(settings) {
+    if (!this.state.ttsSettings) {
+      this.state.ttsSettings = {
+        enabled: true,
+        voice: '冰糖',
+        mode: 'dj'
+      };
+    }
+
+    this.state.ttsSettings = {
+      ...this.state.ttsSettings,
+      ...settings
+    };
+
+    await this.save();
+    console.log('✅ TTS 配置已更新:', this.state.ttsSettings);
   }
 }
 

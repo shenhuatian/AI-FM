@@ -9,6 +9,9 @@
       </span>
     </div>
     <div class="status-right">
+      <button class="action-btn" @click="openConfig" title="配置中心">
+        <span class="icon">⚙️</span>
+      </button>
       <button class="action-btn" @click="clearChatOnly" title="清除聊天记录">
         <span class="icon">💬</span>
       </button>
@@ -24,6 +27,8 @@
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { getAvatar } from '../utils/avatar.js'
 import storage from '../utils/storage.js'
+
+const emit = defineEmits(['openConfig'])
 
 const currentTime = ref('00:00')
 const avatarUrl = ref('')
@@ -61,6 +66,10 @@ const clearAllData = () => {
     localStorage.clear()
     window.location.reload()
   }
+}
+
+const openConfig = () => {
+  emit('openConfig')
 }
 
 onMounted(() => {

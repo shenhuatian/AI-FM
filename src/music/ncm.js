@@ -432,6 +432,138 @@ export class NeteaseCloudMusic {
       return [];
     }
   }
+
+  /**
+   * 获取相似歌曲推荐
+   */
+  async getSimilarSongs(songId, limit = 10) {
+    try {
+      const url = `${this.baseUrl}/simi/song?id=${songId}&limit=${limit}`;
+      console.log(`🔍 获取相似歌曲: songId=${songId}`);
+
+      const response = await this.fetchWithRetry(url);
+      const data = await response.json();
+
+      if (data.code !== 200 || !data.songs || data.songs.length === 0) {
+        console.log(`⚠️ 未找到相似歌曲`);
+        return [];
+      }
+
+      console.log(`✅ 找到 ${data.songs.length} 首相似歌曲`);
+
+      return data.songs.map(song => ({
+        id: song.id,
+        name: song.name,
+        artist: song.artists ? song.artists.map(a => a.name).join('/') : '未知艺术家',
+        album: song.album ? song.album.name : '未知专辑',
+        albumPic: song.album && song.album.picUrl ? song.album.picUrl : null,
+        duration: song.duration || 0,
+        url: null,
+        fee: song.fee || 0,
+        vip: song.fee === 1 || song.fee === 4,
+        privilege: song.privilege || null
+      }));
+    } catch (error) {
+      console.error(`❌ 获取相似歌曲失败:`, error.message);
+      return [];
+    }
+  }
+
+  /**
+   * 获取相似艺术家推荐
+   */
+  async getSimilarArtists(artistId, limit = 10) {
+    try {
+      const url = `${this.baseUrl}/simi/artist?id=${artistId}&limit=${limit}`;
+      console.log(`🔍 获取相似艺术家: artistId=${artistId}`);
+
+      const response = await this.fetchWithRetry(url);
+      const data = await response.json();
+
+      if (data.code !== 200 || !data.artists || data.artists.length === 0) {
+        console.log(`⚠️ 未找到相似艺术家`);
+        return [];
+      }
+
+      console.log(`✅ 找到 ${data.artists.length} 位相似艺术家`);
+
+      return data.artists.map(artist => ({
+        id: artist.id,
+        name: artist.name,
+        picUrl: artist.picUrl || null,
+        albumSize: artist.albumSize || 0
+      }));
+    } catch (error) {
+      console.error(`❌ 获取相似艺术家失败:`, error.message);
+      return [];
+    }
+  }
+
+  /**
+   * 获取艺术家热门歌曲
+   */
+  async getArtistTopSongs(artistId, limit = 50) {
+    try {
+      const url = `${this.baseUrl}/artist/top/song?id=${artistId}&limit=${limit}`;
+      console.log(`🔍 获取艺术家热门歌曲: artistId=${artistId}`);
+
+      const response = await this.fetchWithRetry(url);
+      const data = await response.json();
+
+      if (data.code !== 200 || !data.songs || data.songs.length === 0) {
+        console.log(`⚠️ 未找到艺术家歌曲`);
+        return [];
+      }
+
+      console.log(`✅ 找到 ${data.songs.length} 首歌曲`);
+
+      return data.songs.map(song => ({
+        id: song.id,
+        name: song.name,
+        artist: song.ar ? song.ar.map(a => a.name).join('/') : '未知艺术家',
+        album: song.al ? song.al.name : '未知专辑',
+        albumPic: song.al && song.al.picUrl ? song.al.picUrl : null,
+        duration: song.dt || 0,
+        url: null,
+        fee: song.fee || 0,
+        vip: song.fee === 1 || song.fee === 4,
+        popularity: song.pop || 0
+      }));
+    } catch (error) {
+      console.error(`❌ 获取艺术家歌曲失败:`, error.message);
+      return [];
+    }
+  }
+
+  /**
+   * 搜索艺术家
+   */
+  async searchArtist(keyword, limit = 10) {
+    try {
+      const url = `${this.baseUrl}/cloudsearch?keywords=${encodeURIComponent(keyword)}&limit=${limit}&type=100`;
+      console.log(`🔍 搜索艺术家: ${keyword}`);
+
+      const response = await this.fetchWithRetry(url);
+      const data = await response.json();
+
+      if (data.code !== 200 || !data.result || !data.result.artists || data.result.artists.length === 0) {
+        console.log(`⚠️ 未找到艺术家`);
+        return [];
+      }
+
+      console.log(`✅ 找到 ${data.result.artists.length} 位艺术家`);
+
+      return data.result.artists.map(artist => ({
+        id: artist.id,
+        name: artist.name,
+        picUrl: artist.picUrl || null,
+        albumSize: artist.albumSize || 0
+      }));
+    } catch (error) {
+      console.error(`❌ 搜索艺术家失败:`, error.message);
+      return [];
+    }
+  }
 }
 
 export default NeteaseCloudMusic;

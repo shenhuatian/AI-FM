@@ -14,6 +14,7 @@ import InputSection from './components/InputSection.vue'
 import PlaylistModal from './components/PlaylistModal.vue'
 import DJProfile from './components/DJProfile.vue'
 import FavoritesModal from './components/FavoritesModal.vue'
+import ConfigModal from './components/ConfigModal.vue'
 import storage from './utils/storage.js'
 
 const audioPlayer = ref(null)
@@ -34,6 +35,7 @@ const isSticky = ref(false)
 const showDJProfile = ref(false)
 const currentPlayingSongId = ref(null)
 const showFavoritesModal = ref(false)
+const showConfigModal = ref(false)
 
 onMounted(() => {
     console.log('🎵 Claudio FM - Vue 3')
@@ -209,6 +211,8 @@ const playFavoriteSong = (song) => { playSong(song) }
 const toggleMic = () => { addDJMessage('语音输入功能开发中') }
 const openDJProfile = () => { showDJProfile.value = true }
 const closeDJProfile = () => { showDJProfile.value = false }
+const openConfigModal = () => { showConfigModal.value = true }
+const closeConfigModal = () => { showConfigModal.value = false }
 
 const handleScroll = (e) => {
   const container = e.target
@@ -328,7 +332,7 @@ const playProactiveNotification = () => {
 
         <SongPoemSection :currentSong="currentSong" :poem="currentPoem" :isPlaying="isPlaying" :isPoemCollapsed="isPoemCollapsed" />
         <PlayerSection :isPlaying="isPlaying" :isLiked="isLiked" :volume="volume" :currentTime="currentTime" :duration="duration" @play="togglePlay" @previous="skipPrevious" @next="skipNext" @stop="stopPlayback" @like="toggleLike" @volume-change="changeVolume" @seek="seekTo" @show-playlist="showPlaylist" @show-favorites="showFavorites" />
-        <StatusSection />
+        <StatusSection @openConfig="openConfigModal" />
       </div>
 
       <!-- 聊天区域 - 独立滚动 -->
@@ -343,6 +347,7 @@ const playProactiveNotification = () => {
     <PlaylistModal v-if="showPlaylistModal" :playlist="currentPlaylist" :currentIndex="currentIndex" @close="closePlaylist" @play="playSongByIndex" />
     <DJProfile :isOpen="showDJProfile" :currentSong="currentSong" :isPlaying="isPlaying" @close="closeDJProfile" />
     <FavoritesModal :isOpen="showFavoritesModal" :currentPlayingSongId="currentPlayingSongId" @close="closeFavorites" @play="playFavoriteSong" />
+    <ConfigModal :isOpen="showConfigModal" @close="closeConfigModal" />
     <audio ref="audioPlayer" crossorigin="anonymous" @timeupdate="updateProgress" @ended="onSongEnded" @error="onPlayError"></audio>
   </div>
 </template>
