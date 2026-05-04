@@ -224,8 +224,6 @@ npm run start:frontend
 
 **效果：** DJ的话会用语音播放，更有沉浸感
 
-详见：[小米 TTS 配置指南](XIAOMI-TTS-SETUP.md)
-
 #### OpenWeather API（天气服务）
 
 1. 访问 [OpenWeather](https://openweathermap.org/api)
