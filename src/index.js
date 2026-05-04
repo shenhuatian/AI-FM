@@ -10,6 +10,7 @@ import fs from 'fs/promises';
 import { NeteaseCloudMusic } from './music/ncm.js';
 import { WeatherService } from './services/weather.js';
 import { FeishuCalendarService } from './services/feishu.js';
+import musicLibrary from './music/music-library.js';
 
 // 第二层：本地大脑
 import { DeepSeekAdapter } from './brain/deepseek.js';
@@ -58,6 +59,11 @@ const langChainCache = new Map();
 // 异步初始化状态管理器
 await state.init();
 
+// 初始化音乐库
+console.log('📚 初始化音乐库...');
+await musicLibrary.init();
+console.log('✅ 音乐库初始化完成');
+
 // 初始化音乐向量存储
 console.log('🎵 初始化音乐向量存储...');
 await musicVectorStore.initialize();
@@ -105,7 +111,6 @@ app.post('/api/chat', async (req, res) => {
       // 只有在后端没有配置时，才使用前端配置
       const cacheKey = config.deepseekKey;
       if (!langChainCache.has(cacheKey)) {
-        console.log('🆕 创建新的 LangChainAdapter 实例（前端配置）');
         langChainCache.set(cacheKey, new LangChainAdapter(deepseekKey, state));
       }
       activeLangChain = langChainCache.get(cacheKey);
@@ -136,20 +141,16 @@ app.post('/api/chat', async (req, res) => {
     const seenSongNames = new Set(); // 用于去重（使用歌曲名称）
 
     if (result.play && result.play.length > 0) {
-      console.log('🎵 开始搜索歌曲，AI 返回的歌曲列表:', result.play);
-
       for (const playItem of result.play) {
         try {
           // 检查格式是否正确
           if (!playItem || typeof playItem !== 'string') {
-            console.log(`⚠️ 跳过无效的歌曲项: ${playItem}`);
             continue;
           }
 
           // 分割歌曲名和艺术家
           const parts = playItem.split(' - ');
           if (parts.length < 2) {
-            console.log(`⚠️ 歌曲格式不正确（缺少 " - "）: ${playItem}`);
             // 尝试直接搜索
             const song = await activeNcm.findSong(playItem.trim(), '');
             if (song) {
@@ -158,7 +159,6 @@ app.post('/api/chat', async (req, res) => {
                 songs.push(song);
                 seenSongNames.add(normalizedName);
                 await state.addPlay(song, { reason: result.reason });
-                console.log(`✅ 添加歌曲: ${song.name} - ${song.artist}`);
               }
             }
             continue;
@@ -168,11 +168,9 @@ app.post('/api/chat', async (req, res) => {
           const artistName = parts[1].trim();
 
           if (!songName) {
-            console.log(`⚠️ 歌曲名为空: ${playItem}`);
             continue;
           }
 
-          console.log(`🔍 搜索: ${songName} - ${artistName}`);
           const song = await activeNcm.findSong(songName, artistName);
 
           if (song) {
@@ -183,29 +181,19 @@ app.post('/api/chat', async (req, res) => {
               songs.push(song);
               seenSongNames.add(normalizedName);
               await state.addPlay(song, { reason: result.reason });
-              console.log(`✅ 添加歌曲: ${song.name} - ${song.artist}`);
-            } else {
-              console.log(`⚠️ 跳过重复歌曲: ${song.name} - ${song.artist} (歌曲名称重复)`);
             }
-          } else {
-            console.log(`❌ 未找到歌曲: ${songName} - ${artistName}`);
           }
         } catch (error) {
           console.error(`❌ 搜索歌曲失败: ${playItem}`, error.message);
         }
       }
 
-      console.log(`🎵 搜索完成，找到 ${songs.length} 首歌曲`);
-
       // 🔥 新功能：如果找到的歌曲少于 AI 推荐的数量，使用推荐策略补充
       const targetCount = result.play.length;
       if (songs.length < targetCount && songs.length > 0) {
-        console.log(`\n🎯 歌曲数量不足 (${songs.length}/${targetCount})，启动智能推荐补充...`);
-
         try {
           // 使用第一首成功找到的歌曲作为种子
           const seedSong = songs[0];
-          console.log(`   种子歌曲: ${seedSong.name} - ${seedSong.artist}`);
 
           // 获取相似歌曲推荐
           const similarSongs = await activeNcm.getSimilarSongs(seedSong.id, targetCount - songs.length + 3);
@@ -223,12 +211,9 @@ app.post('/api/chat', async (req, res) => {
                 songs.push(similarSong);
                 seenSongNames.add(normalizedName);
                 await state.addPlay(similarSong, { reason: `相似推荐（基于 ${seedSong.name}）` });
-                console.log(`✅ 添加相似歌曲: ${similarSong.name} - ${similarSong.artist}`);
               }
             }
           }
-
-          console.log(`✅ 智能推荐补充完成，当前歌曲数: ${songs.length}`);
         } catch (error) {
           console.error(`❌ 智能推荐补充失败:`, error.message);
         }
@@ -255,7 +240,6 @@ app.post('/api/chat', async (req, res) => {
       tts.synthesize(result.say, { voice: ttsSettings.voice }).then(audioPath => {
         if (audioPath) {
           const audioUrl = `/cache/tts/${path.basename(audioPath)}`;
-          console.log('✅ TTS 生成完成，推送给前端:', audioUrl);
 
           const message = JSON.stringify({
             type: 'tts',
@@ -401,7 +385,6 @@ app.post('/api/like', async (req, res) => {
   try {
     const { songId, songName, artist } = req.body;
     // 这里可以添加收藏逻辑，暂时只返回成功
-    console.log(`❤️ 收藏歌曲: ${songName} - ${artist}`);
     res.json({ success: true });
   } catch (error) {
     console.error('收藏失败:', error);
@@ -569,7 +552,6 @@ app.delete('/api/favorites', async (req, res) => {
 app.post('/api/config/validate', async (req, res) => {
   try {
     const { type, key, cookie } = req.body;
-    console.log('🟡 /api/config/validate called, type:', type, 'key:', key ? key.substring(0, 10) + '...' : 'empty');
 
     if (type === 'deepseek') {
       // 验证 DeepSeek API Key
@@ -623,7 +605,6 @@ app.post('/api/config/validate', async (req, res) => {
 app.post('/api/config/test-backend', async (req, res) => {
   try {
     const { type } = req.body;
-    console.log('🔵 /api/config/test-backend called, type:', type);
 
     if (type === 'deepseek') {
       // 重新加载 .env 确保使用最新配置
@@ -717,14 +698,12 @@ app.post('/api/config/save-to-env', async (req, res) => {
       envContent = await fs.readFile(envPath, 'utf-8');
     } catch (error) {
       // 如果文件不存在，使用模板
-      console.log('⚠️ .env 文件不存在，将创建新文件');
       envContent = await fs.readFile(path.join(__dirname, '../.env.example'), 'utf-8');
     }
 
     // 备份现有 .env 文件
     const backupPath = path.join(__dirname, '../.env.backup');
     await fs.writeFile(backupPath, envContent);
-    console.log('✅ 已备份 .env 到 .env.backup');
 
     // 更新配置值
     const updateEnvValue = (content, key, value) => {
@@ -765,7 +744,6 @@ app.post('/api/config/save-to-env', async (req, res) => {
 
     // 写入 .env 文件
     await fs.writeFile(envPath, envContent);
-    console.log('✅ 配置已保存到 .env 文件');
 
     // 重新加载环境变量
     dotenv.config();
@@ -824,6 +802,48 @@ app.get('/api/config/status', async (req, res) => {
 });
 
 // ==================== 主动对话 API ====================
+
+/**
+ * POST /api/proactive/test - 测试推送主动消息（开发调试用）
+ */
+app.post('/api/proactive/test', async (req, res) => {
+  try {
+    const { message, songs, reason } = req.body;
+
+    if (!message) {
+      return res.status(400).json({ error: '缺少 message 参数' });
+    }
+
+    // 构造推送消息
+    const wsMessage = JSON.stringify({
+      type: 'proactive',
+      message: message,
+      songs: songs || [],
+      reason: reason || '测试消息',
+      intent: 'test',
+      timestamp: new Date().toISOString()
+    });
+
+    // 广播给所有连接的客户端
+    let sentCount = 0;
+    clients.forEach(client => {
+      if (client.readyState === 1) { // WebSocket.OPEN
+        client.send(wsMessage);
+        sentCount++;
+      }
+    });
+
+    res.json({
+      success: true,
+      message: '测试消息已推送',
+      clientCount: sentCount,
+      data: JSON.parse(wsMessage)
+    });
+  } catch (error) {
+    console.error('推送测试消息失败:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 /**
  * GET /api/proactive/settings - 获取主动对话设置
@@ -930,6 +950,63 @@ app.post('/api/tts/test', async (req, res) => {
   }
 });
 
+// ==================== 音乐库导入 API ====================
+
+/**
+ * POST /api/music/import - 导入音乐库
+ */
+app.post('/api/music/import', async (req, res) => {
+  try {
+    const { mode } = req.body; // mode: 'full' 或 'incremental'
+
+    // 1. 获取用户账号信息
+    const userAccount = await ncm.getUserAccount();
+    if (!userAccount) {
+      return res.status(400).json({ error: '无法获取用户信息，请检查 Cookie 是否有效' });
+    }
+
+    // 2. 获取用户数据
+    const [likedSongs, playlists, playHistoryWeek, playHistoryAll] = await Promise.all([
+      ncm.getUserLikedSongs(userAccount.uid),
+      ncm.getUserPlaylists(userAccount.uid),
+      ncm.getUserPlayHistory(userAccount.uid, 1),
+      ncm.getUserPlayHistory(userAccount.uid, 0)
+    ]);
+
+    const userData = {
+      user: userAccount,
+      likedSongs,
+      playlists,
+      playHistory: {
+        week: playHistoryWeek,
+        all: playHistoryAll
+      }
+    };
+
+    // 3. 导入数据
+    const result = mode === 'full'
+      ? await musicLibrary.importFull(userData)
+      : await musicLibrary.importIncremental(userData);
+
+    res.json(result);
+  } catch (error) {
+    console.error('导入音乐库失败:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/music/library/stats - 获取音乐库统计
+ */
+app.get('/api/music/library/stats', async (req, res) => {
+  try {
+    const stats = musicLibrary.getStats();
+    res.json(stats || { message: '音乐库为空' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // 启动HTTP服务器
 const server = app.listen(PORT, () => {
   console.log(`
@@ -965,13 +1042,11 @@ const wss = new WebSocketServer({ server, path: '/stream' });
 const clients = new Set();
 
 wss.on('connection', (ws) => {
-  console.log('✅ WebSocket客户端已连接');
   clients.add(ws);
 
   ws.on('message', async (message) => {
     try {
       const data = JSON.parse(message);
-      console.log('📨 收到消息:', data);
 
       if (data.type === 'chat') {
         const context = await contextBuilder.build({
@@ -1008,7 +1083,6 @@ wss.on('connection', (ws) => {
   });
 
   ws.on('close', () => {
-    console.log('❌ WebSocket客户端已断开');
     clients.delete(ws);
   });
 });
@@ -1018,8 +1092,6 @@ const broadcastProactiveMessage = async () => {
   const decision = await proactiveAgent.checkAndSpeak();
 
   if (decision && decision.shouldSpeak) {
-    console.log('📢 广播主动消息:', decision.message);
-
     // 搜索歌曲（如果有推荐）
     const songs = [];
     if (decision.songs && decision.songs.length > 0) {

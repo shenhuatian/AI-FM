@@ -20,14 +20,12 @@ export class StorageManager {
 
       // 检查是否过期
       if (this.isExpired(data)) {
-        console.log('📦 数据已过期，清除旧数据')
         return this.getDefaultData()
       }
 
       // 清理过期的对话
       data.conversations = this.cleanExpiredConversations(data.conversations)
 
-      console.log('📦 从 LocalStorage 恢复数据')
       return data
     } catch (error) {
       console.error('❌ 加载数据失败:', error)
@@ -90,6 +88,7 @@ export class StorageManager {
     }
 
     conversation.messages.push({
+      id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`, // 🔥 添加唯一 ID
       type,
       text,
       songs,
@@ -110,6 +109,12 @@ export class StorageManager {
   getAllMessages() {
     const messages = []
     this.data.conversations.forEach(conv => {
+      // 🔥 为旧消息添加 ID（如果没有）
+      conv.messages.forEach(msg => {
+        if (!msg.id) {
+          msg.id = `msg_${msg.timestamp || Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+        }
+      })
       messages.push(...conv.messages)
     })
     return messages
@@ -140,14 +145,12 @@ export class StorageManager {
   clear() {
     localStorage.removeItem(STORAGE_KEY)
     this.data = this.getDefaultData()
-    console.log('🗑️ 已清除所有历史数据')
   }
 
   // 清除聊天记录（保留播放列表）
   clearMessages() {
     this.data.conversations = []
     this.save()
-    console.log('🗑️ 已清除聊天记录')
   }
 
   // 获取按日期分组的对话

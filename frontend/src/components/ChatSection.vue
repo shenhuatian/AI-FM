@@ -1,7 +1,7 @@
 <template>
   <div class="chat-section" ref="chatSection">
     <div class="chat-messages" ref="chatMessages">
-      <div v-for="(msg, index) in messages" :key="index" class="message" :class="[msg.type, { proactive: msg.isProactive }]">
+      <div v-for="(msg, index) in props.messages" :key="msg.id || `msg-${index}`" class="message" :class="[msg.type, { proactive: msg.isProactive }]">
         <div class="message-header">
           <div class="message-avatar">
             <img v-if="msg.type === 'dj' && djAvatarUrl" :src="djAvatarUrl" class="avatar-img" />
@@ -23,30 +23,30 @@
           />
         </div>
 
-        <!-- 反馈按钮（仅显示在有推荐理由的消息上） -->
-        <div v-if="msg.type === 'dj' && msg.reason && msg.songs && msg.songs.length > 0" class="feedback-actions">
+        <!-- 反馈按钮（仅显示在有推荐理由的消息上，且对当前播放的歌曲生效） -->
+        <div v-if="msg.type === 'dj' && msg.reason && msg.songs && msg.songs.length > 0 && hasCurrentPlayingSong(msg.songs)" class="feedback-actions">
           <button
             class="feedback-btn like"
-            :class="{ active: getSongFeedback(msg.songs[0]?.id) === 'like' }"
-            @click="handleFeedback(msg.songs[0], 'like')"
+            :class="{ active: getSongFeedback(getCurrentPlayingSong(msg.songs)?.id) === 'like' }"
+            @click="handleFeedback(getCurrentPlayingSong(msg.songs), 'like')"
           >
             <span class="icon">👍</span>
             <span class="label">喜欢</span>
           </button>
           <button
             class="feedback-btn dislike"
-            :class="{ active: getSongFeedback(msg.songs[0]?.id) === 'dislike' }"
-            @click="handleFeedback(msg.songs[0], 'dislike')"
+            :class="{ active: getSongFeedback(getCurrentPlayingSong(msg.songs)?.id) === 'dislike' }"
+            @click="handleFeedback(getCurrentPlayingSong(msg.songs), 'dislike')"
           >
             <span class="icon">👎</span>
             <span class="label">不喜欢</span>
           </button>
           <button
             class="feedback-btn favorite"
-            :class="{ active: isSongFavorited(msg.songs[0]?.id) }"
-            @click="handleToggleFavorite(msg.songs[0])"
+            :class="{ active: isSongFavorited(getCurrentPlayingSong(msg.songs)?.id) }"
+            @click="handleToggleFavorite(getCurrentPlayingSong(msg.songs))"
           >
-            <span class="icon">{{ isSongFavorited(msg.songs[0]?.id) ? '⭐' : '☆' }}</span>
+            <span class="icon">{{ isSongFavorited(getCurrentPlayingSong(msg.songs)?.id) ? '⭐' : '☆' }}</span>
             <span class="label">收藏</span>
           </button>
         </div>
@@ -66,7 +66,7 @@
 </template>
 
 <script setup>
-import { ref, watch, nextTick, onMounted } from 'vue'
+import { ref, watch, nextTick, onMounted, computed } from 'vue'
 import { getAvatar } from '../utils/avatar.js'
 import { getFeedback, setFeedback, removeFeedback } from '../utils/feedback.js'
 import { isFavorited, toggleFavorite } from '../utils/favorites.js'
@@ -145,12 +145,27 @@ const handleToggleFavorite = (song) => {
   songFavorites.value = { ...songFavorites.value }
 }
 
+// 检查歌曲列表中是否包含当前播放的歌曲
+const hasCurrentPlayingSong = (songs) => {
+  if (!props.currentPlayingSongId || !songs) return false
+  return songs.some(song => song.id === props.currentPlayingSongId)
+}
+
+// 获取当前播放的歌曲
+const getCurrentPlayingSong = (songs) => {
+  if (!props.currentPlayingSongId || !songs) return null
+  return songs.find(song => song.id === props.currentPlayingSongId)
+}
+
 // 检查用户是否在底部附近（距离底部小于150px）
 const checkIfAtBottom = () => {
-  if (!scrollContainer.value) return true
+  if (!scrollContainer.value) {
+    return true
+  }
   const { scrollTop, scrollHeight, clientHeight } = scrollContainer.value
   const distanceFromBottom = scrollHeight - scrollTop - clientHeight
   const isAtBottom = distanceFromBottom < 150
+
   return isAtBottom
 }
 
@@ -187,39 +202,66 @@ const scrollToBottom = (smooth = true) => {
 }
 
 // 监听消息变化
-watch(() => props.messages, async (newMessages, oldMessages) => {
-  if (!newMessages || newMessages.length === 0) return
+watch(() => props.messages, (newMessages, oldMessages) => {
+  try {
+    console.log('🔥 [测试] ChatSection watch 触发')
+    console.log('🔥 [测试] 新消息数量:', newMessages?.length)
+    console.log('🔥 [测试] 旧消息数量:', oldMessages?.length)
 
-  // 获取最新消息
-  const latestMessage = newMessages[newMessages.length - 1]
-
-  // 判断是否是新消息
-  const isNewMessage = !oldMessages ||
-                       newMessages.length !== oldMessages.length ||
-                       (newMessages.length > 0 && oldMessages.length > 0 &&
-                        newMessages[newMessages.length - 1] !== oldMessages[oldMessages.length - 1])
-
-  if (!isNewMessage) return
-
-  // 等待 DOM 更新
-  await nextTick()
-
-  // 再次等待，确保消息已经渲染
-  await new Promise(resolve => setTimeout(resolve, 50))
-
-  // 判断是用户消息还是AI消息
-  if (latestMessage.type === 'user') {
-    isUserAtBottom.value = true
-    scrollToBottom(true)
-  } else if (latestMessage.type === 'dj') {
-    // 重新检查用户位置（因为可能在等待期间用户滚动了）
-    const currentlyAtBottom = checkIfAtBottom()
-
-    if (currentlyAtBottom) {
-      scrollToBottom(true)
-    } else {
-      showNewMessageButton.value = true
+    if (!newMessages || newMessages.length === 0) {
+      console.log('🔥 [测试] 消息为空，退出')
+      return
     }
+
+    // 获取最新消息
+    const latestMessage = newMessages[newMessages.length - 1]
+    console.log('🔥 [测试] 最新消息:', latestMessage)
+
+    // 只要数组引用变化或长度变化，就认为是新消息
+    const isNewMessage = !oldMessages ||
+                         newMessages.length !== oldMessages.length ||
+                         newMessages !== oldMessages
+
+    console.log('🔥 [测试] 是否是新消息:', isNewMessage)
+
+    if (!isNewMessage) {
+      console.log('🔥 [测试] 不是新消息，退出')
+      return
+    }
+
+    console.log('🔥 [测试] 准备更新 DOM...')
+
+    // 使用 nextTick 异步处理 DOM 更新和滚动
+    nextTick(() => {
+      console.log('🔥 [测试] nextTick 回调执行')
+      // 再次等待，确保消息已经渲染
+      setTimeout(() => {
+        console.log('🔥 [测试] 消息已渲染')
+        // 判断是用户消息还是AI消息
+        if (latestMessage.type === 'user') {
+          isUserAtBottom.value = true
+          scrollToBottom(true)
+        } else if (latestMessage.type === 'dj') {
+          // 如果是主动消息，强制滚动到底部（不管用户位置）
+          if (latestMessage.isProactive) {
+            console.log('🔥 [测试] 主动消息，强制滚动')
+            isUserAtBottom.value = true
+            scrollToBottom(true)
+          } else {
+            // 普通 DJ 消息，检查用户位置
+            const currentlyAtBottom = checkIfAtBottom()
+
+            if (currentlyAtBottom) {
+              scrollToBottom(true)
+            } else {
+              showNewMessageButton.value = true
+            }
+          }
+        }
+      }, 50)
+    })
+  } catch (error) {
+    console.error('❌ ChatSection watch 错误:', error)
   }
 }, { deep: true, flush: 'post' })
 
@@ -254,6 +296,8 @@ defineExpose({
 /* 主动消息特殊样式 */
 .message.proactive {
   animation: proactiveMessageIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation-fill-mode: forwards;
+  opacity: 0;
 }
 
 .message.proactive .message-content {

@@ -564,6 +564,147 @@ export class NeteaseCloudMusic {
       return [];
     }
   }
+
+  /**
+   * 获取用户账号信息
+   */
+  async getUserAccount() {
+    try {
+      const cookieParam = `?cookie=${encodeURIComponent(this.cookie)}`;
+      const url = `${this.baseUrl}/user/account${cookieParam}`;
+      console.log(`🔍 获取用户账号信息`);
+
+      const response = await this.fetchWithRetry(url);
+      const data = await response.json();
+
+      if (data.code !== 200 || !data.account) {
+        console.error(`❌ 获取账号信息失败: code=${data.code}`);
+        return null;
+      }
+
+      console.log(`✅ 获取账号信息成功: ${data.profile?.nickname || '未知用户'} (uid: ${data.account.id})`);
+
+      return {
+        uid: data.account.id,
+        nickname: data.profile?.nickname || '未知用户',
+        avatarUrl: data.profile?.avatarUrl || null,
+        vipType: data.account.vipType || 0,
+        isVIP: data.account.vipType === 11
+      };
+    } catch (error) {
+      console.error(`❌ 获取账号信息失败:`, error.message);
+      return null;
+    }
+  }
+
+  /**
+   * 获取用户喜欢的音乐列表
+   */
+  async getUserLikedSongs(uid) {
+    try {
+      const cookieParam = `&cookie=${encodeURIComponent(this.cookie)}`;
+      const url = `${this.baseUrl}/likelist?uid=${uid}${cookieParam}`;
+      console.log(`🔍 获取用户喜欢的音乐: uid=${uid}`);
+
+      const response = await this.fetchWithRetry(url);
+      const data = await response.json();
+
+      if (data.code !== 200 || !data.ids) {
+        console.error(`❌ 获取喜欢列表失败: code=${data.code}`);
+        return [];
+      }
+
+      console.log(`✅ 获取到 ${data.ids.length} 首喜欢的歌曲`);
+
+      return data.ids;
+    } catch (error) {
+      console.error(`❌ 获取喜欢列表失败:`, error.message);
+      return [];
+    }
+  }
+
+  /**
+   * 获取用户的歌单
+   */
+  async getUserPlaylists(uid) {
+    try {
+      const cookieParam = `&cookie=${encodeURIComponent(this.cookie)}`;
+      const url = `${this.baseUrl}/user/playlist?uid=${uid}${cookieParam}`;
+      console.log(`🔍 获取用户歌单: uid=${uid}`);
+
+      const response = await this.fetchWithRetry(url);
+      const data = await response.json();
+
+      if (data.code !== 200 || !data.playlist) {
+        console.error(`❌ 获取歌单失败: code=${data.code}`);
+        return [];
+      }
+
+      console.log(`✅ 获取到 ${data.playlist.length} 个歌单`);
+
+      return data.playlist.map(playlist => ({
+        id: playlist.id,
+        name: playlist.name,
+        coverImgUrl: playlist.coverImgUrl || null,
+        trackCount: playlist.trackCount || 0,
+        playCount: playlist.playCount || 0,
+        creator: playlist.creator?.nickname || '未知',
+        isOwn: playlist.userId === uid
+      }));
+    } catch (error) {
+      console.error(`❌ 获取歌单失败:`, error.message);
+      return [];
+    }
+  }
+
+  /**
+   * 获取用户听歌排行
+   * @param {number} uid - 用户ID
+   * @param {number} type - 类型: 1=最近一周, 0=所有时间
+   */
+  async getUserPlayHistory(uid, type = 1) {
+    try {
+      const cookieParam = `&cookie=${encodeURIComponent(this.cookie)}`;
+      const url = `${this.baseUrl}/user/record?uid=${uid}&type=${type}${cookieParam}`;
+      const typeText = type === 1 ? '最近一周' : '所有时间';
+      console.log(`🔍 获取用户听歌排行: uid=${uid}, type=${typeText}`);
+
+      const response = await this.fetchWithRetry(url);
+      const data = await response.json();
+
+      if (data.code !== 200) {
+        console.error(`❌ 获取听歌排行失败: code=${data.code}`);
+        return [];
+      }
+
+      const recordList = type === 1 ? data.weekData : data.allData;
+
+      if (!recordList || recordList.length === 0) {
+        console.log(`⚠️ 暂无听歌记录`);
+        return [];
+      }
+
+      console.log(`✅ 获取到 ${recordList.length} 条听歌记录`);
+
+      return recordList.map(record => ({
+        playCount: record.playCount || 0,
+        score: record.score || 0,
+        song: {
+          id: record.song.id,
+          name: record.song.name,
+          artist: record.song.ar ? record.song.ar.map(a => a.name).join('/') : '未知艺术家',
+          album: record.song.al ? record.song.al.name : '未知专辑',
+          albumPic: record.song.al && record.song.al.picUrl ? record.song.al.picUrl : null,
+          duration: record.song.dt || 0,
+          fee: record.song.fee || 0,
+          vip: record.song.fee === 1 || record.song.fee === 4
+        }
+      }));
+    } catch (error) {
+      console.error(`❌ 获取听歌排行失败:`, error.message);
+      return [];
+    }
+  }
 }
 
 export default NeteaseCloudMusic;

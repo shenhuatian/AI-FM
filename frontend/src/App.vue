@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick, getCurrentInstance } from 'vue'
 import StarryBackground from './components/StarryBackground.vue'
 import DotMatrix from './components/DotMatrix.vue'
 import AmbienceLight from './components/AmbienceLight.vue'
@@ -15,7 +15,9 @@ import PlaylistModal from './components/PlaylistModal.vue'
 import DJProfile from './components/DJProfile.vue'
 import FavoritesModal from './components/FavoritesModal.vue'
 import ConfigModal from './components/ConfigModal.vue'
+import SetupWizard from './components/SetupWizard.vue'
 import storage from './utils/storage.js'
+import configManager from './utils/config.js'
 
 const audioPlayer = ref(null)
 const appContainer = ref(null)
@@ -29,6 +31,7 @@ const duration = ref(0)
 const currentPlaylist = ref([])
 const currentIndex = ref(0)
 const messages = ref([])
+const chatKey = ref(0)
 const showPlaylistModal = ref(false)
 const isPoemCollapsed = ref(false)
 const isSticky = ref(false)
@@ -36,14 +39,26 @@ const showDJProfile = ref(false)
 const currentPlayingSongId = ref(null)
 const showFavoritesModal = ref(false)
 const showConfigModal = ref(false)
+const showSetupWizard = ref(false)
+const instance = getCurrentInstance()
 
-onMounted(() => {
-    console.log('🎵 Claudio FM - Vue 3')
+onMounted(async () => {
+    // 检查后端配置状态
+    const backendStatus = await configManager.getStatus()
+    const hasBackendConfig = backendStatus?.deepseek?.configured
+
+    // 只有在后端未配置时才显示配置向导
+    if (!hasBackendConfig) {
+      showSetupWizard.value = true
+    } else {
+      // 后端已配置，清除前端配置，确保使用后端配置
+      localStorage.removeItem('claudio_config')
+      console.log('✅ 后端已配置，使用后端配置')
+    }
 
     const savedMessages = storage.getAllMessages()
     if (savedMessages.length > 0) {
       messages.value = savedMessages
-      console.log('📦 恢复了', savedMessages.length, '条历史消息')
     } else {
       addDJMessage('嗨！我是Claudio，你的AI音乐DJ 🎵')
     }
@@ -52,12 +67,11 @@ onMounted(() => {
     if (playlist.length > 0) {
       currentPlaylist.value = playlist
       currentIndex.value = savedIndex
-      console.log('📦 恢复了播放列表，共', playlist.length, '首歌')
     }
 
     if (audioPlayer.value) audioPlayer.value.volume = volume.value / 100
 
-    // 🔥 连接 WebSocket 接收主动消息
+    // 连接 WebSocket 接收主动消息
     connectWebSocket()
   })
 
@@ -95,10 +109,9 @@ const changeVolume = (value) => { volume.value = value; if (audioPlayer.value) a
 
 const playSong = async (song) => {
   if (!song?.url) { addDJMessage('抱歉，无法播放这首歌'); return }
-  console.log('🎵 播放:', song.name)
 
-  // 更新当前播放歌曲 ID
-  currentPlayingSongId.value = song.id
+  // 更新当前播放歌曲 ID（转换为字符串）
+  currentPlayingSongId.value = String(song.id)
 
   // 添加淡出效果
   if (audioPlayer.value && isPlaying.value) {
@@ -124,6 +137,7 @@ const playSong = async (song) => {
         // 淡入新歌曲
         audioPlayer.value.play().then(() => {
           isPlaying.value = true
+          resetPlayErrorCount() // 重置错误计数器
         }).catch(() => {
           addDJMessage('播放出错')
           skipNext()
@@ -135,7 +149,13 @@ const playSong = async (song) => {
     currentSong.value = song
     await generatePoem(song)
     audioPlayer.value.src = song.url
-    audioPlayer.value.play().then(() => { isPlaying.value = true }).catch(() => { addDJMessage('播放出错'); skipNext() })
+    audioPlayer.value.play().then(() => {
+      isPlaying.value = true
+      resetPlayErrorCount() // 重置错误计数器
+    }).catch(() => {
+      addDJMessage('播放出错')
+      skipNext()
+    })
   }
 }
 
@@ -175,7 +195,30 @@ const generateLocalPoem = (song) => {
 const updateProgress = () => { if (audioPlayer.value) { currentTime.value = audioPlayer.value.currentTime; duration.value = audioPlayer.value.duration || 0 } }
 const seekTo = (percent) => { if (audioPlayer.value && duration.value) audioPlayer.value.currentTime = (percent / 100) * duration.value }
 const onSongEnded = () => { skipNext() }
-const onPlayError = () => { addDJMessage('播放出错 🔄'); skipNext() }
+
+// 播放错误计数器，防止无限循环
+let playErrorCount = 0
+const MAX_PLAY_ERRORS = 3
+
+const onPlayError = () => {
+  playErrorCount++
+  console.error(`播放错误 (${playErrorCount}/${MAX_PLAY_ERRORS})`)
+
+  if (playErrorCount >= MAX_PLAY_ERRORS) {
+    addDJMessage('连续播放失败，请检查网络或更换歌曲 😔')
+    playErrorCount = 0 // 重置计数器
+    isPlaying.value = false
+    return
+  }
+
+  addDJMessage('播放出错 🔄')
+  skipNext()
+}
+
+// 播放成功时重置错误计数器
+const resetPlayErrorCount = () => {
+  playErrorCount = 0
+}
 
 const chatSectionRef = ref(null)
 
@@ -183,24 +226,65 @@ const sendMessage = async (message) => {
   if (!message.trim()) return
   addUserMessage(message)
   try {
-    const response = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message }) })
+    // 获取前端配置
+    const config = configManager.getAll()
+
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message,
+        config: {
+          deepseekKey: config.deepseekKey,
+          ncmCookie: config.ncmCookie,
+          xiaomiKey: config.xiaomiKey
+        }
+      })
+    })
+
     const data = await response.json()
+
+    // 检查是否需要配置
+    if (data.needConfig) {
+      addDJMessage('⚠️ 请先配置 DeepSeek API Key 才能使用')
+      showConfigModal.value = true
+      return
+    }
+
     if (data.say) addDJMessage(data.say, data.songs, data.reason)
     if (data.songs?.length > 0) {
-    currentPlaylist.value = data.songs
-    currentIndex.value = 0
-    playSong(data.songs[0])
-    storage.savePlaylist(currentPlaylist.value, currentIndex.value)
-  }
+      currentPlaylist.value = data.songs
+      currentIndex.value = 0
+      playSong(data.songs[0])
+      storage.savePlaylist(currentPlaylist.value, currentIndex.value)
+    }
   } catch (error) { addDJMessage('抱歉，出了点问题 😅') }
 }
 
 const addUserMessage = (text) => {
-    messages.value = [...messages.value, { type: 'user', text, time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }) }]
+    const newMessage = {
+      id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      type: 'user',
+      text,
+      time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
+    }
+    messages.value = [...messages.value, newMessage]
     storage.addMessage('user', text)
   }
 const addDJMessage = (text, songs = null, reason = null, isProactive = false) => {
-    messages.value = [...messages.value, { type: 'dj', text, songs, reason, isProactive, time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }) }]
+    const newMessage = {
+      id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      type: 'dj',
+      text,
+      songs,
+      reason,
+      isProactive,
+      time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
+    }
+
+    // 直接使用展开运算符创建新数组（触发 Vue 响应式）
+    messages.value = [...messages.value, newMessage]
+
     storage.addMessage('dj', text, songs, reason)
     }
 const showPlaylist = () => { showPlaylistModal.value = true }
@@ -211,8 +295,18 @@ const playFavoriteSong = (song) => { playSong(song) }
 const toggleMic = () => { addDJMessage('语音输入功能开发中') }
 const openDJProfile = () => { showDJProfile.value = true }
 const closeDJProfile = () => { showDJProfile.value = false }
-const openConfigModal = () => { showConfigModal.value = true }
-const closeConfigModal = () => { showConfigModal.value = false }
+const openSettings = () => { showConfigModal.value = true }
+const closeSettings = () => { showConfigModal.value = false }
+const onConfigSaved = () => {
+  addDJMessage('配置已保存，正在重新加载...')
+}
+
+const onSetupComplete = () => {
+  showSetupWizard.value = false
+  addDJMessage('欢迎使用 Claudio FM！配置已保存，请重启服务后开始使用 🎵')
+  // 清除前端 localStorage 配置，确保使用后端配置
+  localStorage.removeItem('claudio_config')
+}
 
 const handleScroll = (e) => {
   const container = e.target
@@ -247,25 +341,55 @@ const handleStickyScroll = (e) => {
   }
 }
 
-// 🔥 WebSocket 连接 - 接收主动消息
+// WebSocket 连接 - 接收主动消息
 const connectWebSocket = () => {
+  console.log('🔌 [测试] 尝试连接 WebSocket...')
   const ws = new WebSocket('ws://localhost:8080/stream')
 
   ws.onopen = () => {
-    console.log('🔌 WebSocket 已连接')
+    console.log('✅ [测试] WebSocket 已连接')
   }
 
   ws.onmessage = (event) => {
+    console.log('📨 [测试] 收到原始 WebSocket 数据:', event.data)
     try {
       const data = JSON.parse(event.data)
-      console.log('📨 收到 WebSocket 消息:', data)
+      console.log('📨 [测试] 解析后的数据:', data)
 
       if (data.type === 'proactive') {
         // AI 主动发起的消息
-        console.log('🤖 收到主动消息:', data.message)
+        console.log('🔥 [测试] 收到主动消息')
+        console.log('🔥 [测试] 当前 messages 数量:', messages.value.length)
+        console.log('🔥 [测试] 消息内容:', data.message)
 
-        // 添加特殊标记的 DJ 消息
         addDJMessage(data.message, data.songs, data.reason, true)
+
+        console.log('🔥 [测试] 添加后 messages 数量:', messages.value.length)
+        console.log('🔥 [测试] 最新消息:', messages.value[messages.value.length - 1])
+        console.log('🔥 [测试] messages.value 引用:', messages.value)
+
+        // 🔥 强制触发 Vue 更新并滚动到底部
+        nextTick(() => {
+          // 强制更新整个组件
+          if (instance) {
+            console.log('🔥 [测试] 执行 forceUpdate')
+            instance.proxy.$forceUpdate()
+          }
+
+          // 直接操作 DOM 滚动到底部
+          setTimeout(() => {
+            const appContainer = document.querySelector('.app-container')
+            if (appContainer) {
+              console.log('🔥 [测试] 找到 app-container，执行滚动')
+              appContainer.scrollTo({
+                top: appContainer.scrollHeight,
+                behavior: 'smooth'
+              })
+            } else {
+              console.log('❌ [测试] 未找到 app-container')
+            }
+          }, 100)
+        })
 
         // 如果有推荐歌曲，更新播放列表
         if (data.songs && data.songs.length > 0) {
@@ -276,6 +400,30 @@ const connectWebSocket = () => {
 
         // 播放提示音（可选）
         playProactiveNotification()
+      } else if (data.type === 'tts') {
+        // 收到 TTS 音频
+        if (data.audioUrl) {
+          // 确保 URL 是完整的
+          const audioUrl = data.audioUrl.startsWith('http')
+            ? data.audioUrl
+            : `http://localhost:8080${data.audioUrl}`
+
+          const ttsAudio = new Audio(audioUrl)
+          ttsAudio.volume = volume.value / 100
+
+          ttsAudio.addEventListener('error', (e) => {
+            console.error('TTS 播放失败详情:', {
+              error: e,
+              src: ttsAudio.src,
+              networkState: ttsAudio.networkState,
+              readyState: ttsAudio.readyState
+            })
+          })
+
+          ttsAudio.play().catch(error => {
+            console.error('TTS 播放失败:', error)
+          })
+        }
       }
     } catch (error) {
       console.error('处理 WebSocket 消息失败:', error)
@@ -287,7 +435,7 @@ const connectWebSocket = () => {
   }
 
   ws.onclose = () => {
-    console.log('🔌 WebSocket 已断开，5秒后重连...')
+    // WebSocket 已断开，5秒后重连
     setTimeout(connectWebSocket, 5000)
   }
 }
@@ -323,7 +471,7 @@ const playProactiveNotification = () => {
 
     <!-- 可滚动区域 -->
     <div class="scrollable-content">
-      <PixelClock :isPoemCollapsed="isPoemCollapsed" @update:isPoemCollapsed="isPoemCollapsed = $event" @openProfile="openDJProfile" />
+      <PixelClock :isPoemCollapsed="isPoemCollapsed" @update:isPoemCollapsed="isPoemCollapsed = $event" @openProfile="openDJProfile" @openSettings="openSettings" />
 
       <!-- 吸附区域 -->
       <div class="sticky-section" :class="{ 'is-sticky': isSticky }" @wheel="handleStickyScroll">
@@ -332,7 +480,7 @@ const playProactiveNotification = () => {
 
         <SongPoemSection :currentSong="currentSong" :poem="currentPoem" :isPlaying="isPlaying" :isPoemCollapsed="isPoemCollapsed" />
         <PlayerSection :isPlaying="isPlaying" :isLiked="isLiked" :volume="volume" :currentTime="currentTime" :duration="duration" @play="togglePlay" @previous="skipPrevious" @next="skipNext" @stop="stopPlayback" @like="toggleLike" @volume-change="changeVolume" @seek="seekTo" @show-playlist="showPlaylist" @show-favorites="showFavorites" />
-        <StatusSection @openConfig="openConfigModal" />
+        <StatusSection />
       </div>
 
       <!-- 聊天区域 - 独立滚动 -->
@@ -347,7 +495,8 @@ const playProactiveNotification = () => {
     <PlaylistModal v-if="showPlaylistModal" :playlist="currentPlaylist" :currentIndex="currentIndex" @close="closePlaylist" @play="playSongByIndex" />
     <DJProfile :isOpen="showDJProfile" :currentSong="currentSong" :isPlaying="isPlaying" @close="closeDJProfile" />
     <FavoritesModal :isOpen="showFavoritesModal" :currentPlayingSongId="currentPlayingSongId" @close="closeFavorites" @play="playFavoriteSong" />
-    <ConfigModal :isOpen="showConfigModal" @close="closeConfigModal" />
+    <ConfigModal :isOpen="showConfigModal" @close="closeSettings" @saved="onConfigSaved" />
+    <SetupWizard :isOpen="showSetupWizard" @close="showSetupWizard = false" @complete="onSetupComplete" />
     <audio ref="audioPlayer" crossorigin="anonymous" @timeupdate="updateProgress" @ended="onSongEnded" @error="onPlayError"></audio>
   </div>
 </template>
