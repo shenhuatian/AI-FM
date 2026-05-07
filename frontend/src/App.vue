@@ -8,6 +8,7 @@ import MusicParticles from './components/MusicParticles.vue'
 import PixelClock from './components/PixelClock.vue'
 import SongPoemSection from './components/SongPoemSection.vue'
 import PlayerSection from './components/PlayerSection.vue'
+import LyricsPanel from './components/LyricsPanel.vue'
 import StatusSection from './components/StatusSection.vue'
 import ChatSection from './components/ChatSection.vue'
 import InputSection from './components/InputSection.vue'
@@ -18,6 +19,7 @@ import ConfigModal from './components/ConfigModal.vue'
 import SetupWizard from './components/SetupWizard.vue'
 import storage from './utils/storage.js'
 import configManager from './utils/config.js'
+import { loadFavoritesFromBackend } from './utils/favorites.js'
 
 const audioPlayer = ref(null)
 const appContainer = ref(null)
@@ -41,6 +43,8 @@ const showFavoritesModal = ref(false)
 const showConfigModal = ref(false)
 const showSetupWizard = ref(false)
 const instance = getCurrentInstance()
+const playMode = ref('manual')
+const ttsMode = ref('music') // TTS 模式：'dj' | 'music' | 'quiet'
 
 onMounted(async () => {
     // 检查后端配置状态
@@ -60,7 +64,7 @@ onMounted(async () => {
     if (savedMessages.length > 0) {
       messages.value = savedMessages
     } else {
-      addDJMessage('嗨！我是Claudio，你的AI音乐DJ 🎵')
+      addDJMessage('嗨！我是Phoenix，你的AI音乐DJ 🎵')
     }
 
     const { playlist, currentIndex: savedIndex } = storage.getPlaylist()
@@ -73,6 +77,28 @@ onMounted(async () => {
 
     // 连接 WebSocket 接收主动消息
     connectWebSocket()
+
+    // 加载播放模式
+    loadPlayMode()
+
+    // 加载 TTS 模式
+    loadTTSMode()
+
+    // 监听播放模式变化事件
+    window.addEventListener('playmode-changed', (e) => {
+      playMode.value = e.detail.mode
+      console.log('✅ 播放模式已更新:', playMode.value)
+    })
+
+    // 监听 TTS 模式变化事件
+    window.addEventListener('ttsmode-changed', (e) => {
+      ttsMode.value = e.detail.mode
+      console.log('✅ TTS 模式已更新:', ttsMode.value)
+    })
+
+    // 🔥 从后端加载收藏数据
+    console.log('📚 正在从后端加载收藏数据...')
+    await loadFavoritesFromBackend()
   })
 
 const togglePlay = () => {
@@ -89,6 +115,14 @@ const skipPrevious = () => {
 
 const skipNext = () => {
   if (currentPlaylist.value.length === 0) { addDJMessage('播放列表是空的 🎵'); return }
+
+  // 🔥 修复：在智能续播模式下，不要循环回到开头
+  if (playMode.value === 'auto' && currentIndex.value >= currentPlaylist.value.length - 1) {
+    // 已经是最后一首，不要跳转
+    addDJMessage('播放列表已结束，等待 AI 推荐新歌 🎵')
+    return
+  }
+
   currentIndex.value = (currentIndex.value + 1) % currentPlaylist.value.length
   playSong(currentPlaylist.value[currentIndex.value])
 }
@@ -170,8 +204,15 @@ const playSongByIndex = (index) => {
 const playSongFromChat = (messageIndex, songIndex) => {
   const message = messages.value[messageIndex]
   if (message && message.songs && message.songs[songIndex]) {
+    // 🔥 更新播放列表和索引
+    currentPlaylist.value = message.songs
+    currentIndex.value = songIndex
+
     const song = message.songs[songIndex]
     playSong(song)
+
+    // 保存到 storage
+    storage.savePlaylist(currentPlaylist.value, currentIndex.value)
   }
 }
 
@@ -194,7 +235,27 @@ const generateLocalPoem = (song) => {
 
 const updateProgress = () => { if (audioPlayer.value) { currentTime.value = audioPlayer.value.currentTime; duration.value = audioPlayer.value.duration || 0 } }
 const seekTo = (percent) => { if (audioPlayer.value && duration.value) audioPlayer.value.currentTime = (percent / 100) * duration.value }
-const onSongEnded = () => { skipNext() }
+
+const onSongEnded = async () => {
+  if (playMode.value === 'auto') {
+    // 智能续播模式
+    if (currentIndex.value === currentPlaylist.value.length - 1) {
+      // 最后一首歌，请求 AI 推荐
+      console.log('🤖 智能续播：请求 AI 推荐新歌...')
+      await requestAutoRecommendation()
+    } else {
+      // 还有下一首，继续播放
+      skipNext()
+    }
+  } else if (playMode.value === 'loop') {
+    // 列表循环模式
+    skipNext()
+  } else {
+    // 手动模式，停止播放
+    isPlaying.value = false
+    console.log('⏸️ 手动模式：播放完毕，等待用户指令')
+  }
+}
 
 // 播放错误计数器，防止无限循环
 let playErrorCount = 0
@@ -271,7 +332,7 @@ const addUserMessage = (text) => {
     messages.value = [...messages.value, newMessage]
     storage.addMessage('user', text)
   }
-const addDJMessage = (text, songs = null, reason = null, isProactive = false) => {
+const addDJMessage = (text, songs = null, reason = null, isProactive = false, ttsUrl = null) => {
     const newMessage = {
       id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       type: 'dj',
@@ -279,6 +340,7 @@ const addDJMessage = (text, songs = null, reason = null, isProactive = false) =>
       songs,
       reason,
       isProactive,
+      ttsUrl, // 存储 TTS 音频 URL
       time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
     }
 
@@ -303,7 +365,7 @@ const onConfigSaved = () => {
 
 const onSetupComplete = () => {
   showSetupWizard.value = false
-  addDJMessage('欢迎使用 Claudio FM！配置已保存，请重启服务后开始使用 🎵')
+  addDJMessage('欢迎使用 Phoenix FM！配置已保存，请重启服务后开始使用 🎵')
   // 清除前端 localStorage 配置，确保使用后端配置
   localStorage.removeItem('claudio_config')
 }
@@ -341,13 +403,34 @@ const handleStickyScroll = (e) => {
   }
 }
 
+// 生成或获取客户端唯一标识（使用 sessionStorage，每个标签页独立）
+const getClientId = () => {
+  let clientId = sessionStorage.getItem('claudio_client_id')
+  if (!clientId) {
+    clientId = `client_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    sessionStorage.setItem('claudio_client_id', clientId)
+  }
+  return clientId
+}
+
+// TTS 播放状态管理（防止重复播放）
+let currentTTSAudio = null
+let lastTTSUrl = null
+
 // WebSocket 连接 - 接收主动消息
 const connectWebSocket = () => {
   console.log('🔌 [测试] 尝试连接 WebSocket...')
   const ws = new WebSocket('ws://localhost:8080/stream')
+  const clientId = getClientId()
 
   ws.onopen = () => {
     console.log('✅ [测试] WebSocket 已连接')
+    // 连接成功后立即发送客户端标识
+    ws.send(JSON.stringify({
+      type: 'register',
+      clientId: clientId
+    }))
+    console.log('📤 已发送客户端标识:', clientId)
   }
 
   ws.onmessage = (event) => {
@@ -408,21 +491,29 @@ const connectWebSocket = () => {
             ? data.audioUrl
             : `http://localhost:8080${data.audioUrl}`
 
-          const ttsAudio = new Audio(audioUrl)
-          ttsAudio.volume = volume.value / 100
+          // 防止重复播放相同的 TTS
+          if (lastTTSUrl === audioUrl) {
+            console.log('⚠️ 跳过重复的 TTS:', audioUrl)
+            return
+          }
 
-          ttsAudio.addEventListener('error', (e) => {
-            console.error('TTS 播放失败详情:', {
-              error: e,
-              src: ttsAudio.src,
-              networkState: ttsAudio.networkState,
-              readyState: ttsAudio.readyState
-            })
-          })
+          // 将 TTS URL 存储到最新的 DJ 消息中
+          const lastDJMessage = messages.value.filter(m => m.type === 'dj').pop()
+          if (lastDJMessage) {
+            lastDJMessage.ttsUrl = audioUrl
+          }
 
-          ttsAudio.play().catch(error => {
-            console.error('TTS 播放失败:', error)
-          })
+          // 根据 TTS 模式决定是否自动播放
+          if (ttsMode.value === 'dj') {
+            // DJ 模式：自动播放 TTS
+            playTTSAudio(audioUrl)
+          } else if (ttsMode.value === 'music') {
+            // 音乐模式：不自动播放，等待用户点击
+            console.log('🎵 音乐模式：TTS 已准备，等待用户点击播放')
+          } else if (ttsMode.value === 'quiet') {
+            // 安静模式：不播放 TTS
+            console.log('🔇 安静模式：跳过 TTS 播放')
+          }
         }
       }
     } catch (error) {
@@ -435,6 +526,7 @@ const connectWebSocket = () => {
   }
 
   ws.onclose = () => {
+    console.log('🔌 WebSocket 已断开，5秒后重连...')
     // WebSocket 已断开，5秒后重连
     setTimeout(connectWebSocket, 5000)
   }
@@ -459,6 +551,115 @@ const playProactiveNotification = () => {
   oscillator.start(audioContext.currentTime)
   oscillator.stop(audioContext.currentTime + 0.3)
 }
+
+// 播放 TTS 音频
+const playTTSAudio = (audioUrl) => {
+  // 停止之前的 TTS
+  if (currentTTSAudio) {
+    currentTTSAudio.pause()
+    currentTTSAudio = null
+  }
+
+  lastTTSUrl = audioUrl
+  currentTTSAudio = new Audio(audioUrl)
+  currentTTSAudio.volume = volume.value / 100
+
+  currentTTSAudio.addEventListener('error', (e) => {
+    console.error('TTS 播放失败详情:', {
+      error: e,
+      src: currentTTSAudio.src,
+      networkState: currentTTSAudio.networkState,
+      readyState: currentTTSAudio.readyState
+    })
+  })
+
+  currentTTSAudio.addEventListener('ended', () => {
+    // TTS 播放完成后清理
+    currentTTSAudio = null
+    lastTTSUrl = null
+
+    // DJ 模式下，TTS 播放完毕后自动播放音乐
+    if (ttsMode.value === 'dj' && !isPlaying.value && currentPlaylist.value.length > 0) {
+      console.log('🎙️ DJ 模式：TTS 播放完毕，开始播放音乐')
+      playSong(currentPlaylist.value[currentIndex.value])
+    }
+  })
+
+  currentTTSAudio.play().catch(error => {
+    console.error('TTS 播放失败:', error)
+  })
+}
+
+// 加载播放模式
+const loadPlayMode = async () => {
+  try {
+    const response = await fetch('/api/playmode/settings')
+    const data = await response.json()
+    if (data.settings) {
+      playMode.value = data.settings.mode || 'manual'
+      console.log('✅ 播放模式已加载:', playMode.value)
+    }
+  } catch (error) {
+    console.error('加载播放模式失败:', error)
+    const savedMode = localStorage.getItem('play_mode')
+    if (savedMode) playMode.value = savedMode
+  }
+}
+
+// 加载 TTS 模式
+const loadTTSMode = async () => {
+  try {
+    const response = await fetch('/api/tts/config')
+    const data = await response.json()
+    if (data.settings) {
+      ttsMode.value = data.settings.mode || 'music'
+      console.log('✅ TTS 模式已加载:', ttsMode.value)
+    }
+  } catch (error) {
+    console.error('加载 TTS 模式失败:', error)
+    const savedMode = localStorage.getItem('tts_mode')
+    if (savedMode) ttsMode.value = savedMode
+  }
+}
+
+// 请求自动推荐
+const requestAutoRecommendation = async () => {
+  try {
+    const lastSong = currentPlaylist.value[currentIndex.value]
+    const config = configManager.getAll()
+
+    const response = await fetch('/api/auto-recommend', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        lastSong: lastSong,
+        config: {
+          deepseekKey: config.deepseekKey,
+          ncmCookie: config.ncmCookie
+        }
+      })
+    })
+
+    const data = await response.json()
+
+    if (data.songs && data.songs.length > 0) {
+      // 在聊天区显示 AI 的推荐消息
+      addDJMessage(data.say || '好听吗？再来点舒服的，下班路上放松一下', data.songs, data.reason || '智能续播')
+
+      // 添加到播放列表
+      currentPlaylist.value = [...currentPlaylist.value, ...data.songs]
+      storage.savePlaylist(currentPlaylist.value, currentIndex.value)
+      skipNext()
+      console.log('✅ 智能续播：已添加', data.songs.length, '首新歌')
+    } else {
+      console.log('⚠️ 智能续播：没有推荐到新歌')
+      isPlaying.value = false
+    }
+  } catch (error) {
+    console.error('自动推荐失败:', error)
+    isPlaying.value = false
+  }
+}
 </script>
 
 <template>
@@ -480,12 +681,13 @@ const playProactiveNotification = () => {
 
         <SongPoemSection :currentSong="currentSong" :poem="currentPoem" :isPlaying="isPlaying" :isPoemCollapsed="isPoemCollapsed" />
         <PlayerSection :isPlaying="isPlaying" :isLiked="isLiked" :volume="volume" :currentTime="currentTime" :duration="duration" @play="togglePlay" @previous="skipPrevious" @next="skipNext" @stop="stopPlayback" @like="toggleLike" @volume-change="changeVolume" @seek="seekTo" @show-playlist="showPlaylist" @show-favorites="showFavorites" />
+        <LyricsPanel :songId="currentPlaylist[currentIndex]?.id" :currentTime="currentTime" :isPlaying="isPlaying" @seek="seekTo" />
         <StatusSection />
       </div>
 
       <!-- 聊天区域 - 独立滚动 -->
       <div class="chat-container" :class="{ 'scroll-locked': isSticky }">
-        <ChatSection ref="chatSectionRef" :messages="messages" :currentPlayingSongId="currentPlayingSongId" @play-song="playSongFromChat" />
+        <ChatSection ref="chatSectionRef" :messages="messages" :currentPlayingSongId="currentPlayingSongId" :ttsMode="ttsMode" @play-song="playSongFromChat" @play-tts="playTTSAudio" />
       </div>
     </div>
 

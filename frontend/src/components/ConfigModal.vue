@@ -4,7 +4,7 @@
       <div class="modal-container">
         <!-- 头部 -->
         <div class="modal-header">
-          <h2 class="modal-title">⚙️ Claudio FM 配置中心</h2>
+          <h2 class="modal-title">⚙️ Phoenix FM 配置中心</h2>
           <button class="close-btn" @click="$emit('close')">✕</button>
         </div>
 
@@ -645,7 +645,7 @@ const saveConfig = async () => {
   try {
     // 🔥 只保存用户修改过的前端配置（dirty fields）
     // 后端来源且未修改的字段跳过，避免脱敏值覆盖真实值
-    const configToSave = { configured: true }
+    const configToSave = {}
     const allFields = ['deepseekKey', 'ncmCookie', 'xiaomiKey', 'openweatherKey', 'feishuAppId', 'feishuAppSecret']
 
     for (const field of allFields) {
@@ -655,20 +655,33 @@ const saveConfig = async () => {
       // 后端来源且未修改 → 跳过
     }
 
-    console.log('💾 保存配置:', configToSave)
-    configManager.setAll(configToSave)
+    console.log('💾 保存配置到后端 .env:', configToSave)
+
+    // 🔥 保存到后端 .env 文件
+    const response = await fetch('/api/config/save-to-env', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ config: configToSave })
+    })
+
+    const data = await response.json()
+
+    if (!data.success) {
+      throw new Error(data.error || '保存失败')
+    }
+
+    // 清除前端 localStorage，确保使用后端配置
+    configManager.reset()
 
     // 通知父组件
     emit('saved')
     emit('close')
 
-    // 刷新页面以应用新配置
-    setTimeout(() => {
-      window.location.reload()
-    }, 500)
+    // 提示用户重启服务
+    alert('✅ 配置已保存到 .env 文件\n\n⚠️ 请在终端按 Ctrl+C 停止服务，然后运行 npm run dev 重启服务以使配置生效')
   } catch (error) {
     console.error('保存配置失败:', error)
-    alert('保存配置失败: ' + error.message)
+    alert('❌ 保存配置失败: ' + error.message)
   } finally {
     saving.value = false
   }

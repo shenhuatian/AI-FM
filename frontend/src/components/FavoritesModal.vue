@@ -58,9 +58,27 @@ const emit = defineEmits(['close', 'play'])
 
 const favorites = ref([])
 
-// 加载收藏列表
-const loadFavorites = () => {
+// 加载收藏列表（优先从后端）
+const loadFavorites = async () => {
+  // 先显示本地数据（快速响应）
   favorites.value = getAllFavorites()
+
+  // 然后从后端加载最新数据
+  try {
+    const response = await fetch('/api/favorites')
+    if (response.ok) {
+      const data = await response.json()
+      const backendFavorites = data.favorites || []
+
+      // 更新显示
+      favorites.value = backendFavorites
+
+      // 同步到 localStorage
+      localStorage.setItem('song_favorites', JSON.stringify(backendFavorites))
+    }
+  } catch (error) {
+    console.warn('从后端加载收藏失败，使用本地数据:', error)
+  }
 }
 
 // 监听弹窗打开

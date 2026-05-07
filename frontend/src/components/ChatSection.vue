@@ -8,6 +8,15 @@
             <span v-else>{{ msg.type === 'user' ? '👤' : '🎵' }}</span>
           </div>
           <div class="message-sender">{{ msg.type === 'user' ? 'YOU' : 'CLAUDIO' }}</div>
+          <!-- TTS 播放按钮（仅在音乐模式下显示，且消息有 TTS URL） -->
+          <button
+            v-if="msg.type === 'dj' && msg.ttsUrl && props.ttsMode === 'music'"
+            class="tts-play-btn"
+            @click="$emit('play-tts', msg.ttsUrl)"
+            title="播放语音"
+          >
+            🔊
+          </button>
         </div>
         <div class="message-content">{{ msg.text }}</div>
 
@@ -18,7 +27,7 @@
             :key="song.id || songIndex"
             :song="song"
             :isBestRecommendation="songIndex === 0"
-            :isPlaying="currentPlayingSongId === song.id"
+            :isPlaying="String(currentPlayingSongId) === String(song.id)"
             @play="$emit('play-song', index, songIndex)"
           />
         </div>
@@ -72,8 +81,8 @@ import { getFeedback, setFeedback, removeFeedback } from '../utils/feedback.js'
 import { isFavorited, toggleFavorite } from '../utils/favorites.js'
 import SongCard from './SongCard.vue'
 
-const props = defineProps({ messages: Array, currentPlayingSongId: String })
-defineEmits(['play-song'])
+const props = defineProps({ messages: Array, currentPlayingSongId: String, ttsMode: String })
+defineEmits(['play-song', 'play-tts'])
 
 const chatSection = ref(null)
 const chatMessages = ref(null)
@@ -148,13 +157,13 @@ const handleToggleFavorite = (song) => {
 // 检查歌曲列表中是否包含当前播放的歌曲
 const hasCurrentPlayingSong = (songs) => {
   if (!props.currentPlayingSongId || !songs) return false
-  return songs.some(song => song.id === props.currentPlayingSongId)
+  return songs.some(song => String(song.id) === String(props.currentPlayingSongId))
 }
 
 // 获取当前播放的歌曲
 const getCurrentPlayingSong = (songs) => {
   if (!props.currentPlayingSongId || !songs) return null
-  return songs.find(song => song.id === props.currentPlayingSongId)
+  return songs.find(song => String(song.id) === String(props.currentPlayingSongId))
 }
 
 // 检查用户是否在底部附近（距离底部小于150px）
@@ -350,6 +359,34 @@ defineExpose({
 .message-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; background: #1a1a1a; border: 1px solid #333; overflow: hidden; }
 .message-avatar .avatar-img { width: 100%; height: 100%; object-fit: cover; }
 .message-sender { font-size: 12px; color: #888; text-transform: uppercase; font-family: 'Courier New', monospace; }
+
+/* TTS 播放按钮 */
+.tts-play-btn {
+  margin-left: auto;
+  padding: 4px 8px;
+  background: rgba(0, 255, 136, 0.1);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  border-radius: 12px;
+  color: #00ff88;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tts-play-btn:hover {
+  background: rgba(0, 255, 136, 0.2);
+  border-color: #00ff88;
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+.tts-play-btn:active {
+  transform: scale(0.95);
+}
+
 .message-content {
   background: #1a1a1a;
   border: 1px solid #333;

@@ -56,14 +56,10 @@ export const setFeedback = async (songId, songName, artist, feedback) => {
 
       if (!response.ok) {
         console.warn('后端同步失败，但本地已保存')
-      } else {
-        console.log(`✅ 反馈已同步到后端: ${songName} - ${feedback}`)
       }
     } catch (apiError) {
       console.warn('后端API调用失败，但本地已保存:', apiError)
     }
-
-    console.log(`✅ 反馈已保存: ${songName} - ${feedback}`)
   } catch (error) {
     console.error('保存反馈失败:', error)
   }
@@ -88,8 +84,6 @@ export const removeFeedback = async (songId) => {
 
       if (!response.ok) {
         console.warn('后端同步失败，但本地已删除')
-      } else {
-        console.log(`✅ 反馈已从后端删除: ${songId}`)
       }
     } catch (apiError) {
       console.warn('后端API调用失败，但本地已删除:', apiError)
@@ -127,7 +121,6 @@ export const getDislikedSongs = () => {
 export const clearAllFeedback = () => {
   try {
     localStorage.removeItem(FEEDBACK_KEY)
-    console.log('🗑️ 已清除所有反馈')
   } catch (error) {
     console.error('清除反馈失败:', error)
   }

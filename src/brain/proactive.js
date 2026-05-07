@@ -10,6 +10,15 @@ export class ProactiveAgent {
     this.userResponseRate = 1.0; // 用户响应率（1.0 = 100%）
     this.isRunning = false;
     this.checkInterval = null;
+    this.broadcastCallback = null; // 广播回调函数
+  }
+
+  /**
+   * 设置广播回调函数
+   */
+  setBroadcastCallback(callback) {
+    this.broadcastCallback = callback;
+    console.log('✅ 主动对话广播回调已设置');
   }
 
   /**
@@ -62,7 +71,13 @@ export class ProactiveAgent {
     console.log(`⏰ 下次主动检查将在 ${Math.round(actualInterval / 1000 / 60)} 分钟后`);
 
     this.checkInterval = setTimeout(async () => {
-      await this.checkAndSpeak();
+      // 如果设置了广播回调，使用回调函数
+      if (this.broadcastCallback) {
+        await this.broadcastCallback();
+      } else {
+        // 否则直接调用 checkAndSpeak
+        await this.checkAndSpeak();
+      }
       this.scheduleNextCheck();
     }, actualInterval);
   }
@@ -73,12 +88,12 @@ export class ProactiveAgent {
   getBaseInterval(level) {
     switch (level) {
       case 'quiet':
-        return 60 * 60 * 1000; // 60分钟
+        return 30 * 60 * 1000; // 30分钟
       case 'active':
-        return 15 * 60 * 1000; // 15分钟
+        return 5 * 60 * 1000; // 5分钟
       case 'medium':
       default:
-        return 20 * 60 * 1000; // 20分钟
+        return 15 * 60 * 1000; // 15分钟
     }
   }
 
@@ -145,7 +160,8 @@ export class ProactiveAgent {
     // 1. 长时间未互动（30分钟）
     const lastMessage = this.state.getMessages(1)[0];
     if (lastMessage) {
-      const idleTime = now - (lastMessage.timestamp || 0);
+      const lastMessageTime = lastMessage.created_at ? new Date(lastMessage.created_at).getTime() : 0;
+      const idleTime = now - lastMessageTime;
       if (idleTime > 30 * 60 * 1000) {
         triggers.push({
           type: 'idle',
@@ -201,7 +217,8 @@ export class ProactiveAgent {
     if (recentMessages.length > 0) {
       const lastUserMessage = recentMessages.find(m => m.role === 'user');
       if (lastUserMessage) {
-        const timeSinceLastUserMessage = now - (lastUserMessage.timestamp || 0);
+        const lastUserMessageTime = lastUserMessage.created_at ? new Date(lastUserMessage.created_at).getTime() : 0;
+        const timeSinceLastUserMessage = now - lastUserMessageTime;
         // 如果用户刚发过消息（5分钟内），但AI还没主动说话
         if (timeSinceLastUserMessage < 5 * 60 * 1000 && now - this.lastProactiveTime > 20 * 60 * 1000) {
           triggers.push({

@@ -71,10 +71,23 @@ const isHovered = ref(false)
 }
 
 .song-card.playing {
-  background: rgba(0, 255, 136, 0.1);
+  background: rgba(0, 255, 136, 0.15);
   border-color: #00ff88;
-  border-left: 4px solid #00ff88;
-  padding-left: 13px;
+  border-left: 6px solid #00ff88;
+  padding-left: 11px;
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+  animation: playingPulse 2s ease-in-out infinite;
+}
+
+@keyframes playingPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+  }
+  50% {
+    transform: scale(1.01);
+    box-shadow: 0 0 25px rgba(0, 255, 136, 0.4);
+  }
 }
 
 .song-card.best-recommendation {
@@ -143,6 +156,11 @@ const isHovered = ref(false)
   color: #fff;
   margin-bottom: 4px;
   font-family: 'Courier New', monospace;
+  transition: color 0.3s;
+}
+
+.song-card.playing .song-name {
+  color: #00ff88;
 }
 
 .song-artist {
@@ -155,7 +173,7 @@ const isHovered = ref(false)
   display: flex;
   align-items: center;
   gap: 3px;
-  height: 16px;
+  height: 20px;
 }
 
 .wave-bar {
@@ -182,7 +200,7 @@ const isHovered = ref(false)
     height: 4px;
   }
   50% {
-    height: 16px;
+    height: 20px;
   }
 }
 </style>

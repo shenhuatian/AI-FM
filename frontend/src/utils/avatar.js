@@ -69,10 +69,6 @@ export const compressImage = (file, maxWidth = 200, quality = 0.8) => {
         // 转换为 base64（JPEG 格式，压缩质量 0.8）
         const compressedBase64 = canvas.toDataURL('image/jpeg', quality)
 
-        // 检查压缩后的大小
-        const sizeInKB = (compressedBase64.length * 3) / 4 / 1024
-        console.log(`✅ 图片压缩完成: ${sizeInKB.toFixed(2)} KB`)
-
         resolve(compressedBase64)
       }
 

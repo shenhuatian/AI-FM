@@ -18,11 +18,20 @@ const {
 const { URLSearchParams, URL } = require('url')
 const { APP_CONF } = require('../util/config.json')
 
-// 预先读取匿名token并缓存
-const anonymous_token = fs.readFileSync(
-  path.resolve(tmpPath, './anonymous_token'),
-  'utf-8',
-)
+// 预先读取匿名token并缓存（如果文件不存在则创建）
+let anonymous_token = ''
+const tokenPath = path.resolve(tmpPath, './anonymous_token')
+try {
+  if (fs.existsSync(tokenPath)) {
+    anonymous_token = fs.readFileSync(tokenPath, 'utf-8')
+  } else {
+    // 如果文件不存在，创建一个空的token文件
+    fs.writeFileSync(tokenPath, '', 'utf-8')
+    console.log('[INFO] Created anonymous_token file')
+  }
+} catch (error) {
+  console.warn('[WARN] Could not read/create anonymous_token:', error.message)
+}
 
 // 预先绑定常用函数和常量
 const floor = Math.floor

@@ -37,7 +37,6 @@ export const addFavorite = async (song) => {
 
     // 检查是否已收藏
     if (isFavorited(song.id)) {
-      console.log('⚠️ 歌曲已在收藏夹中')
       return false
     }
 
@@ -64,14 +63,10 @@ export const addFavorite = async (song) => {
 
       if (!response.ok) {
         console.warn('后端同步失败，但本地已保存')
-      } else {
-        console.log(`⭐ 已同步到后端: ${song.name} - ${song.artist}`)
       }
     } catch (apiError) {
       console.warn('后端API调用失败，但本地已保存:', apiError)
     }
-
-    console.log(`⭐ 已收藏: ${song.name} - ${song.artist}`)
 
     // 触发收藏更新事件
     window.dispatchEvent(new Event('favorites-updated'))
@@ -101,14 +96,10 @@ export const removeFavorite = async (songId) => {
 
       if (!response.ok) {
         console.warn('后端同步失败，但本地已删除')
-      } else {
-        console.log(`🗑️ 已从后端移除: ${songId}`)
       }
     } catch (apiError) {
       console.warn('后端API调用失败，但本地已删除:', apiError)
     }
-
-    console.log('🗑️ 已从收藏夹移除')
 
     // 触发收藏更新事件
     window.dispatchEvent(new Event('favorites-updated'))
@@ -150,14 +141,10 @@ export const clearAllFavorites = async () => {
 
       if (!response.ok) {
         console.warn('后端同步失败，但本地已清空')
-      } else {
-        console.log('🗑️ 已从后端清空收藏夹')
       }
     } catch (apiError) {
       console.warn('后端API调用失败，但本地已清空:', apiError)
     }
-
-    console.log('🗑️ 已清空收藏夹')
 
     // 触发收藏更新事件
     window.dispatchEvent(new Event('favorites-updated'))
@@ -174,6 +161,52 @@ export const getFavoritesCount = () => {
   return getAllFavorites().length
 }
 
+/**
+ * 从后端加载收藏数据（初始化时调用）
+ */
+export const loadFavoritesFromBackend = async () => {
+  try {
+    const response = await fetch('/api/favorites')
+    if (response.ok) {
+      const data = await response.json()
+      const backendFavorites = data.favorites || []
+
+      // 合并本地和后端数据（去重）
+      const localFavorites = getAllFavorites()
+      const mergedFavorites = mergeFavorites(localFavorites, backendFavorites)
+
+      // 保存合并后的数据到 localStorage
+      localStorage.setItem(FAVORITES_KEY, JSON.stringify(mergedFavorites))
+
+      console.log('✅ 已从后端加载收藏数据:', mergedFavorites.length, '首')
+      return mergedFavorites
+    }
+  } catch (error) {
+    console.warn('从后端加载收藏失败，使用本地数据:', error)
+    return getAllFavorites()
+  }
+}
+
+/**
+ * 合并本地和后端收藏数据（去重）
+ */
+const mergeFavorites = (local, backend) => {
+  const merged = [...local]
+  const localIds = new Set(local.map(f => f.id))
+
+  // 添加后端有但本地没有的
+  backend.forEach(song => {
+    if (!localIds.has(song.id)) {
+      merged.push(song)
+    }
+  })
+
+  // 按添加时间排序
+  merged.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt))
+
+  return merged
+}
+
 export default {
   getAllFavorites,
   isFavorited,
@@ -181,5 +214,6 @@ export default {
   removeFavorite,
   toggleFavorite,
   clearAllFavorites,
-  getFavoritesCount
+  getFavoritesCount,
+  loadFavoritesFromBackend
 }

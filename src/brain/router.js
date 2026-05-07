@@ -1,8 +1,9 @@
 // 路由分流器 - 意图识别和分流
 export class Router {
-  constructor(deepseek, ncm) {
+  constructor(deepseek, ncm, userProfile = null) {
     this.deepseek = deepseek;
     this.ncm = ncm;
+    this.userProfile = userProfile;  // 🔥 添加用户画像
   }
 
   /**
@@ -29,6 +30,13 @@ export class Router {
       return await this.handleSimpleCommand(simpleCommand, context);
     }
 
+    // 🔥 新增：检测是否是对上一轮推荐的反馈
+    const isFeedback = this.isFeedbackOnPreviousRecommendation(input, conversationHistory);
+    if (isFeedback) {
+      console.log('🎯 识别为对上一轮推荐的反馈，需要AI理解上下文');
+      return await this.handleNaturalLanguage(input, context, conversationHistory);
+    }
+
     // 如果明确是音乐请求
     if (intent === 'definitely_music' || this.isMusicSearch(input)) {
       console.log('🎯 识别为音乐请求意图');
@@ -38,6 +46,66 @@ export class Router {
     // 不确定的情况，走DeepSeek自然语言处理（AI会自己判断）
     console.log('🎯 意图不明确，交给AI判断');
     return await this.handleNaturalLanguage(input, context, conversationHistory);
+  }
+
+  /**
+   * 🔥 新增：检测是否是对上一轮推荐的反馈
+   * @param {string} input - 用户输入
+   * @param {Array} conversationHistory - 对话历史
+   * @returns {boolean}
+   */
+  isFeedbackOnPreviousRecommendation(input, conversationHistory) {
+    // 如果没有对话历史，肯定不是反馈
+    if (!conversationHistory || conversationHistory.length === 0) {
+      return false;
+    }
+
+    const lowerInput = input.toLowerCase().trim();
+
+    // 🔥 新增：检测"解释性描述"（用户在解释上一首歌，不是请求）
+    const explanationPatterns = [
+      /^是.+的/, // "是陶喆的"、"是一首"
+      /^这是/, // "这是一首"
+      /^那是/, // "那是一首"
+      /等.+演唱/, // "等一众歌星共同演唱"
+      /等.+合唱/, // "等人合唱"
+      /共同演唱/, // "共同演唱的"
+      /一众/, // "一众歌星"
+    ];
+
+    // 如果是解释性描述，很可能是反馈
+    if (explanationPatterns.some(pattern => pattern.test(lowerInput))) {
+      console.log('🎯 检测到解释性描述，判定为反馈');
+      return true;
+    }
+
+    // 反馈关键词
+    const feedbackKeywords = [
+      '这些', '这首', '这个', '太', '不够', '还要', '换',
+      '不是', '不对', '不太', '有点', '稍微', '更',
+      '别的', '其他', '再来', '还有', '继续', '算了'
+    ];
+
+    // 否定/调整关键词
+    const adjustmentKeywords = [
+      '热门', '冷门', '小众', '大众', '快', '慢',
+      '新', '老', '经典', '流行', '深度', '浅'
+    ];
+
+    // 如果包含反馈关键词 + 调整关键词，很可能是反馈
+    const hasFeedback = feedbackKeywords.some(k => lowerInput.includes(k));
+    const hasAdjustment = adjustmentKeywords.some(k => lowerInput.includes(k));
+
+    if (hasFeedback || hasAdjustment) {
+      return true;
+    }
+
+    // 如果消息很短（<15字）且包含"听"、"要"、"来"等词，可能是延续对话
+    if (lowerInput.length < 15 && (lowerInput.includes('听') || lowerInput.includes('要') || lowerInput.includes('来'))) {
+      return true;
+    }
+
+    return false;
   }
 
   /**
@@ -219,15 +287,133 @@ export class Router {
    * 处理音乐搜索
    * @param {string} input - 用户输入
    * @param {Object} context - 上下文
+   * @param {Array} conversationHistory - 对话历史
    * @returns {Promise<Object>}
    */
-  async handleMusicSearch(input, context) {
+  async handleMusicSearch(input, context, conversationHistory = []) {
+    try {
+      console.log(`\n🎵 处理音乐搜索: "${input}"`);
+
+      // 🔥 新流程：意图分析 → 构建候选池 → AI 筛选 → 返回结果
+
+      // 1. 意图分析
+      console.log(`\n📊 步骤 1: 意图分析`);
+      const intent = await this.deepseek.analyzeIntent(input, conversationHistory);
+      console.log(`   意图:`, JSON.stringify(intent, null, 2));
+
+      // 2. 根据意图构建候选池（智能混合推荐）
+      console.log(`\n🎯 步骤 2: 构建候选池`);
+      const lastPlayedSongId = context.lastPlayedSongId || null;
+      const candidates = await this.ncm.getCandidatesByIntent(intent, null, lastPlayedSongId, 80);
+
+      if (candidates.length === 0) {
+        return {
+          type: 'music',
+          say: '抱歉，没有找到符合的歌曲',
+          play: [],
+          reason: '搜索无结果'
+        };
+      }
+
+      console.log(`   候选歌曲数: ${candidates.length}`);
+
+      // 3. AI 筛选歌曲（根据即时需求）
+      console.log(`\n🧠 步骤 3: AI 筛选歌曲`);
+      const filtered = await this.deepseek.filterSongs(candidates, intent, intent.count || 5);
+
+      if (filtered.length === 0) {
+        return {
+          type: 'music',
+          say: '抱歉，没有找到符合的歌曲',
+          play: [],
+          reason: '过滤后无结果'
+        };
+      }
+
+      console.log(`   过滤后歌曲数: ${filtered.length}`);
+
+      // 4. 获取播放 URL
+      console.log(`\n🔗 步骤 4: 获取播放 URL`);
+      const songsWithUrl = [];
+
+      for (const song of filtered) {
+        // 如果已经有 URL，跳过
+        if (song.url) {
+          songsWithUrl.push(song);
+          continue;
+        }
+
+        // 获取播放 URL
+        const url = await this.ncm.getSongUrl(song.id, 'standard');
+
+        if (url) {
+          song.url = url;
+          songsWithUrl.push(song);
+        } else {
+          console.log(`   ⚠️ 无法获取播放链接: ${song.name} - ${song.artist}`);
+        }
+
+        // 如果已经有足够的歌曲，停止
+        if (songsWithUrl.length >= (intent.count || 5)) {
+          break;
+        }
+      }
+
+      if (songsWithUrl.length === 0) {
+        return {
+          type: 'music',
+          say: '抱歉，这些歌曲暂时无法播放',
+          play: [],
+          reason: '无法获取播放链接'
+        };
+      }
+
+      console.log(`   可播放歌曲数: ${songsWithUrl.length}`);
+
+      // 5. 生成自然的回复
+      console.log(`\n💬 步骤 5: 生成回复`);
+      const reply = await this.deepseek.generateReply(input, songsWithUrl, intent);
+
+      // 🔥 步骤 6: 从对话中学习用户偏好
+      if (this.userProfile) {
+        console.log(`\n📝 步骤 6: 学习用户偏好`);
+        this.userProfile.learnFromConversation(input, intent);
+      }
+
+      return {
+        type: 'music',
+        say: reply.say,
+        play: songsWithUrl.map(s => `${s.name} - ${s.artist}`),
+        songs: songsWithUrl,
+        reason: reply.reason,
+        intent: intent // 返回意图，用于调试
+      };
+    } catch (error) {
+      console.error('❌ 处理音乐搜索失败:', error);
+
+      // 降级：使用简单搜索
+      console.log('⚠️ 降级到简单搜索');
+      return await this.handleSimpleMusicSearch(input, context);
+    }
+  }
+
+  /**
+   * 🔥 新增：简单音乐搜索（降级方案）
+   * @param {string} input - 用户输入
+   * @param {Object} context - 上下文
+   * @returns {Promise<Object>}
+   */
+  async handleSimpleMusicSearch(input, context) {
     // 提取歌曲名或歌手名
     const keyword = this.extractMusicKeyword(input);
 
     if (!keyword) {
-      // 如果无法提取关键词，走自然语言处理
-      return await this.handleNaturalLanguage(input, context);
+      return {
+        type: 'music',
+        say: '抱歉，我没有理解你想听什么歌',
+        play: [],
+        reason: '无法提取关键词'
+      };
     }
 
     // 直接搜索音乐
@@ -242,11 +428,21 @@ export class Router {
       };
     }
 
+    // 获取播放 URL
+    const songsWithUrl = [];
+    for (const song of songs) {
+      const url = await this.ncm.getSongUrl(song.id, 'standard');
+      if (url) {
+        song.url = url;
+        songsWithUrl.push(song);
+      }
+    }
+
     return {
       type: 'music',
       say: `为你找到了"${keyword}"`,
-      play: songs.map(s => `${s.name} - ${s.artist}`),
-      songs: songs,
+      play: songsWithUrl.map(s => `${s.name} - ${s.artist}`),
+      songs: songsWithUrl,
       reason: '直接搜索'
     };
   }

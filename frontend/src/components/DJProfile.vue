@@ -9,7 +9,7 @@
             <div class="avatar-overlay"><span>更换头像</span></div>
           </div>
           <input ref="avatarInput" type="file" accept="image/*" style="display: none" @change="handleAvatarUpload" />
-          <h1 class="dj-name">Claudio</h1>
+          <h1 class="dj-name">Phoenix</h1>
           <div class="dj-subtitle" @click="editSubtitle" v-if="!isEditingSubtitle">{{ subtitle }}</div>
           <input v-else v-model="subtitle" class="subtitle-input" @blur="saveSubtitle" @keyup.enter="saveSubtitle" ref="subtitleInput" />
         </div>
@@ -37,7 +37,7 @@
         <!-- 🔥 主动对话设置 -->
         <div class="proactive-settings">
           <div class="settings-title">主动对话设置</div>
-          <div class="settings-description">让 Claudio 主动和你聊天、推荐音乐</div>
+          <div class="settings-description">让 Phoenix 主动和你聊天、推荐音乐</div>
           <div class="settings-options">
             <div
               class="setting-option"
@@ -68,6 +68,76 @@
             </div>
           </div>
         </div>
+
+        <!-- 🔥 播放模式设置 -->
+        <div class="playmode-settings">
+          <div class="settings-title">播放模式</div>
+          <div class="settings-description">歌曲播放完后的行为</div>
+          <div class="settings-options">
+            <div
+              class="setting-option"
+              :class="{ active: playMode === 'manual' }"
+              @click="setPlayMode('manual')"
+            >
+              <div class="option-icon">⏸️</div>
+              <div class="option-label">手动模式</div>
+              <div class="option-desc">等待指令</div>
+            </div>
+            <div
+              class="setting-option"
+              :class="{ active: playMode === 'auto' }"
+              @click="setPlayMode('auto')"
+            >
+              <div class="option-icon">🤖</div>
+              <div class="option-label">智能续播</div>
+              <div class="option-desc">AI自动推荐</div>
+            </div>
+            <div
+              class="setting-option"
+              :class="{ active: playMode === 'loop' }"
+              @click="setPlayMode('loop')"
+            >
+              <div class="option-icon">🔁</div>
+              <div class="option-label">列表循环</div>
+              <div class="option-desc">循环播放</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🔥 TTS 语音模式设置 -->
+        <div class="tts-settings">
+          <div class="settings-title">🎤 语音播放模式</div>
+          <div class="settings-description">选择 Phoenix 如何与你交流</div>
+          <div class="settings-options">
+            <div
+              class="setting-option"
+              :class="{ active: ttsMode === 'dj' }"
+              @click="setTTSMode('dj')"
+            >
+              <div class="option-icon">🎙️</div>
+              <div class="option-label">DJ 模式</div>
+              <div class="option-desc">先说话再放歌</div>
+            </div>
+            <div
+              class="setting-option"
+              :class="{ active: ttsMode === 'music' }"
+              @click="setTTSMode('music')"
+            >
+              <div class="option-icon">🎵</div>
+              <div class="option-label">音乐模式</div>
+              <div class="option-desc">点击播放语音</div>
+            </div>
+            <div
+              class="setting-option"
+              :class="{ active: ttsMode === 'quiet' }"
+              @click="setTTSMode('quiet')"
+            >
+              <div class="option-icon">🔇</div>
+              <div class="option-label">安静模式</div>
+              <div class="option-desc">不播放语音</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </transition>
@@ -89,6 +159,8 @@ const isEditingSubtitle = ref(false)
 const isEditingBio = ref(false)
 const genres = ref([])
 const proactiveLevel = ref('medium')
+const playMode = ref('manual')
+const ttsMode = ref('music')
 const avatarStyle = computed(() => avatarUrl.value ? { backgroundImage: `url(${avatarUrl.value})`, backgroundSize: 'cover', backgroundPosition: 'center' } : { background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' })
 const onAirStatus = computed(() => props.isPlaying ? 'ON AIR' : 'OFFLINE')
 
@@ -101,6 +173,8 @@ onMounted(async () => {
   if (savedBio) bio.value = savedBio
   await loadGenres()
   await loadProactiveSettings()
+  await loadPlayMode()
+  await loadTTSMode()
 })
 
 const loadGenres = async () => {
@@ -139,6 +213,67 @@ const setProactiveLevel = async (level) => {
   }
 }
 
+const loadPlayMode = async () => {
+  try {
+    const response = await fetch('/api/playmode/settings')
+    const data = await response.json()
+    if (data.settings) {
+      playMode.value = data.settings.mode || 'manual'
+    }
+  } catch (error) {
+    console.error('加载播放模式设置失败:', error)
+    // 从 localStorage 加载备用
+    const savedMode = localStorage.getItem('play_mode')
+    if (savedMode) playMode.value = savedMode
+  }
+}
+
+const setPlayMode = async (mode) => {
+  playMode.value = mode
+  try {
+    await fetch('/api/playmode/settings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ settings: { mode } })
+    })
+    localStorage.setItem('play_mode', mode)
+    console.log('✅ 播放模式已更新:', mode)
+    window.dispatchEvent(new CustomEvent('playmode-changed', { detail: { mode } }))
+  } catch (error) {
+    console.error('更新播放模式设置失败:', error)
+  }
+}
+
+const loadTTSMode = async () => {
+  try {
+    const response = await fetch('/api/tts/config')
+    const data = await response.json()
+    if (data.settings) {
+      ttsMode.value = data.settings.mode || 'music'
+    }
+  } catch (error) {
+    console.error('加载 TTS 模式失败:', error)
+    const savedMode = localStorage.getItem('tts_mode')
+    if (savedMode) ttsMode.value = savedMode
+  }
+}
+
+const setTTSMode = async (mode) => {
+  ttsMode.value = mode
+  try {
+    await fetch('/api/tts/config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ settings: { mode } })
+    })
+    localStorage.setItem('tts_mode', mode)
+    console.log('✅ TTS 模式已更新:', mode)
+    window.dispatchEvent(new CustomEvent('ttsmode-changed', { detail: { mode } }))
+  } catch (error) {
+    console.error('更新 TTS 模式失败:', error)
+  }
+}
+
 const triggerAvatarUpload = () => avatarInput.value.click()
 
 const handleAvatarUpload = async (e) => {
@@ -170,7 +305,7 @@ const closeProfile = () => emit('close')
 
 <style scoped>
 .profile-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);z-index:1000;display:flex;justify-content:center;align-items:center;padding:20px}
-.profile-sidebar{width:90%;max-width:400px;max-height:90vh;background:#0a0a0a;overflow-y:auto;padding:40px 32px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.8);border-radius:16px;border:1px solid rgba(255,255,255,0.1)}
+.profile-sidebar{width:90%;max-width:450px;max-height:90vh;background:#0a0a0a;overflow-y:auto;padding:40px 32px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.8);border-radius:16px;border:1px solid rgba(255,255,255,0.1)}
 .close-btn{position:absolute;top:16px;right:16px;width:32px;height:32px;border:none;background:rgba(255,255,255,0.1);color:#fff;font-size:24px;border-radius:50%;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;line-height:1}
 .close-btn:hover{background:rgba(255,255,255,0.2);transform:rotate(90deg)}
 .profile-header{text-align:center;margin-bottom:32px}
@@ -221,6 +356,12 @@ const closeProfile = () => emit('close')
 .option-icon{font-size:24px;margin-bottom:8px}
 .option-label{font-size:12px;font-weight:600;color:#fff;font-family:'Courier New',monospace;margin-bottom:4px}
 .option-desc{font-size:10px;color:#888;font-family:'Courier New',monospace}
+
+/* 播放模式设置样式 */
+.playmode-settings{margin-bottom:32px;padding:20px;background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.2);border-radius:12px}
+
+/* TTS 语音模式设置样式 */
+.tts-settings{margin-bottom:32px;padding:20px;background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.2);border-radius:12px}
 
 @media (max-width:768px){.profile-sidebar{width:80%}}
 </style>

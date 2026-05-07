@@ -485,3 +485,8 @@ module.exports = {
   serveNcmApi,
   getModulesDefinitions,
 }
+
+// 如果直接运行此文件，启动服务器
+if (require.main === module) {
+  serveNcmApi({ port: 3000 })
+}

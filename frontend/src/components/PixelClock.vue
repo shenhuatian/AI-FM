@@ -4,7 +4,7 @@
     <div v-if="isFocusMode" class="focus-bar" @click="exitFocusMode">
       <div class="focus-logo">
         <div class="mini-avatar" :style="avatarStyle"></div>
-        <span class="mini-brand">Claudio</span>
+        <span class="mini-brand">Phoenix</span>
       </div>
       <button class="exit-focus-btn" @click.stop="exitFocusMode">
         EXIT FOCUS
@@ -17,9 +17,12 @@
       <div class="header">
         <div class="logo">
           <div class="avatar" :style="avatarStyle" @click="emit('openProfile')"></div>
-          <span class="brand">Claudio</span>
+          <span class="brand">Phoenix</span>
         </div>
         <div class="controls">
+          <button class="theme-toggle settings-btn" @click="emit('openSettings')" title="配置中心">
+            SET
+          </button>
           <button class="theme-toggle" @click="toggleTheme">
             {{ isDark ? 'DARK' : 'LIGHT' }}
           </button>
@@ -66,7 +69,7 @@ const props = defineProps({
   isPoemCollapsed: Boolean
 })
 
-const emit = defineEmits(['update:isPoemCollapsed', 'openProfile'])
+const emit = defineEmits(['update:isPoemCollapsed', 'openProfile', 'openSettings'])
 
 const currentTime = ref('00:00')
 const currentDate = ref('')

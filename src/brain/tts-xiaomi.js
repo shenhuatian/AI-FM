@@ -1,16 +1,18 @@
-// TTS语音合成 - Fish Audio
+// TTS语音合成 - 小米 MiMo V2.5
+// 基于官方文档：https://platform.xiaomimimo.com/docs/zh-CN/usage-guide/speech-synthesis-v2.5
 import fetch from 'node-fetch';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import fs from 'fs/promises';
 import path from 'path';
 import crypto from 'crypto';
 
-export class TTSService {
-  constructor(apiKey, defaultVoiceId = '168931532') {
+export class XiaomiTTSService {
+  constructor(apiKey) {
     this.apiKey = apiKey;
-    this.defaultVoiceId = defaultVoiceId; // 默认声音ID（曼波 - 男性、年轻）
+    this.baseUrl = process.env.XIAOMI_BASE_URL || 'https://token-plan-sgp.xiaomimimo.com';
+    this.model = 'mimo-v2.5-tts'; // 使用 MiMo-V2.5-TTS 模型
     this.cacheDir = 'cache/tts';
-    this.isAvailable = false; // TTS 可用性状态
+    this.isAvailable = false;
 
     // 代理配置（从环境变量读取）
     this.proxyUrl = process.env.HTTPS_PROXY || process.env.HTTP_PROXY || null;
@@ -29,25 +31,33 @@ export class TTSService {
    */
   async testAvailability() {
     if (!this.apiKey) {
-      console.log('⚠️  未配置 FISH_API_KEY，TTS 功能已禁用');
+      console.log('⚠️  未配置 XIAOMI_API_KEY，TTS 功能已禁用');
       this.isAvailable = false;
       return false;
     }
 
     try {
-      console.log('🧪 测试 Fish Audio API...');
+      console.log('🧪 测试小米 MiMo TTS API...');
       const fetchOptions = {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
+          'api-key': this.apiKey,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          text: '测试',
-          reference_id: this.defaultVoiceId,
-          format: 'mp3'
+          model: this.model,
+          messages: [
+            {
+              role: 'assistant',
+              content: '测试'
+            }
+          ],
+          audio: {
+            format: 'mp3',
+            voice: '冰糖' // 中文女声
+          }
         }),
-        signal: AbortSignal.timeout(10000) // 10秒超时
+        signal: AbortSignal.timeout(15000) // 15秒超时
       };
 
       // 如果配置了代理，添加 agent
@@ -55,20 +65,20 @@ export class TTSService {
         fetchOptions.agent = this.agent;
       }
 
-      const response = await fetch('https://api.fish.audio/v1/tts', fetchOptions);
+      const response = await fetch(`${this.baseUrl}/v1/chat/completions`, fetchOptions);
 
       if (response.ok) {
-        console.log('✅ Fish Audio TTS 可用');
+        console.log('✅ 小米 MiMo TTS 可用');
         this.isAvailable = true;
         return true;
       } else {
         const errorText = await response.text();
-        console.log('❌ Fish Audio API 测试失败:', response.status, errorText);
+        console.log('❌ 小米 MiMo API 测试失败:', response.status, errorText);
         this.isAvailable = false;
         return false;
       }
     } catch (error) {
-      console.log('❌ Fish Audio API 连接失败:', error.message);
+      console.log('❌ 小米 MiMo API 连接失败:', error.message);
       this.isAvailable = false;
       return false;
     }
@@ -88,19 +98,22 @@ export class TTSService {
   /**
    * 生成文本的哈希值（用于缓存）
    * @param {string} text - 文本内容
+   * @param {Object} options - 配置选项
    * @returns {string} 哈希值
    */
-  getTextHash(text) {
-    return crypto.createHash('md5').update(text).digest('hex');
+  getTextHash(text, options = {}) {
+    const key = `${text}_${options.voice || '冰糖'}_${options.style || ''}`;
+    return crypto.createHash('md5').update(key).digest('hex');
   }
 
   /**
    * 检查缓存是否存在
    * @param {string} text - 文本内容
+   * @param {Object} options - 配置选项
    * @returns {Promise<string|null>} 缓存文件路径或null
    */
-  async checkCache(text) {
-    const hash = this.getTextHash(text);
+  async checkCache(text, options = {}) {
+    const hash = this.getTextHash(text, options);
     const cachePath = path.join(this.cacheDir, `${hash}.mp3`);
 
     try {
@@ -112,9 +125,12 @@ export class TTSService {
   }
 
   /**
-   * 使用Fish Audio生成语音
+   * 使用小米 MiMo 生成语音
    * @param {string} text - 要转换的文本
    * @param {Object} options - 配置选项
+   * @param {string} options.voice - 音色 (冰糖, 茉莉, 苏打, 白桦, Mia, Chloe, Milo, Dean, mimo_default)
+   * @param {string} options.style - 风格标签（如：开心、悲伤、东北话等）
+   * @param {string} options.instruction - 自然语言指令（放在 user 消息中）
    * @returns {Promise<string>} 音频文件路径
    */
   async synthesize(text, options = {}) {
@@ -125,19 +141,42 @@ export class TTSService {
     }
 
     // 检查缓存
-    const cached = await this.checkCache(text);
+    const cached = await this.checkCache(text, options);
     if (cached) {
       console.log('✅ 使用缓存的TTS音频');
       return cached;
     }
 
     if (!this.apiKey) {
-      console.warn('⚠️ 未配置Fish API Key，跳过TTS生成');
+      console.warn('⚠️ 未配置小米 API Key，跳过TTS生成');
       return null;
     }
 
     try {
       console.log('🎤 开始生成TTS音频...');
+
+      // 处理文本：如果有风格标签，使用 (风格) 格式
+      let finalText = text;
+      if (options.style) {
+        finalText = `(${options.style})${text}`;
+      }
+
+      // 构建消息
+      const messages = [];
+
+      // 如果有自然语言指令，添加到 user 消息
+      if (options.instruction) {
+        messages.push({
+          role: 'user',
+          content: options.instruction
+        });
+      }
+
+      // 要合成的文本放在 assistant 消息中（根据文档要求）
+      messages.push({
+        role: 'assistant',
+        content: finalText
+      });
 
       // 使用AbortController实现超时控制
       const controller = new AbortController();
@@ -147,16 +186,16 @@ export class TTSService {
         const fetchOptions = {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${this.apiKey}`,
+            'api-key': this.apiKey,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            text: text,
-            reference_id: options.voiceId || this.defaultVoiceId,
-            format: 'mp3',
-            chunk_length: 200,
-            normalize: true,
-            ...options
+            model: this.model,
+            messages: messages,
+            audio: {
+              format: 'mp3',
+              voice: options.voice || '冰糖' // 默认中文女声
+            }
           }),
           signal: controller.signal
         };
@@ -166,20 +205,31 @@ export class TTSService {
           fetchOptions.agent = this.agent;
         }
 
-        const response = await fetch('https://api.fish.audio/v1/tts', fetchOptions);
+        const response = await fetch(`${this.baseUrl}/v1/chat/completions`, fetchOptions);
 
         clearTimeout(timeoutId);
 
         if (!response.ok) {
           const errorText = await response.text();
-          throw new Error(`Fish API错误: ${response.status} - ${errorText}`);
+          throw new Error(`小米 API错误: ${response.status} - ${errorText}`);
         }
 
+        const result = await response.json();
+
+        // 从响应中提取音频数据
+        const message = result.choices[0].message;
+        if (!message.audio || !message.audio.data) {
+          throw new Error('响应中没有音频数据');
+        }
+
+        // 解码 Base64 音频数据
+        const audioBase64 = message.audio.data;
+        const audioBuffer = Buffer.from(audioBase64, 'base64');
+
         // 保存音频文件
-        const hash = this.getTextHash(text);
+        const hash = this.getTextHash(text, options);
         const outputPath = path.join(this.cacheDir, `${hash}.mp3`);
-        const buffer = await response.arrayBuffer();
-        await fs.writeFile(outputPath, Buffer.from(buffer));
+        await fs.writeFile(outputPath, audioBuffer);
 
         console.log('✅ TTS音频生成成功');
         return outputPath;
@@ -223,4 +273,4 @@ export class TTSService {
   }
 }
 
-export default TTSService;
+export default XiaomiTTSService;

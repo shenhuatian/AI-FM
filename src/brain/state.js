@@ -26,6 +26,9 @@ export class StateManager {
         enabled: true,    // 是否启用 TTS
         voice: '冰糖',    // 音色：冰糖、茉莉、苏打、白桦、Mia、Chloe、Milo、Dean
         mode: 'dj'        // 模式：'dj' | 'music' | 'quiet'
+      },
+      playModeSettings: {  // 播放模式设置
+        mode: 'manual'     // 模式：'manual' | 'auto' | 'loop'
       }
     };
     this.init();
@@ -682,6 +685,40 @@ export class StateManager {
 
     await this.save();
     console.log('✅ TTS 配置已更新:', this.state.ttsSettings);
+  }
+
+  /**
+   * 获取播放模式配置
+   * @returns {Object} 播放模式配置
+   */
+  getPlayModeSettings() {
+    if (!this.state.playModeSettings) {
+      this.state.playModeSettings = {
+        mode: 'manual'
+      };
+    }
+    return this.state.playModeSettings;
+  }
+
+  /**
+   * 更新播放模式配置
+   * @param {Object} settings - 播放模式配置
+   * @param {string} settings.mode - 模式：'manual' | 'auto' | 'loop'
+   */
+  async updatePlayModeSettings(settings) {
+    if (!this.state.playModeSettings) {
+      this.state.playModeSettings = {
+        mode: 'manual'
+      };
+    }
+
+    this.state.playModeSettings = {
+      ...this.state.playModeSettings,
+      ...settings
+    };
+
+    await this.save();
+    console.log('✅ 播放模式配置已更新:', this.state.playModeSettings);
   }
 }
 
